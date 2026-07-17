@@ -82,6 +82,6 @@ ALTER TABLE products ADD COLUMN status VARCHAR DEFAULT 'PENDING_APPROVAL';
 
 To ensure code reviews are clean, structured, and easy to parse, always divide development into highly isolated, sequential chunks.
 *   **Logical Chunking:** Implement one logical feature at a time, verify its compilation, and validate it with tests before writing any code for the next feature.
-*   **Pause & Commit Reminder:** After completing any logical feature block (e.g., initial folder structures, database schema definitions, JWT authentication logic, etc.), **the AI must STOP and explicitly remind the user to review and commit their changes** before starting on the next block. Do not write code for subsequent features until the current chunk is approved or committed.
+*   **Pause & Commit Reminder:** After completing any logical feature block (e.g., initial folder structures, database schema definitions, JWT authentication logic, etc.), **the AI must STOP, suggest a structured commit message, and explicitly remind the user to review and commit their changes** before starting on the next block. Do not write code for subsequent features until the current chunk is approved or committed.
 
 ***
