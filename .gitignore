@@ -1,0 +1,19 @@
+# Root dependency folders
+node_modules/
+
+# Local env files
+.env
+.env.*
+
+# Build directories
+dist/
+.nuxt/
+.output/
+out/
+build/
+
+# IDE / System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

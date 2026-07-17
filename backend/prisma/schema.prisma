@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  BUYER
+  VENDOR
+  ADMIN
+}
+
+enum VendorStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ProductStatus {
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+}
+
+enum CouponDiscountType {
+  PERCENTAGE
+  FLAT
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(BUYER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vendorProfile Vendor?
+  orders        Order[]      @relation("BuyerOrders")
+  reviews       Review[]     @relation("BuyerReviews")
+  savedCards    SavedCard[]
+  cart          Cart?
+}
+
+model Vendor {
+  id                  String       @id @default(uuid())
+  userId              String       @unique
+  shopName            String
+  shopDescription     String?
+  autoApproveProducts Boolean      @default(false)
+  status              VendorStatus @default(PENDING)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
+  coupons  Coupon[]
+  orders   Order[]   @relation("VendorOrders")
+  reviews  Review[]  @relation("VendorReviews")
+  carts    Cart[]
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  vendorId    String
+  categoryId  String
+  name        String
+  description String?
+  price       Float
+  image       String?
+  status      ProductStatus @default(PENDING_APPROVAL)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  vendor     Vendor      @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  category   Category    @relation(fields: [categoryId], references: [id])
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model Cart {
+  id        String   @id @default(uuid())
+  buyerId   String   @unique
+  vendorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyer  User       @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  vendor Vendor?    @relation(fields: [vendorId], references: [id])
+  items  CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  productId String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber Int         @unique @default(autoincrement())
+  buyerId     String
+  vendorId    String
+  subtotal    Float
+  tax         Float
+  deliveryFee Float
+  discount    Float       @default(0.0)
+  total       Float
+  promoCode   String?
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  buyer      User        @relation("BuyerOrders", fields: [buyerId], references: [id])
+  vendor     Vendor      @relation("VendorOrders", fields: [vendorId], references: [id])
+  items      OrderItem[]
+  review     Review?
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Coupon {
+  id            String             @id @default(uuid())
+  vendorId      String
+  code          String
+  discountType  CouponDiscountType
+  discountValue Float
+  isActive      Boolean            @default(true)
+  expirationDate DateTime?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, code])
+}
+
+model SavedCard {
+  id        String   @id @default(uuid())
+  buyerId   String
+  cardToken String
+  brand     String
+  last4     String
+  expMonth  Int
+  expYear   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyer User @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  orderId   String   @unique
+  buyerId   String
+  vendorId  String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order  Order  @relation(fields: [orderId], references: [id])
+  buyer  User   @relation("BuyerReviews", fields: [buyerId], references: [id])
+  vendor Vendor @relation("VendorReviews", fields: [vendorId], references: [id])
+}
