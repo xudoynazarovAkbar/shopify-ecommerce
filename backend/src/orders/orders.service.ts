@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CartService } from '../cart/cart.service';
+import { CouponsService } from '../coupons/coupons.service';
+import { CheckoutDto } from './dto/checkout.dto';
 import { OrderStatus } from '@prisma/client';
 
 @Injectable()
@@ -13,9 +15,10 @@ export class OrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cartService: CartService,
+    private readonly couponsService: CouponsService,
   ) {}
 
-  async checkout(buyerId: string) {
+  async checkout(buyerId: string, dto?: CheckoutDto) {
     // 1. Fetch active cart
     const cart = await this.cartService.getCart(buyerId);
 
@@ -30,6 +33,33 @@ export class OrdersService {
       );
     }
 
+    let discount = 0.0;
+    let promoCode: string | null = null;
+
+    if (dto?.promoCode) {
+      const coupon = await this.couponsService.validateCoupon(
+        cart.vendorId,
+        dto.promoCode,
+      );
+
+      if (coupon.discountType === 'PERCENTAGE') {
+        discount = parseFloat(
+          (cart.subtotal * (coupon.discountValue / 100)).toFixed(2),
+        );
+      } else {
+        discount = parseFloat(coupon.discountValue.toFixed(2));
+      }
+
+      // Discount cannot exceed subtotal
+      discount = Math.min(discount, cart.subtotal);
+      promoCode = coupon.code;
+    }
+
+    const calculatedTotal = parseFloat(
+      (cart.subtotal + cart.tax + cart.deliveryFee - discount).toFixed(2),
+    );
+    const finalTotal = Math.max(0.0, calculatedTotal);
+
     // 3. Create order and clear cart in a transaction to ensure atomicity
     const order = await this.prisma.$transaction(async (tx) => {
       // Create the main Order along with nested OrderItems
@@ -40,7 +70,9 @@ export class OrdersService {
           subtotal: cart.subtotal,
           tax: cart.tax,
           deliveryFee: cart.deliveryFee,
-          total: cart.total,
+          discount,
+          total: finalTotal,
+          promoCode,
           status: OrderStatus.PENDING,
           items: {
             create: cart.items.map((item) => ({

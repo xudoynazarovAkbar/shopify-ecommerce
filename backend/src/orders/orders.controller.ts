@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+import { CheckoutDto } from './dto/checkout.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -30,8 +31,8 @@ export class OrdersController {
 
   @Post('checkout')
   @Roles(Role.BUYER)
-  checkout(@Request() req: AuthenticatedRequest) {
-    return this.ordersService.checkout(req.user.id);
+  checkout(@Request() req: AuthenticatedRequest, @Body() dto: CheckoutDto) {
+    return this.ordersService.checkout(req.user.id, dto);
   }
 
   @Get('my-orders')
