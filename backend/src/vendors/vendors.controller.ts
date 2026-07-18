@@ -3,6 +3,7 @@ import {
   Post,
   Body,
   Get,
+  Param,
   UseGuards,
   Request,
 } from '@nestjs/common';
@@ -35,5 +36,10 @@ export class VendorsController {
   @Get('me')
   async getProfile(@Request() req: AuthenticatedRequest) {
     return this.vendorsService.getProfile(req.user.id);
+  }
+
+  @Get(':id')
+  async getPublicProfile(@Param('id') id: string) {
+    return this.vendorsService.getPublicProfile(id);
   }
 }

@@ -43,6 +43,42 @@ export class VendorsService {
     return vendor;
   }
 
+  async getPublicProfile(vendorId: string) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { id: vendorId },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!vendor) {
+      throw new NotFoundException(`Vendor with ID ${vendorId} not found`);
+    }
+
+    const aggregate = await this.prisma.review.aggregate({
+      where: { vendorId },
+      _avg: { rating: true },
+      _count: { rating: true },
+    });
+
+    const averageRatingRaw = aggregate._avg.rating;
+    const averageRating =
+      averageRatingRaw !== null
+        ? Math.round(averageRatingRaw * 100) / 100
+        : null;
+    const reviewCount = aggregate._count.rating || 0;
+
+    return {
+      ...vendor,
+      averageRating,
+      reviewCount,
+    };
+  }
+
   async listVendors(status?: VendorStatus) {
     return this.prisma.vendor.findMany({
       where: status ? { status } : {},
