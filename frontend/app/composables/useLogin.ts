@@ -51,10 +51,17 @@ export const useLogin = () => {
       } else {
         navigateTo('/');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
+      const fetchError = err as {
+        response?: {
+          _data?: {
+            message?: string;
+          };
+        };
+      };
       const errorMessage =
-        err.response?._data?.message || 'Invalid email or password';
+        fetchError.response?._data?.message || 'Invalid email or password';
       toastStore.error(errorMessage);
     } finally {
       loading.value = false;

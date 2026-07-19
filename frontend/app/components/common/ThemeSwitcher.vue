@@ -38,10 +38,10 @@ onMounted(() => {
 
 <template>
   <button
-    @click="toggleTheme"
     type="button"
     class="p-2 rounded-full border border-appBorder bg-cardBg hover:bg-appBg text-textPrimary shadow-sm transition duration-200 flex items-center justify-center shrink-0"
     title="Toggle Theme"
+    @click="toggleTheme"
   >
     <Icon
       v-if="theme === 'light'"

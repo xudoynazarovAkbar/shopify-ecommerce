@@ -44,8 +44,8 @@ const toastStore = useToastStore();
           <p class="text-sm font-medium">{{ toast.message }}</p>
         </div>
         <button
-          @click="toastStore.remove(toast.id)"
           class="ml-4 shrink-0 rounded-md hover:bg-black/5 p-1 text-textMuted hover:text-textPrimary transition"
+          @click="toastStore.remove(toast.id)"
         >
           <Icon name="heroicons:x-mark-20-solid" class="w-4 h-4" />
         </button>

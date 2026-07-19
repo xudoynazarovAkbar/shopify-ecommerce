@@ -49,10 +49,17 @@ export const useRegister = () => {
       }
 
       navigateTo('/login');
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
+      const fetchError = err as {
+        response?: {
+          _data?: {
+            message?: string;
+          };
+        };
+      };
       const errorMessage =
-        err.response?._data?.message || 'Failed to register account';
+        fetchError.response?._data?.message || 'Failed to register account';
       toastStore.error(errorMessage);
     } finally {
       loading.value = false;

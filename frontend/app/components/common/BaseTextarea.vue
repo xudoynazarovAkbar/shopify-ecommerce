@@ -26,12 +26,6 @@ defineEmits(['update:modelValue']);
       :id="id"
       :rows="rows || 3"
       :value="modelValue"
-      @input="
-        $emit(
-          'update:modelValue',
-          ($event.target as HTMLTextAreaElement).value,
-        )
-      "
       :placeholder="placeholder"
       :required="required"
       :disabled="disabled"
@@ -41,7 +35,13 @@ defineEmits(['update:modelValue']);
           ? 'border-rose-300 focus:ring-rose-500 focus:border-rose-500'
           : 'border-appBorder focus:ring-brand focus:border-brand'
       "
-    ></textarea>
+      @input="
+        $emit(
+          'update:modelValue',
+          ($event.target as HTMLTextAreaElement).value,
+        )
+      "
+    />
     <p v-if="error" class="text-xs text-rose-500 mt-1">{{ error }}</p>
   </div>
 </template>

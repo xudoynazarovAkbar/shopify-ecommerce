@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useApi } from '../composables/useApi';
+import type { Category, Vendor, Product } from '../types';
 import HeroBanner from '../components/index/HeroBanner.vue';
 import CategoryGrid from '../components/index/CategoryGrid.vue';
 import FeaturedStores from '../components/index/FeaturedStores.vue';
@@ -11,17 +12,17 @@ definePageMeta({
 
 const api = useApi();
 
-const categories = ref<any[]>([]);
-const vendors = ref<any[]>([]);
-const products = ref<any[]>([]);
+const categories = ref<Category[]>([]);
+const vendors = ref<Vendor[]>([]);
+const products = ref<Product[]>([]);
 const loading = ref(true);
 
 onMounted(async () => {
   try {
     const [catsRes, vendorsRes, productsRes] = await Promise.all([
-      api.get<any[]>('/categories'),
-      api.get<any[]>('/vendors'),
-      api.get<any[]>('/products'),
+      api.get<Category[]>('/categories'),
+      api.get<Vendor[]>('/vendors'),
+      api.get<Product[]>('/products'),
     ]);
     categories.value = catsRes || [];
     vendors.value = vendorsRes || [];

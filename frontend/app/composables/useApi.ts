@@ -1,12 +1,20 @@
 import { useAuthStore } from '../stores/auth';
 
+export interface ApiOptions {
+  method?: string;
+  headers?: Record<string, string>;
+  body?: unknown;
+  params?: Record<string, string | number | boolean>;
+  [key: string]: unknown;
+}
+
 export const useApi = () => {
   const authStore = useAuthStore();
   const config = useRuntimeConfig();
   const baseURL = config.public.apiBase;
 
-  const request = async <T>(url: string, options: any = {}): Promise<T> => {
-    const headers = {
+  const request = async <T>(url: string, options: ApiOptions = {}): Promise<T> => {
+    const headers: Record<string, string> = {
       ...options.headers,
     };
 
@@ -19,10 +27,16 @@ export const useApi = () => {
         baseURL,
         ...options,
         headers,
-      });
-    } catch (err: any) {
+      } as Parameters<typeof $fetch>[1]);
+    } catch (err) {
       // If unauthorized (401) and we are logged in, clear auth session
-      if (err.status === 401 && authStore.isAuthenticated) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'status' in err &&
+        err.status === 401 &&
+        authStore.isAuthenticated
+      ) {
         authStore.logout();
       }
       throw err;
@@ -31,13 +45,13 @@ export const useApi = () => {
 
   return {
     request,
-    get: <T>(url: string, options: any = {}) =>
+    get: <T>(url: string, options: ApiOptions = {}) =>
       request<T>(url, { ...options, method: 'GET' }),
-    post: <T>(url: string, body?: any, options: any = {}) =>
+    post: <T>(url: string, body?: unknown, options: ApiOptions = {}) =>
       request<T>(url, { ...options, method: 'POST', body }),
-    patch: <T>(url: string, body?: any, options: any = {}) =>
+    patch: <T>(url: string, body?: unknown, options: ApiOptions = {}) =>
       request<T>(url, { ...options, method: 'PATCH', body }),
-    delete: <T>(url: string, options: any = {}) =>
+    delete: <T>(url: string, options: ApiOptions = {}) =>
       request<T>(url, { ...options, method: 'DELETE' }),
   };
 };

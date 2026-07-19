@@ -11,6 +11,6 @@
         restaurants, delivered straight to your door.
       </p>
     </div>
-    <div class="absolute inset-0 bg-grid-white/[0.05] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-grid-white/[0.05] pointer-events-none"/>
   </section>
 </template>

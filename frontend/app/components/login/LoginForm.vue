@@ -13,13 +13,13 @@ const { email, password, loading, handleLogin } = useLogin();
       <p class="text-textMuted text-sm">Sign in to your marketplace account</p>
     </div>
 
-    <form @submit.prevent="handleLogin" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="handleLogin">
       <!-- Email -->
       <BaseInput
         id="email"
+        v-model="email"
         type="email"
         label="Email Address"
-        v-model="email"
         required
         placeholder="your@email.com"
       />
@@ -27,9 +27,9 @@ const { email, password, loading, handleLogin } = useLogin();
       <!-- Password -->
       <BaseInput
         id="password"
+        v-model="password"
         type="password"
         label="Password"
-        v-model="password"
         required
         placeholder="••••••••"
       />

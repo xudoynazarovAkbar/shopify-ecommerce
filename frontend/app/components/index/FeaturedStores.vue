@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Vendor } from '../../types';
+
 defineProps<{
-  vendors: any[];
+  vendors: Vendor[];
   loading: boolean;
 }>();
 </script>
@@ -19,7 +21,7 @@ defineProps<{
         v-for="i in 3"
         :key="i"
         class="h-40 bg-appBg animate-pulse rounded-xl"
-      ></div>
+      />
     </div>
     <div v-else-if="vendors.length === 0" class="text-textMuted text-sm">
       No active merchants available.
@@ -36,13 +38,13 @@ defineProps<{
             {{ vendor.shopName }}
           </h3>
           <span
-            class="flex items-center gap-1 text-amber-500 font-bold text-sm"
             v-if="vendor.averageRating"
+            class="flex items-center gap-1 text-amber-500 font-bold text-sm"
           >
             <Icon name="heroicons:star-20-solid" class="w-4 h-4" />
             {{ vendor.averageRating.toFixed(1) }}
           </span>
-          <span class="text-xs text-textMuted font-medium" v-else>
+          <span v-else class="text-xs text-textMuted font-medium">
             No ratings
           </span>
         </div>

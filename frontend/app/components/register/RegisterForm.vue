@@ -22,7 +22,7 @@ const {
       <p class="text-textMuted text-sm">Join the marketplace as a buyer or vendor</p>
     </div>
 
-    <form @submit.prevent="handleRegister" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="handleRegister">
       <!-- Role Toggle -->
       <div>
         <label class="block text-sm font-medium text-textSecondary mb-2">
@@ -31,25 +31,25 @@ const {
         <div class="grid grid-cols-2 gap-2 p-1 bg-appBg rounded-lg transition-colors">
           <button
             type="button"
-            @click="role = 'BUYER'"
             class="py-2 text-sm font-semibold rounded-md transition-all duration-200"
             :class="
               role === 'BUYER'
                 ? 'bg-cardBg text-brand shadow-sm'
                 : 'text-textSecondary hover:text-textPrimary'
             "
+            @click="role = 'BUYER'"
           >
             Buyer (Customer)
           </button>
           <button
             type="button"
-            @click="role = 'VENDOR'"
             class="py-2 text-sm font-semibold rounded-md transition-all duration-200"
             :class="
               role === 'VENDOR'
                 ? 'bg-cardBg text-brand shadow-sm'
                 : 'text-textSecondary hover:text-textPrimary'
             "
+            @click="role = 'VENDOR'"
           >
             Vendor (Merchant)
           </button>
@@ -59,9 +59,9 @@ const {
       <!-- Email -->
       <BaseInput
         id="email"
+        v-model="email"
         type="email"
         label="Email Address"
-        v-model="email"
         required
         placeholder="your@email.com"
       />
@@ -69,9 +69,9 @@ const {
       <!-- Password -->
       <BaseInput
         id="password"
+        v-model="password"
         type="password"
         label="Password"
-        v-model="password"
         required
         placeholder="••••••••"
       />
@@ -88,17 +88,17 @@ const {
         <div v-if="role === 'VENDOR'" class="space-y-4 pt-4 border-t border-appBorder">
           <BaseInput
             id="shopName"
+            v-model="shopName"
             type="text"
             label="Shop Name"
-            v-model="shopName"
             :required="role === 'VENDOR'"
             placeholder="e.g. Pizza Paradise"
           />
 
           <BaseTextarea
             id="shopDescription"
-            label="Shop Description"
             v-model="shopDescription"
+            label="Shop Description"
             placeholder="Tell customers about your shop..."
           />
         </div>

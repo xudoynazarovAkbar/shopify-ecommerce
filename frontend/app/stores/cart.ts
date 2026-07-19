@@ -1,18 +1,7 @@
 import { defineStore } from 'pinia';
 import { useApi } from '../composables/useApi';
 import { useAuthStore } from './auth';
-
-export interface CartItem {
-  id: string;
-  productId: string;
-  quantity: number;
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    image?: string;
-  };
-}
+import type { Cart, CartItem } from '../types';
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
@@ -38,11 +27,11 @@ export const useCartStore = defineStore('cart', {
       this.loading = true;
       const api = useApi();
       try {
-        const cartData = await api.get<any>('/cart');
+        const cartData = await api.get<Cart>('/cart');
         if (cartData) {
           this.id = cartData.id;
           this.vendorId = cartData.vendorId;
-          this.vendor = cartData.vendor;
+          this.vendor = cartData.vendor || null;
           this.subtotal = cartData.subtotal;
           this.tax = cartData.tax;
           this.deliveryFee = cartData.deliveryFee;
@@ -62,8 +51,6 @@ export const useCartStore = defineStore('cart', {
       try {
         await api.post('/cart/items', { productId, quantity });
         await this.fetchCart();
-      } catch (err: any) {
-        throw err;
       } finally {
         this.loading = false;
       }

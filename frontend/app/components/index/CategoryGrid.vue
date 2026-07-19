@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Category } from '../../types';
+
 defineProps<{
-  categories: any[];
+  categories: Category[];
   loading: boolean;
 }>();
 </script>
@@ -16,7 +18,7 @@ defineProps<{
         v-for="i in 4"
         :key="i"
         class="h-16 bg-appBg animate-pulse rounded-xl"
-      ></div>
+      />
     </div>
     <div v-else-if="categories.length === 0" class="text-textMuted text-sm">
       No categories available yet.
@@ -28,7 +30,7 @@ defineProps<{
         class="bg-cardBg p-4 rounded-xl shadow-sm border border-appBorder hover:shadow transition cursor-pointer flex flex-col justify-center items-center text-center"
       >
         <span class="font-bold text-sm text-textPrimary">{{ cat.name }}</span>
-        <span class="text-xs text-textMuted mt-1" v-if="cat.description">
+        <span v-if="cat.description" class="text-xs text-textMuted mt-1">
           {{ cat.description }}
         </span>
       </div>

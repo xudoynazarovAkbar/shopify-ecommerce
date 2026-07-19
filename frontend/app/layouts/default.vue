@@ -38,13 +38,13 @@ onMounted(() => {
 
         <!-- Search Bar -->
         <div v-if="showSearch" class="flex-1 max-w-lg">
-          <form @submit.prevent="onSearch" class="relative">
+          <form class="relative" @submit.prevent="onSearch">
             <input
-              type="text"
               v-model="searchQuery"
+              type="text"
               placeholder="Search products, shops, restaurants..."
               class="w-full pl-10 pr-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:bg-cardBg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
-            />
+            >
             <Icon
               name="heroicons:magnifying-glass-20-solid"
               class="w-5 h-5 text-textMuted absolute left-3 top-2.5 pointer-events-none"
@@ -93,8 +93,8 @@ onMounted(() => {
               My Orders
             </NuxtLink>
             <button
-              @click="authStore.logout()"
               class="text-sm font-semibold text-rose-600 hover:text-rose-700"
+              @click="authStore.logout()"
             >
               Logout
             </button>

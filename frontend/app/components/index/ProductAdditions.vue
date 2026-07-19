@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Product } from '../../types';
+
 defineProps<{
-  products: any[];
+  products: Product[];
   loading: boolean;
 }>();
 </script>
@@ -16,7 +18,7 @@ defineProps<{
         v-for="i in 4"
         :key="i"
         class="h-60 bg-appBg animate-pulse rounded-xl"
-      ></div>
+      />
     </div>
     <div v-else-if="products.length === 0" class="text-textMuted text-sm">
       No products available yet.
