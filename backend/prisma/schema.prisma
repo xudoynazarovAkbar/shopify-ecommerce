@@ -43,8 +43,9 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(BUYER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  hashedRefreshToken String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   vendorProfile Vendor?
   orders        Order[]      @relation("BuyerOrders")

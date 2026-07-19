@@ -64,9 +64,16 @@ export class AuthService {
         });
       }
 
-      // Return user without password
-      return exclude(user, ['password']);
+      // Return user without password or refresh token hash
+      return exclude(user, ['password', 'hashedRefreshToken']);
     });
+  }
+
+  generateTokens(userId: string, role: Role) {
+    const payload = { sub: userId, role };
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+    return { accessToken, refreshToken };
   }
 
   async login(dto: LoginDto) {
@@ -98,15 +105,75 @@ export class AuthService {
       );
     }
 
-    // 4. Generate JWT with the payload: { sub: user.id, role: user.role }
-    const payload = { sub: user.id, role: user.role };
-    const accessToken = this.jwtService.sign(payload);
+    // 4. Generate access and refresh tokens
+    const { accessToken, refreshToken } = this.generateTokens(
+      user.id,
+      user.role,
+    );
 
-    // Return token and user details (sans password)
+    // 5. Hash and store the refresh token
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { hashedRefreshToken },
+    });
+
+    // Return token and user details (sans password and hashedRefreshToken)
     return {
       accessToken,
-      user: exclude(user, ['password']),
+      refreshToken,
+      user: exclude(user, ['password', 'hashedRefreshToken']),
     };
+  }
+
+  async refreshTokens(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify<{ sub: string; role: Role }>(
+        refreshToken,
+      );
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.sub },
+      });
+
+      if (!user || !user.hashedRefreshToken) {
+        throw new UnauthorizedException('Access Denied');
+      }
+
+      // Verify stored hash matches
+      const isMatch = await bcrypt.compare(
+        refreshToken,
+        user.hashedRefreshToken,
+      );
+      if (!isMatch) {
+        throw new UnauthorizedException('Access Denied');
+      }
+
+      const tokens = this.generateTokens(user.id, user.role);
+      const hashedRefreshToken = await bcrypt.hash(tokens.refreshToken, 10);
+
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { hashedRefreshToken },
+      });
+
+      return tokens;
+    } catch {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+  }
+
+  async logout(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify<{ sub: string; role: Role }>(
+        refreshToken,
+      );
+      await this.prisma.user.update({
+        where: { id: payload.sub },
+        data: { hashedRefreshToken: null },
+      });
+    } catch {
+      // Ignore invalid token on logout
+    }
   }
 
   async getProfile(userId: string) {
@@ -126,7 +193,7 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    return exclude(user, ['password']);
+    return exclude(user, ['password', 'hashedRefreshToken']);
   }
 }
 
