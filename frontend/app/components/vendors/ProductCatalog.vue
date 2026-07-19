@@ -10,6 +10,7 @@ defineProps<{
 
 const cartStore = useCartStore();
 const toastStore = useToastStore();
+const { resolveImageUrl } = useImageResolver();
 
 const addingProductId = ref<string | null>(null);
 const showConflictModal = ref(false);
@@ -111,7 +112,7 @@ const handleResolveConflict = async () => {
             <div class="aspect-video w-full bg-appBg flex items-center justify-center relative overflow-hidden border-b border-appBorder">
               <img
                 v-if="product.image"
-                :src="product.image"
+                :src="resolveImageUrl(product.image)"
                 :alt="product.name"
                 class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               >

@@ -459,4 +459,43 @@ describe('Categories & Products Moderation System (e2e)', () => {
         .expect(409);
     });
   });
+
+  describe('5. Product Image Uploads', () => {
+    it('should block unauthorized or anonymous file uploads', async () => {
+      await request(app.getHttpServer())
+        .post('/products/upload')
+        .attach('file', Buffer.from('fake-image-data'), 'test.png')
+        .expect(401);
+    });
+
+    it('should allow approved vendor to upload a product image', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/products/upload')
+        .set('Authorization', `Bearer ${trustedVendorToken}`)
+        .attach('file', Buffer.from('fake-image-data'), 'test-image.png')
+        .expect(201);
+
+      expect(res.body).toHaveProperty('url');
+      expect(res.body.url).toContain('/uploads/products/product-');
+    });
+
+    it('should allow admin to upload a product image', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/products/upload')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .attach('file', Buffer.from('fake-image-data'), 'test-image.jpg')
+        .expect(201);
+
+      expect(res.body).toHaveProperty('url');
+      expect(res.body.url).toContain('/uploads/products/product-');
+    });
+
+    it('should reject non-image file formats', async () => {
+      await request(app.getHttpServer())
+        .post('/products/upload')
+        .set('Authorization', `Bearer ${trustedVendorToken}`)
+        .attach('file', Buffer.from('plain-text-data'), 'malicious.txt')
+        .expect(400);
+    });
+  });
 });

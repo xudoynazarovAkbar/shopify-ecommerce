@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const cartStore = useCartStore();
 const mutating = ref(false);
+const { resolveImageUrl } = useImageResolver();
 
 const onIncrease = async () => {
   mutating.value = true;
@@ -50,7 +51,7 @@ const onRemove = async () => {
     <div class="w-16 h-16 md:w-20 md:h-20 bg-appBg rounded-xl overflow-hidden border border-appBorder flex items-center justify-center shrink-0">
       <img
         v-if="item.product.image"
-        :src="item.product.image"
+        :src="resolveImageUrl(item.product.image)"
         :alt="item.product.name"
         class="w-full h-full object-cover"
       >

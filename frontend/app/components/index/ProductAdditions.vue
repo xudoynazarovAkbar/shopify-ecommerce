@@ -5,6 +5,8 @@ defineProps<{
   products: Product[];
   loading: boolean;
 }>();
+
+const { resolveImageUrl } = useImageResolver();
 </script>
 
 <template>
@@ -33,7 +35,7 @@ defineProps<{
         <div class="bg-appBg aspect-square flex items-center justify-center overflow-hidden relative border-b border-appBorder">
           <img
             v-if="product.image"
-            :src="product.image"
+            :src="resolveImageUrl(product.image)"
             :alt="product.name"
             class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
           >

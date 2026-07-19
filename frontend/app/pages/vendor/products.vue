@@ -20,6 +20,7 @@ const {
 } = useVendorProducts();
 
 const toastStore = useToastStore();
+const { resolveImageUrl } = useImageResolver();
 
 const showModal = ref(false);
 const editingProduct = ref<Product | null>(null);
@@ -137,7 +138,7 @@ const handleDelete = async (productId: string) => {
         <div class="aspect-video w-full bg-appBg relative overflow-hidden border-b border-appBorder flex items-center justify-center">
           <img
             v-if="product.image"
-            :src="product.image"
+            :src="resolveImageUrl(product.image)"
             :alt="product.name"
             class="w-full h-full object-cover group-hover:scale-102 transition duration-300"
           >

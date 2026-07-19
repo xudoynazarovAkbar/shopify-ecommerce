@@ -7,6 +7,8 @@ defineProps<{
   loading: boolean;
   query: string;
 }>();
+
+const { resolveImageUrl } = useImageResolver();
 </script>
 
 <template>
@@ -120,7 +122,7 @@ defineProps<{
               <div class="aspect-video w-full bg-appBg flex items-center justify-center relative border-b border-appBorder overflow-hidden">
                 <img
                   v-if="product.image"
-                  :src="product.image"
+                  :src="resolveImageUrl(product.image)"
                   :alt="product.name"
                   class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 >

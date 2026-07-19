@@ -6,6 +6,7 @@ defineProps<{
 }>();
 
 const isOpen = ref(false);
+const { resolveImageUrl } = useImageResolver();
 
 const toggleAccordion = () => {
   isOpen.value = !isOpen.value;
@@ -85,7 +86,7 @@ const toggleAccordion = () => {
               <div class="w-12 h-12 rounded bg-appBg border border-appBorder overflow-hidden flex items-center justify-center shrink-0">
                 <img
                   v-if="item.product?.image"
-                  :src="item.product.image"
+                  :src="resolveImageUrl(item.product.image)"
                   :alt="item.product.name"
                   class="w-full h-full object-cover"
                 >

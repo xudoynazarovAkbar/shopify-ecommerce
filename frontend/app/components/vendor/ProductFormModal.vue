@@ -24,6 +24,100 @@ const categoryId = ref('');
 const isSubmitting = ref(false);
 const formError = ref<string | null>(null);
 
+// Drag-and-Drop Image refs and handlers
+const fileInput = ref<HTMLInputElement | null>(null);
+const dragActive = ref(false);
+const isUploading = ref(false);
+const { resolveImageUrl } = useImageResolver();
+
+const triggerFileSelect = () => {
+  fileInput.value?.click();
+};
+
+const handleDragOver = (e: DragEvent) => {
+  e.preventDefault();
+  dragActive.value = true;
+};
+
+const handleDragLeave = (e: DragEvent) => {
+  e.preventDefault();
+  dragActive.value = false;
+};
+
+const handleDrop = async (e: DragEvent) => {
+  e.preventDefault();
+  dragActive.value = false;
+  const files = e.dataTransfer?.files;
+  if (files && files.length > 0) {
+    await processFile(files[0]);
+  }
+};
+
+const handleFileSelect = async (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const files = target.files;
+  if (files && files.length > 0) {
+    await processFile(files[0]);
+  }
+};
+
+const processFile = async (file: File) => {
+  formError.value = null;
+
+  // Client-side preflight validations
+  if (!file.type.startsWith('image/')) {
+    formError.value = useNuxtApp().$i18n.t('vendor.dragDropTypeErr');
+    return;
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    formError.value = useNuxtApp().$i18n.t('vendor.dragDropSizeErr');
+    return;
+  }
+
+  isUploading.value = true;
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const apiBase = useRuntimeConfig().public.apiBase;
+    const token = useAuthStore().token;
+
+    const response = await fetch(`${apiBase}/products/upload`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Upload failed with status: ${response.status}`);
+    }
+
+    const res = await response.json();
+
+    if (res && res.url) {
+      image.value = res.url;
+    } else {
+      throw new Error('No URL returned from server');
+    }
+  } catch (err: unknown) {
+    console.error('Failed to upload product image:', err);
+    formError.value = useNuxtApp().$i18n.t('vendor.dragDropError');
+  } finally {
+    isUploading.value = false;
+  }
+};
+
+const removeImage = () => {
+  image.value = '';
+  if (fileInput.value) {
+    fileInput.value.value = '';
+  }
+};
+
 const resetForm = () => {
   name.value = '';
   description.value = '';
@@ -177,17 +271,92 @@ const handleSubmit = async () => {
           >
         </div>
 
-        <!-- Image URL Input -->
+        <!-- Drag-and-Drop Image Uploader -->
         <div class="space-y-1.5">
           <label class="text-xs font-bold text-textPrimary uppercase tracking-wider block">
             {{ $t('vendor.imageUrl') }} ({{ $t('vendor.optional') }})
           </label>
+          
+          <!-- Hidden Input for File Selection -->
           <input
-            v-model="image"
-            type="text"
-            class="w-full bg-appBg text-textPrimary border border-appBorder rounded-xl p-3 text-sm placeholder:text-textMuted/60 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition"
-            placeholder="/images/image.png"
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            @change="handleFileSelect"
           >
+
+          <!-- Uploader Container -->
+          <div
+            v-if="!image && !isUploading"
+            :class="[
+              'border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer text-center space-y-2 transition-all',
+              dragActive
+                ? 'border-brand bg-brand/5 scale-[1.01]'
+                : 'border-appBorder bg-appBg hover:border-brand hover:bg-brand/[0.02]',
+            ]"
+            @click="triggerFileSelect"
+            @dragover.prevent="handleDragOver"
+            @dragleave.prevent="handleDragLeave"
+            @drop.prevent="handleDrop"
+          >
+            <div class="w-10 h-10 rounded-full bg-brand/10 text-brand flex items-center justify-center">
+              <Icon name="heroicons:arrow-up-tray" class="w-5 h-5" />
+            </div>
+            <div class="space-y-1">
+              <p class="text-xs font-bold text-textPrimary">
+                {{ $t('vendor.dragDropPlaceholder') }}
+              </p>
+              <p class="text-[10px] text-textMuted">
+                {{ $t('vendor.dragDropSizeErr') }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Uploading Spinner State -->
+          <div
+            v-else-if="isUploading"
+            class="border-2 border-dashed border-appBorder bg-appBg rounded-xl p-6 flex flex-col items-center justify-center space-y-2"
+          >
+            <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-brand" />
+            <p class="text-xs font-bold text-brand animate-pulse">
+              {{ $t('vendor.dragDropUploading') }}
+            </p>
+          </div>
+
+          <!-- Image Preview / Manage State -->
+          <div
+            v-else
+            class="relative rounded-xl overflow-hidden border border-appBorder bg-appBg flex flex-col items-center group/preview"
+          >
+            <!-- Image Frame -->
+            <div class="aspect-video w-full relative flex items-center justify-center bg-slate-950/20">
+              <img
+                :src="resolveImageUrl(image)"
+                alt="Product Preview"
+                class="w-full h-full object-cover"
+              >
+              <!-- Hover Overlay for Actions -->
+              <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  class="px-3.5 py-1.5 bg-cardBg/90 hover:bg-cardBg border border-appBorder text-xs font-bold text-textPrimary rounded-lg shadow transition flex items-center gap-1.5"
+                  @click="triggerFileSelect"
+                >
+                  <Icon name="heroicons:pencil-square" class="w-3.5 h-3.5" />
+                  {{ $t('vendor.replaceImage') }}
+                </button>
+                <button
+                  type="button"
+                  class="px-3.5 py-1.5 bg-rose-600/90 hover:bg-rose-600 text-xs font-bold text-white rounded-lg shadow transition flex items-center gap-1.5"
+                  @click="removeImage"
+                >
+                  <Icon name="heroicons:trash" class="w-3.5 h-3.5" />
+                  {{ $t('vendor.removeImage') }}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Description Textarea -->

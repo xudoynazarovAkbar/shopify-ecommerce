@@ -11,6 +11,7 @@ definePageMeta({
 
 const { pendingProducts, loading, error, fetchPendingProducts, updateProductStatus } = useAdminProducts();
 const toastStore = useToastStore();
+const { resolveImageUrl } = useImageResolver();
 
 onMounted(async () => {
   await fetchPendingProducts();
@@ -81,7 +82,7 @@ const handleStatusChange = async (productId: string, status: 'APPROVED' | 'REJEC
         <div class="aspect-video w-full bg-appBg flex items-center justify-center relative border-b border-appBorder">
           <img
             v-if="p.image"
-            :src="p.image"
+            :src="resolveImageUrl(p.image)"
             :alt="p.name"
             class="w-full h-full object-cover"
           >

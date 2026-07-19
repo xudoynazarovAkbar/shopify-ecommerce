@@ -3,9 +3,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import express from 'express';
+import { join } from 'path';
+import fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Ensure uploads directory exists on startup
+  const uploadsDir = join(process.cwd(), 'uploads', 'products');
+  fs.mkdirSync(uploadsDir, { recursive: true });
+
+  // Serve static assets from uploads directory
+  app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
 
   // Enable CORS with credentials support for cookies
   app.enableCors({
