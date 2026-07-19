@@ -38,6 +38,11 @@ export class VendorsController {
     return this.vendorsService.getProfile(req.user.id);
   }
 
+  @Get()
+  async listApproved() {
+    return this.vendorsService.listApproved();
+  }
+
   @Get(':id')
   async getPublicProfile(@Param('id') id: string) {
     return this.vendorsService.getPublicProfile(id);

@@ -27,11 +27,17 @@ defineProps<{
       <NuxtLink
         v-for="product in products"
         :key="product.id"
-        :to="`/product/${product.id}`"
-        class="bg-cardBg rounded-xl border border-appBorder shadow-sm hover:shadow transition flex flex-col overflow-hidden cursor-pointer"
+        :to="`/vendors/${product.vendorId}`"
+        class="bg-cardBg rounded-xl border border-appBorder shadow-sm hover:shadow transition flex flex-col overflow-hidden cursor-pointer group"
         >
-        <div class="bg-appBg aspect-square flex items-center justify-center">
-          <Icon name="heroicons:photo" class="w-12 h-12 text-textMuted/50" />
+        <div class="bg-appBg aspect-square flex items-center justify-center overflow-hidden relative border-b border-appBorder">
+          <img
+            v-if="product.image"
+            :src="product.image"
+            :alt="product.name"
+            class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+          >
+          <Icon v-else name="heroicons:photo" class="w-12 h-12 text-textMuted/50" />
         </div>
         <div class="p-4 flex-1 flex flex-col">
           <div class="flex-1">

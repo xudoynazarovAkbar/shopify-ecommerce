@@ -69,6 +69,13 @@
     "noReviews": "Ushbu sotuvchi haqida hali sharhlar yo'q"
   },
   "cart": {
-    "addBtn": "Savatga qo'shish"
+    "addBtn": "Savatga qo'shish",
+    "title": "Sizning xarid savatingiz",
+    "emptyTitle": "Savatingiz bo'sh",
+    "emptyDesc": "Savatingizga hali hech qanday mahsulot qo'shmadingiz. Ishonchli hamkorlarimiz do'konlarini kashf qilishni boshlang!",
+    "couponLabel": "Promo kodingiz bormi?",
+    "couponApplyBtn": "Faollashtirish",
+    "couponAppliedMsg": "Buyurtma berish uchun ro'yxatdan o'tkazildi",
+    "paymentLabel": "To'lov usuli"
   }
 }

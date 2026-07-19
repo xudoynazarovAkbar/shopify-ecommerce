@@ -131,6 +131,7 @@ async function main() {
       description:
         'Two flame-grilled beef patties, cheddar cheese, fresh lettuce, and house sauce.',
       price: 12.99,
+      image: '/images/image.png',
       status: ProductStatus.APPROVED,
     },
   });
@@ -143,6 +144,7 @@ async function main() {
       description:
         'Crispy golden French fries tossed in our signature Cajun spice blend.',
       price: 4.5,
+      image: '/images/image1.png',
       status: ProductStatus.APPROVED,
     },
   });
@@ -156,6 +158,7 @@ async function main() {
       description:
         'Next-gen smartphone with 120Hz AMOLED display and pro-grade triple camera system.',
       price: 999.0,
+      image: '/images/image3.png',
       status: ProductStatus.PENDING_APPROVAL,
     },
   });
@@ -168,6 +171,7 @@ async function main() {
       description:
         'Full-featured wellness watch with blood oxygen, heart-rate, and GPS tracking.',
       price: 199.0,
+      image: '/images/image.png',
       status: ProductStatus.PENDING_APPROVAL,
     },
   });
@@ -181,6 +185,7 @@ async function main() {
       description:
         'Active noise-cancelling earbuds with crystal clear sound and 30-hour battery life.',
       price: 89.99,
+      image: '/images/image2.png',
       status: ProductStatus.APPROVED,
     },
   });

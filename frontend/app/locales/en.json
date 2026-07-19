@@ -69,6 +69,13 @@
     "noReviews": "No reviews yet"
   },
   "cart": {
-    "addBtn": "Add to Cart"
+    "addBtn": "Add to Cart",
+    "title": "Your Shopping Cart",
+    "emptyTitle": "Your Cart is Empty",
+    "emptyDesc": "You have not added any products to your shopping cart yet. Start exploring our trusted merchant stores!",
+    "couponLabel": "Have a Promo Code?",
+    "couponApplyBtn": "Apply",
+    "couponAppliedMsg": "Registered for checkout",
+    "paymentLabel": "Payment Method"
   }
 }

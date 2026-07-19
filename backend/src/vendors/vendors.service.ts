@@ -79,6 +79,35 @@ export class VendorsService {
     };
   }
 
+  async listApproved() {
+    const vendors = await this.prisma.vendor.findMany({
+      where: { status: VendorStatus.APPROVED },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const vendorsWithRatings = await Promise.all(
+      vendors.map(async (vendor) => {
+        const ratingsAgg = await this.prisma.review.aggregate({
+          where: { vendorId: vendor.id },
+          _avg: {
+            rating: true,
+          },
+          _count: {
+            id: true,
+          },
+        });
+
+        return {
+          ...vendor,
+          averageRating: ratingsAgg._avg.rating || null,
+          reviewCount: ratingsAgg._count.id || 0,
+        };
+      }),
+    );
+
+    return vendorsWithRatings;
+  }
+
   async listVendors(status?: VendorStatus) {
     return this.prisma.vendor.findMany({
       where: status ? { status } : {},
