@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { useRegister } from '../../composables/useRegister';
-import BaseInput from '../common/BaseInput.vue';
-import BaseButton from '../common/BaseButton.vue';
-import BaseTextarea from '../common/BaseTextarea.vue';
 
 const {
   email,
@@ -57,7 +54,7 @@ const {
       </div>
 
       <!-- Email -->
-      <BaseInput
+      <CommonBaseInput
         id="email"
         v-model="email"
         type="email"
@@ -67,7 +64,7 @@ const {
       />
 
       <!-- Password -->
-      <BaseInput
+      <CommonBaseInput
         id="password"
         v-model="password"
         type="password"
@@ -86,7 +83,7 @@ const {
         leave-to-class="transform scale-95 opacity-0"
       >
         <div v-if="role === 'VENDOR'" class="space-y-4 pt-4 border-t border-appBorder">
-          <BaseInput
+          <CommonBaseInput
             id="shopName"
             v-model="shopName"
             type="text"
@@ -95,7 +92,7 @@ const {
             placeholder="e.g. Pizza Paradise"
           />
 
-          <BaseTextarea
+          <CommonBaseTextarea
             id="shopDescription"
             v-model="shopDescription"
             :label="$t('auth.shopDescription')"
@@ -105,9 +102,9 @@ const {
       </Transition>
 
       <!-- Submit Button -->
-      <BaseButton type="submit" :loading="loading">
+      <CommonBaseButton type="submit" :loading="loading">
         {{ $t('auth.registerBtn') }}
-      </BaseButton>
+      </CommonBaseButton>
     </form>
 
     <div class="mt-8 pt-6 border-t border-appBorder text-center text-sm text-textMuted">

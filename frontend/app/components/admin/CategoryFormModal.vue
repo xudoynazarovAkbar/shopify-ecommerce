@@ -17,6 +17,13 @@ const icon = ref('');
 const isSubmitting = ref(false);
 const formError = ref<string | null>(null);
 
+const resetForm = () => {
+  name.value = '';
+  description.value = '';
+  icon.value = '';
+  formError.value = null;
+};
+
 // Watch for category pre-population
 watch(
   () => props.category,
@@ -31,13 +38,6 @@ watch(
   },
   { immediate: true }
 );
-
-const resetForm = () => {
-  name.value = '';
-  description.value = '';
-  icon.value = '';
-  formError.value = null;
-};
 
 const handleCancel = () => {
   resetForm();

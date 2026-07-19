@@ -24,6 +24,15 @@ const categoryId = ref('');
 const isSubmitting = ref(false);
 const formError = ref<string | null>(null);
 
+const resetForm = () => {
+  name.value = '';
+  description.value = '';
+  price.value = '';
+  image.value = '';
+  categoryId.value = '';
+  formError.value = null;
+};
+
 // Watch for product changes to pre-populate (for Edit Mode)
 watch(
   () => props.product,
@@ -53,15 +62,6 @@ onMounted(async () => {
     categoriesLoading.value = false;
   }
 });
-
-const resetForm = () => {
-  name.value = '';
-  description.value = '';
-  price.value = '';
-  image.value = '';
-  categoryId.value = '';
-  formError.value = null;
-};
 
 const handleCancel = () => {
   resetForm();

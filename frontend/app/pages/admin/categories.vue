@@ -2,7 +2,6 @@
 import { useAdminCategories } from '../../composables/useAdminCategories';
 import { useToastStore } from '../../stores/toast';
 import type { Category } from '../../types';
-import CategoryFormModal from '../../components/admin/CategoryFormModal.vue';
 
 definePageMeta({
   layout: 'admin',
@@ -171,7 +170,7 @@ const handleDelete = async (catId: string) => {
     </div>
 
     <!-- Category addition/editing modal form -->
-    <CategoryFormModal
+    <AdminCategoryFormModal
       :show="showModal"
       :category="editingCategory"
       @close="closeModal"

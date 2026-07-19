@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useApi } from '../composables/useApi';
 import type { Category, Vendor, Product } from '../types';
-import HeroBanner from '../components/index/HeroBanner.vue';
-import CategoryGrid from '../components/index/CategoryGrid.vue';
-import FeaturedStores from '../components/index/FeaturedStores.vue';
-import ProductAdditions from '../components/index/ProductAdditions.vue';
 
 definePageMeta({
   layout: 'default',
@@ -37,9 +33,9 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-12">
-    <HeroBanner />
-    <CategoryGrid :categories="categories" :loading="loading" />
-    <FeaturedStores :vendors="vendors" :loading="loading" />
-    <ProductAdditions :products="products" :loading="loading" />
+    <IndexHeroBanner />
+    <IndexCategoryGrid :categories="categories" :loading="loading" />
+    <IndexFeaturedStores :vendors="vendors" :loading="loading" />
+    <IndexProductAdditions :products="products" :loading="loading" />
   </div>
 </template>

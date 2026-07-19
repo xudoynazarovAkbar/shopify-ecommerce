@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useVendorCoupons } from '../../composables/useVendorCoupons';
 import { useToastStore } from '../../stores/toast';
-import CouponFormModal from '../../components/vendor/CouponFormModal.vue';
 
 definePageMeta({
   layout: 'vendor',
@@ -189,7 +188,7 @@ const handleDelete = async (couponId: string) => {
     </div>
 
     <!-- Add Coupon modal -->
-    <CouponFormModal
+    <VendorCouponFormModal
       :show="showModal"
       @close="closeModal"
       @submit="handleFormSubmit"

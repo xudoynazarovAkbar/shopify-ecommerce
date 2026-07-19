@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useLogin } from '../../composables/useLogin';
-import BaseInput from '../common/BaseInput.vue';
-import BaseButton from '../common/BaseButton.vue';
 
 const { email, password, loading, handleLogin } = useLogin();
 </script>
@@ -15,7 +13,7 @@ const { email, password, loading, handleLogin } = useLogin();
 
     <form class="space-y-6" @submit.prevent="handleLogin">
       <!-- Email -->
-      <BaseInput
+      <CommonBaseInput
         id="email"
         v-model="email"
         type="email"
@@ -25,7 +23,7 @@ const { email, password, loading, handleLogin } = useLogin();
       />
 
       <!-- Password -->
-      <BaseInput
+      <CommonBaseInput
         id="password"
         v-model="password"
         type="password"
@@ -35,9 +33,9 @@ const { email, password, loading, handleLogin } = useLogin();
       />
 
       <!-- Submit Button -->
-      <BaseButton type="submit" :loading="loading">
+      <CommonBaseButton type="submit" :loading="loading">
         {{ $t('auth.signInBtn') }}
-      </BaseButton>
+      </CommonBaseButton>
     </form>
 
     <div class="mt-8 pt-6 border-t border-appBorder text-center text-sm text-textMuted">

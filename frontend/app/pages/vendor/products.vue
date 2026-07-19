@@ -2,7 +2,6 @@
 import { useVendorProducts } from '../../composables/useVendorProducts';
 import { useToastStore } from '../../stores/toast';
 import type { Product } from '../../types';
-import ProductFormModal from '../../components/vendor/ProductFormModal.vue';
 
 definePageMeta({
   layout: 'vendor',
@@ -188,7 +187,6 @@ const handleDelete = async (productId: string) => {
               @click="openEditModal(product)"
             >
               <Icon name="heroicons:pencil-square" class="w-4 h-4 text-textMuted" />
-              {{ $t('common.cancel') }} <!-- Wait, Edit translates better here, but we can write edit, we'll map edit in locale! -->
               <span>{{ $t('vendor.edit') }}</span>
             </button>
             <button
@@ -204,7 +202,7 @@ const handleDelete = async (productId: string) => {
     </div>
 
     <!-- Product addition/editing form modal -->
-    <ProductFormModal
+    <VendorProductFormModal
       :show="showModal"
       :product="editingProduct"
       @close="closeModal"

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { useCartStore } from '../stores/cart';
 import { useCartCheckout } from '../composables/useCartCheckout';
-import CartItemRow from '../components/cart/CartItemRow.vue';
-import CouponInput from '../components/cart/CouponInput.vue';
-import SavedCardSelector from '../components/cart/SavedCardSelector.vue';
 
 definePageMeta({
   layout: 'default',
@@ -74,7 +71,7 @@ onMounted(async () => {
 
           <!-- Items Ledger -->
           <div class="space-y-3">
-            <CartItemRow
+            <CartCartItemRow
               v-for="item in cartStore.items"
               :key="item.id"
               :item="item"
@@ -110,10 +107,10 @@ onMounted(async () => {
             </div>
 
             <!-- Merchant Coupon input -->
-            <CouponInput v-model="promoCode" />
+            <CartCouponInput v-model="promoCode" />
 
             <!-- Vaulted Saved Card Selector -->
-            <SavedCardSelector v-model="selectedCardId" />
+            <CartSavedCardSelector v-model="selectedCardId" />
 
             <!-- Checkout Execute Button -->
             <button

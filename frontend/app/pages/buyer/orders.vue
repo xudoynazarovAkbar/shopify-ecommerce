@@ -2,8 +2,6 @@
 import { useBuyerOrders } from '../../composables/useBuyerOrders';
 import { useToastStore } from '../../stores/toast';
 import type { Order } from '../../types';
-import OrderItemAccordion from '../../components/orders/OrderItemAccordion.vue';
-import ReviewFormModal from '../../components/orders/ReviewFormModal.vue';
 
 definePageMeta({
   layout: 'default',
@@ -106,7 +104,7 @@ const handleReviewSubmit = async (rating: number, comment: string) => {
 
     <!-- Historical Orders Ledger List -->
     <div v-else class="space-y-4">
-      <OrderItemAccordion
+      <OrdersOrderItemAccordion
         v-for="order in orders"
         :key="order.id"
         :order="order"
@@ -141,11 +139,11 @@ const handleReviewSubmit = async (rating: number, comment: string) => {
             </button>
           </div>
         </template>
-      </OrderItemAccordion>
+      </OrdersOrderItemAccordion>
     </div>
 
     <!-- Review Modal Container -->
-    <ReviewFormModal
+    <OrdersReviewFormModal
       :show="showReviewModal"
       :order="activeOrderForReview"
       @close="closeReviewModal"
