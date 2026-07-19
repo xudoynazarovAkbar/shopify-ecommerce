@@ -139,13 +139,21 @@ export class ProductsService {
     });
   }
 
-  async findAllApproved(categoryId?: string, search?: string) {
+  async findAllApproved(
+    categoryId?: string,
+    search?: string,
+    vendorId?: string,
+  ) {
     const where: Prisma.ProductWhereInput = {
       status: ProductStatus.APPROVED,
     };
 
     if (categoryId) {
       where.categoryId = categoryId;
+    }
+
+    if (vendorId) {
+      where.vendorId = vendorId;
     }
 
     if (search) {

@@ -47,5 +47,28 @@
     "shopDescriptionPlaceholder": "Mijozlarga do'koningiz haqida gapirib bering...",
     "registerBtn": "Hisobni ro'yxatdan o'tkazish",
     "alreadyHaveAccount": "Hisobingiz bormi?"
+  },
+  "search": {
+    "explore": "Savdo maydonchasini o'rganing",
+    "enterKeyword": "Kashf qilishni boshlash uchun yuqoridagi qidiruv paneliga qidiruv so'zini kiriting.",
+    "noResultsTitle": "Hech qanday moslik topilmadi",
+    "noResultsDesc": "\"{query}\" so'roviga mos keladigan mahsulotlar, do'konlar yoki restoranlar topilmadi. Imlo xatolarini tekshirib ko'ring yoki boshqa so'z bilan qidirib ko'ring.",
+    "matchingShops": "Mos keladigan do'konlar va oshxonalar",
+    "matchingProducts": "Mos keladigan mahsulotlar",
+    "noShops": "Mos keladigan do'konlar topilmadi.",
+    "noProducts": "Mos keladigan mahsulotlar topilmadi.",
+    "visitStore": "Do'konga tashrif buyurish",
+    "resultsFor": "\"{query}\" so'rovi bo'yicha qidiruv natijalari"
+  },
+  "vendor": {
+    "trusted": "Tasdiqlangan ishonch",
+    "memberSince": "Savdo maydonchasida a'zolik sanasi"
+  },
+  "reviews": {
+    "title": "Mijozlarning fikrlari",
+    "noReviews": "Ushbu sotuvchi haqida hali sharhlar yo'q"
+  },
+  "cart": {
+    "addBtn": "Savatga qo'shish"
   }
 }

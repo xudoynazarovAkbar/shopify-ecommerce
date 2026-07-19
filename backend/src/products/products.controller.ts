@@ -44,8 +44,9 @@ export class ProductsController {
   findAll(
     @Query('categoryId') categoryId?: string,
     @Query('search') search?: string,
+    @Query('vendorId') vendorId?: string,
   ) {
-    return this.productsService.findAllApproved(categoryId, search);
+    return this.productsService.findAllApproved(categoryId, search, vendorId);
   }
 
   @Get('my-shop')

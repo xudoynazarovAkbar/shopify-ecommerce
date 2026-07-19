@@ -47,5 +47,28 @@
     "shopDescriptionPlaceholder": "Tell customers about your shop...",
     "registerBtn": "Register Account",
     "alreadyHaveAccount": "Already have an account?"
+  },
+  "search": {
+    "explore": "Explore the Marketplace",
+    "enterKeyword": "Enter a search query in the search bar above to begin exploring.",
+    "noResultsTitle": "No matches found",
+    "noResultsDesc": "No products, shops, or restaurants matched your query \"{query}\". Try checking for typos or searching something else.",
+    "matchingShops": "Matching Stores & Kitchens",
+    "matchingProducts": "Matching Products",
+    "noShops": "No matching stores found.",
+    "noProducts": "No matching products found.",
+    "visitStore": "Visit Store",
+    "resultsFor": "Search results for \"{query}\""
+  },
+  "vendor": {
+    "trusted": "Verified Trust",
+    "memberSince": "Member since"
+  },
+  "reviews": {
+    "title": "Customer Reviews",
+    "noReviews": "No reviews yet"
+  },
+  "cart": {
+    "addBtn": "Add to Cart"
   }
 }
