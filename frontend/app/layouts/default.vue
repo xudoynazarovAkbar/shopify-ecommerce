@@ -4,8 +4,13 @@ import { useCartStore } from '../stores/cart';
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
+const route = useRoute();
 
 const searchQuery = ref('');
+
+const showSearch = computed(() => {
+  return !['/login', '/register'].includes(route.path);
+});
 
 const onSearch = () => {
   if (searchQuery.value.trim()) {
@@ -21,28 +26,28 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-slate-50">
+  <div class="min-h-screen flex flex-col bg-appBg text-textSecondary transition-colors duration-200">
     <!-- Navigation Bar -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <header class="bg-cardBg border-b border-appBorder sticky top-0 z-40 shadow-sm transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center gap-2 text-xl font-bold text-slate-900 shrink-0">
-          <Icon name="heroicons:shopping-bag-solid" class="w-6 h-6 text-indigo-600" />
+        <NuxtLink to="/" class="flex items-center gap-2 text-xl font-bold text-textPrimary shrink-0">
+          <Icon name="heroicons:shopping-bag-solid" class="w-6 h-6 text-brand" />
           <span>Shopify</span>
         </NuxtLink>
 
         <!-- Search Bar -->
-        <div class="flex-1 max-w-lg">
+        <div v-if="showSearch" class="flex-1 max-w-lg">
           <form @submit.prevent="onSearch" class="relative">
             <input
               type="text"
               v-model="searchQuery"
               placeholder="Search products, shops, restaurants..."
-              class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              class="w-full pl-10 pr-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:bg-cardBg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
             />
             <Icon
               name="heroicons:magnifying-glass-20-solid"
-              class="w-5 h-5 text-slate-400 absolute left-3 top-2.5 pointer-events-none"
+              class="w-5 h-5 text-textMuted absolute left-3 top-2.5 pointer-events-none"
             />
           </form>
         </div>
@@ -53,12 +58,12 @@ onMounted(() => {
           <NuxtLink
             v-if="authStore.role === 'BUYER'"
             to="/cart"
-            class="relative p-2 text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-full transition"
+            class="relative p-2 text-textSecondary hover:text-brand hover:bg-appBg rounded-full transition"
           >
             <Icon name="heroicons:shopping-cart-20-solid" class="w-6 h-6" />
             <span
               v-if="cartStore.itemCount > 0"
-              class="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white"
+              class="absolute -top-1 -right-1 bg-brand text-brandText text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-cardBg"
             >
               {{ cartStore.itemCount }}
             </span>
@@ -69,21 +74,21 @@ onMounted(() => {
             <NuxtLink
               v-if="authStore.role === 'VENDOR'"
               to="/vendor"
-              class="text-sm font-semibold text-slate-700 hover:text-indigo-600"
+              class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
               Dashboard
             </NuxtLink>
             <NuxtLink
               v-if="authStore.role === 'ADMIN'"
               to="/admin"
-              class="text-sm font-semibold text-slate-700 hover:text-indigo-600"
+              class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
               Admin Central
             </NuxtLink>
             <NuxtLink
               v-if="authStore.role === 'BUYER'"
               to="/buyer/orders"
-              class="text-sm font-semibold text-slate-700 hover:text-indigo-600"
+              class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
               My Orders
             </NuxtLink>
@@ -99,17 +104,20 @@ onMounted(() => {
           <template v-else>
             <NuxtLink
               to="/login"
-              class="text-sm font-semibold text-slate-700 hover:text-indigo-600"
+              class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
               Sign In
             </NuxtLink>
             <NuxtLink
               to="/register"
-              class="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition"
+              class="text-sm font-semibold text-brandText bg-brand hover:bg-brandHover px-4 py-2 rounded-lg transition"
             >
               Onboard
             </NuxtLink>
           </template>
+
+          <!-- Theme Switcher -->
+          <CommonThemeSwitcher />
         </nav>
       </div>
     </header>
@@ -120,13 +128,13 @@ onMounted(() => {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
+    <footer class="bg-cardBg border-t border-appBorder py-6 mt-auto transition-colors duration-200">
+      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-textMuted">
         &copy; 2026 Shopify Multi-Vendor Marketplace. Built with Nuxt 3 & NestJS.
       </div>
     </footer>
 
     <!-- Toast Notifications -->
-    <ToastNotification />
+    <CommonToastNotification />
   </div>
 </template>

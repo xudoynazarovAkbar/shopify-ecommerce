@@ -1,86 +1,42 @@
 <script setup lang="ts">
-import { useToastStore } from '../../stores/toast';
-import { useApi } from '../../composables/useApi';
+import { useRegister } from '../../composables/useRegister';
+import BaseInput from '../common/BaseInput.vue';
+import BaseButton from '../common/BaseButton.vue';
+import BaseTextarea from '../common/BaseTextarea.vue';
 
-const toastStore = useToastStore();
-const api = useApi();
-
-const email = ref('');
-const password = ref('');
-const role = ref<'BUYER' | 'VENDOR'>('BUYER');
-const shopName = ref('');
-const shopDescription = ref('');
-const loading = ref(false);
-
-const handleRegister = async () => {
-  if (!email.value || !password.value) {
-    toastStore.error('Please fill in email and password');
-    return;
-  }
-
-  if (role.value === 'VENDOR' && !shopName.value) {
-    toastStore.error('Please enter a shop name');
-    return;
-  }
-
-  loading.value = true;
-  try {
-    const payload = {
-      email: email.value,
-      password: password.value,
-      role: role.value,
-      shopName: role.value === 'VENDOR' ? shopName.value : undefined,
-      shopDescription:
-        role.value === 'VENDOR' && shopDescription.value
-          ? shopDescription.value
-          : undefined,
-    };
-
-    await api.post('/auth/register', payload);
-
-    if (role.value === 'VENDOR') {
-      toastStore.success(
-        'Account created! Your merchant application is currently pending admin approval.',
-        6000,
-      );
-    } else {
-      toastStore.success('Account created successfully! You can now log in.');
-    }
-
-    navigateTo('/login');
-  } catch (err: any) {
-    console.error(err);
-    const errorMessage =
-      err.response?._data?.message || 'Failed to register account';
-    toastStore.error(errorMessage);
-  } finally {
-    loading.value = false;
-  }
-};
+const {
+  email,
+  password,
+  role,
+  shopName,
+  shopDescription,
+  loading,
+  handleRegister,
+} = useRegister();
 </script>
 
 <template>
-  <div class="max-w-md mx-auto my-12 bg-white p-8 rounded-xl shadow-md border border-slate-200">
+  <div class="max-w-md mx-auto my-12 bg-cardBg p-8 rounded-xl shadow-md border border-appBorder transition-colors">
     <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold text-slate-900 mb-2">Create Account</h1>
-      <p class="text-slate-500 text-sm">Join the marketplace as a buyer or vendor</p>
+      <h1 class="text-2xl font-bold text-textPrimary mb-2">Create Account</h1>
+      <p class="text-textMuted text-sm">Join the marketplace as a buyer or vendor</p>
     </div>
 
     <form @submit.prevent="handleRegister" class="space-y-6">
       <!-- Role Toggle -->
       <div>
-        <label class="block text-sm font-medium text-slate-700 mb-2">
+        <label class="block text-sm font-medium text-textSecondary mb-2">
           I want to join as a:
         </label>
-        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-lg">
+        <div class="grid grid-cols-2 gap-2 p-1 bg-appBg rounded-lg transition-colors">
           <button
             type="button"
             @click="role = 'BUYER'"
-            class="py-2 text-sm font-semibold rounded-md transition"
+            class="py-2 text-sm font-semibold rounded-md transition-all duration-200"
             :class="
               role === 'BUYER'
-                ? 'bg-white text-indigo-600 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-cardBg text-brand shadow-sm'
+                : 'text-textSecondary hover:text-textPrimary'
             "
           >
             Buyer (Customer)
@@ -88,11 +44,11 @@ const handleRegister = async () => {
           <button
             type="button"
             @click="role = 'VENDOR'"
-            class="py-2 text-sm font-semibold rounded-md transition"
+            class="py-2 text-sm font-semibold rounded-md transition-all duration-200"
             :class="
               role === 'VENDOR'
-                ? 'bg-white text-indigo-600 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-cardBg text-brand shadow-sm'
+                : 'text-textSecondary hover:text-textPrimary'
             "
           >
             Vendor (Merchant)
@@ -101,34 +57,24 @@ const handleRegister = async () => {
       </div>
 
       <!-- Email -->
-      <div>
-        <label for="email" class="block text-sm font-medium text-slate-700 mb-1">
-          Email Address
-        </label>
-        <input
-          id="email"
-          type="email"
-          v-model="email"
-          required
-          placeholder="your@email.com"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-        />
-      </div>
+      <BaseInput
+        id="email"
+        type="email"
+        label="Email Address"
+        v-model="email"
+        required
+        placeholder="your@email.com"
+      />
 
       <!-- Password -->
-      <div>
-        <label for="password" class="block text-sm font-medium text-slate-700 mb-1">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          v-model="password"
-          required
-          placeholder="••••••••"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-        />
-      </div>
+      <BaseInput
+        id="password"
+        type="password"
+        label="Password"
+        v-model="password"
+        required
+        placeholder="••••••••"
+      />
 
       <!-- Vendor Conditional Fields -->
       <Transition
@@ -139,53 +85,34 @@ const handleRegister = async () => {
         leave-from-class="transform scale-100 opacity-100"
         leave-to-class="transform scale-95 opacity-0"
       >
-        <div v-if="role === 'VENDOR'" class="space-y-4 pt-4 border-t border-slate-100">
-          <div>
-            <label for="shopName" class="block text-sm font-medium text-slate-700 mb-1">
-              Shop Name *
-            </label>
-            <input
-              id="shopName"
-              type="text"
-              v-model="shopName"
-              :required="role === 'VENDOR'"
-              placeholder="e.g. Pizza Paradise"
-              class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-            />
-          </div>
+        <div v-if="role === 'VENDOR'" class="space-y-4 pt-4 border-t border-appBorder">
+          <BaseInput
+            id="shopName"
+            type="text"
+            label="Shop Name"
+            v-model="shopName"
+            :required="role === 'VENDOR'"
+            placeholder="e.g. Pizza Paradise"
+          />
 
-          <div>
-            <label
-              for="shopDescription"
-              class="block text-sm font-medium text-slate-700 mb-1"
-            >
-              Shop Description
-            </label>
-            <textarea
-              id="shopDescription"
-              v-model="shopDescription"
-              rows="3"
-              placeholder="Tell customers about your shop..."
-              class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-            ></textarea>
-          </div>
+          <BaseTextarea
+            id="shopDescription"
+            label="Shop Description"
+            v-model="shopDescription"
+            placeholder="Tell customers about your shop..."
+          />
         </div>
       </Transition>
 
       <!-- Submit Button -->
-      <button
-        type="submit"
-        :disabled="loading"
-        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg text-sm transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <span v-if="loading">Creating Account...</span>
-        <span v-else>Register Account</span>
-      </button>
+      <BaseButton type="submit" :loading="loading">
+        Register Account
+      </BaseButton>
     </form>
 
-    <div class="mt-8 pt-6 border-t border-slate-150 text-center text-sm text-slate-500">
+    <div class="mt-8 pt-6 border-t border-appBorder text-center text-sm text-textMuted">
       Already have an account?
-      <NuxtLink to="/login" class="font-semibold text-indigo-600 hover:text-indigo-500 ml-1">
+      <NuxtLink to="/login" class="font-semibold text-brand hover:text-brandHover ml-1 transition-colors">
         Sign In here
       </NuxtLink>
     </div>

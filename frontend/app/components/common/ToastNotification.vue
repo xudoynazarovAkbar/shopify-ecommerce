@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToastStore } from '../stores/toast';
+import { useToastStore } from '../../stores/toast';
 
 const toastStore = useToastStore();
 </script>
@@ -45,7 +45,7 @@ const toastStore = useToastStore();
         </div>
         <button
           @click="toastStore.remove(toast.id)"
-          class="ml-4 shrink-0 rounded-md hover:bg-black/5 p-1 text-slate-400 hover:text-slate-600 transition"
+          class="ml-4 shrink-0 rounded-md hover:bg-black/5 p-1 text-textMuted hover:text-textPrimary transition"
         >
           <Icon name="heroicons:x-mark-20-solid" class="w-4 h-4" />
         </button>

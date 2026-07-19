@@ -2,7 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Additional global overrides can go here */
+:root {
+  /* LIGHT MODE (Slate + Indigo Accent) - WCAG Compliant */
+  --bg-app: 248, 250, 252;       /* slate-50 background */
+  --bg-card: 255, 255, 255;      /* white card background */
+  --text-primary: 15, 23, 42;    /* slate-900 */
+  --text-secondary: 51, 65, 85;  /* slate-700 */
+  --text-muted: 100, 116, 139;   /* slate-500 */
+  --border-color: 226, 232, 240; /* slate-200 border */
+  --brand: 79, 70, 229;          /* indigo-600 */
+  --brand-hover: 67, 56, 202;    /* indigo-700 */
+  --brand-text: 255, 255, 255;   /* white text for brand button */
+}
+
+.dark {
+  /* DARK MODE (Zinc + Comfortable Blue Accent) - WCAG Compliant */
+  --bg-app: 9, 9, 11;            /* zinc-950 */
+  --bg-card: 24, 24, 27;         /* zinc-900 */
+  --text-primary: 244, 244, 245; /* zinc-100 */
+  --text-secondary: 212, 212, 216; /* zinc-300 */
+  --text-muted: 161, 161, 170;   /* zinc-400 */
+  --border-color: 39, 39, 42;    /* zinc-800 */
+  --brand: 96, 165, 250;         /* blue-400 */
+  --brand-hover: 147, 197, 253;  /* blue-300 */
+  --brand-text: 9, 9, 11;        /* dark text for brand button */
+}
+
 body {
-  @apply bg-slate-50 text-slate-800 antialiased font-sans;
+  background-color: rgba(var(--bg-app), 1);
+  color: rgba(var(--text-secondary), 1);
+  @apply antialiased font-sans transition-colors duration-200;
 }
