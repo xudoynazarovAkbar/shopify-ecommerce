@@ -1,0 +1,51 @@
+{
+  "welcome": "Welcome to Shopify Multi-Vendor Marketplace",
+  "searchPlaceholder": "Search products, shops, restaurants...",
+  "signIn": "Sign In",
+  "onboard": "Onboard",
+  "dashboard": "Dashboard",
+  "adminCentral": "Admin Central",
+  "myOrders": "My Orders",
+  "logout": "Logout",
+  "systemOverseer": "System Overseer",
+  "adminControlPanel": "Admin Control Panel",
+  "vendorHub": "Vendor Hub",
+  "backToMarketplace": "Back to Marketplace",
+  "common": {
+    "loading": "Loading..."
+  },
+  "home": {
+    "heroTitle": "Your Omnipresent Marketplace",
+    "heroSubtitle": "Browse food, gadgets, fashion and more from trusted merchant shops and restaurants, delivered straight to your door.",
+    "browseCategories": "Browse Categories",
+    "noCategories": "No categories available yet.",
+    "featuredStores": "Featured Stores & Kitchens",
+    "noMerchants": "No active merchants available.",
+    "noRatings": "No ratings",
+    "noDescription": "No description provided.",
+    "freshAdditions": "Fresh Additions",
+    "noProducts": "No products available yet.",
+    "uncategorized": "Uncategorized",
+    "unknownShop": "Unknown Shop",
+    "viewDetail": "View Detail"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signInSubtitle": "Sign in to your marketplace account",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "signInBtn": "Sign In",
+    "dontHaveAccount": "Don't have an account?",
+    "signUpHere": "Sign Up here",
+    "createAccount": "Create Account",
+    "registerSubtitle": "Join the marketplace as a buyer or vendor",
+    "roleLabel": "I want to join as a:",
+    "buyerRole": "Buyer (Customer)",
+    "vendorRole": "Vendor (Merchant)",
+    "shopName": "Shop Name",
+    "shopDescription": "Shop Description",
+    "shopDescriptionPlaceholder": "Tell customers about your shop...",
+    "registerBtn": "Register Account",
+    "alreadyHaveAccount": "Already have an account?"
+  }
+}

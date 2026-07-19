@@ -42,7 +42,7 @@ onMounted(() => {
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Search products, shops, restaurants..."
+              :placeholder="$t('searchPlaceholder')"
               class="w-full pl-10 pr-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:bg-cardBg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
             >
             <Icon
@@ -76,27 +76,27 @@ onMounted(() => {
               to="/vendor"
               class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
-              Dashboard
+              {{ $t('dashboard') }}
             </NuxtLink>
             <NuxtLink
               v-if="authStore.role === 'ADMIN'"
               to="/admin"
               class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
-              Admin Central
+              {{ $t('adminCentral') }}
             </NuxtLink>
             <NuxtLink
               v-if="authStore.role === 'BUYER'"
               to="/buyer/orders"
               class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
-              My Orders
+              {{ $t('myOrders') }}
             </NuxtLink>
             <button
               class="text-sm font-semibold text-rose-600 hover:text-rose-700"
               @click="authStore.logout()"
             >
-              Logout
+              {{ $t('logout') }}
             </button>
           </template>
 
@@ -106,15 +106,18 @@ onMounted(() => {
               to="/login"
               class="text-sm font-semibold text-textSecondary hover:text-brand"
             >
-              Sign In
+              {{ $t('signIn') }}
             </NuxtLink>
             <NuxtLink
               to="/register"
               class="text-sm font-semibold text-brandText bg-brand hover:bg-brandHover px-4 py-2 rounded-lg transition"
             >
-              Onboard
+              {{ $t('onboard') }}
             </NuxtLink>
           </template>
+
+          <!-- Language Switcher -->
+          <CommonLanguageSwitcher />
 
           <!-- Theme Switcher -->
           <CommonThemeSwitcher />

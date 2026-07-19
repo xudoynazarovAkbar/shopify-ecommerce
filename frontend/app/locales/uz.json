@@ -1,0 +1,51 @@
+{
+  "welcome": "Shopify ko'p sotuvchili savdo maydonchasiga xush kelibsiz",
+  "searchPlaceholder": "Mahsulotlar, do'konlar, restoranlarni qidirish...",
+  "signIn": "Kirish",
+  "onboard": "Ro'yxatdan o'tish",
+  "dashboard": "Boshqaruv paneli",
+  "adminCentral": "Admin markazi",
+  "myOrders": "Mening buyurtmalarim",
+  "logout": "Chiqish",
+  "systemOverseer": "Tizim nazoratchisi",
+  "adminControlPanel": "Admin boshqaruv paneli",
+  "vendorHub": "Sotuvchi markazi",
+  "backToMarketplace": "Savdo maydonchasiga qaytish",
+  "common": {
+    "loading": "Yuklanmoqda..."
+  },
+  "home": {
+    "heroTitle": "Sizning universal savdo maydonchangiz",
+    "heroSubtitle": "Ishonchli do'konlar va restoranlardan oziq-ovqat, gadjetlar, kiyim-kechaklar va boshqa ko'plab narsalarni qidiring, to'g'ridan-to'g'ri uyingizga yetkazib beramiz.",
+    "browseCategories": "Kategoriyalar bo'yicha ko'rish",
+    "noCategories": "Kategoriyalar hali mavjud emas.",
+    "featuredStores": "Tavsiya etilgan do'konlar va oshxonalar",
+    "noMerchants": "Faol sotuvchilar mavjud emas.",
+    "noRatings": "Reytinglar yo'q",
+    "noDescription": "Tavsif berilmagan.",
+    "freshAdditions": "Yangi qo'shilganlar",
+    "noProducts": "Mahsulotlar hali mavjud emas.",
+    "uncategorized": "Kategoriyasiz",
+    "unknownShop": "Noma'lum do'kon",
+    "viewDetail": "Tafsilotlarni ko'rish"
+  },
+  "auth": {
+    "welcomeBack": "Xush kelibsiz",
+    "signInSubtitle": "Hisobingizga kiring",
+    "emailAddress": "Elektron pochta manzili",
+    "password": "Parol",
+    "signInBtn": "Kirish",
+    "dontHaveAccount": "Hisobingiz yo'qmi?",
+    "signUpHere": "Bu yerda ro'yxatdan o'ting",
+    "createAccount": "Hisob yaratish",
+    "registerSubtitle": "Xaridor yoki sotuvchi sifatida qo'shiling",
+    "roleLabel": "Sifatida qo'shilishni xohlayman:",
+    "buyerRole": "Xaridor (Mijoz)",
+    "vendorRole": "Sotuvchi (Tadbirkor)",
+    "shopName": "Do'kon nomi",
+    "shopDescription": "Do'kon tavsifi",
+    "shopDescriptionPlaceholder": "Mijozlarga do'koningiz haqida gapirib bering...",
+    "registerBtn": "Hisobni ro'yxatdan o'tkazish",
+    "alreadyHaveAccount": "Hisobingiz bormi?"
+  }
+}

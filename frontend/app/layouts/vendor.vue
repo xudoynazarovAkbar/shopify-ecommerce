@@ -64,14 +64,14 @@ const shopName = computed(() => authStore.user?.vendorProfile?.shopName || 'Merc
           class="flex items-center gap-3 px-4 py-2 text-xs font-semibold hover:text-textPrimary transition"
         >
           <Icon name="heroicons:arrow-left-20-solid" class="w-4 h-4" />
-          <span>Back to Marketplace</span>
+          <span>{{ $t('backToMarketplace') }}</span>
         </NuxtLink>
         <button
           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition w-full text-left"
           @click="authStore.logout()"
         >
           <Icon name="heroicons:arrow-left-on-rectangle-20-solid" class="w-5 h-5" />
-          <span>Log Out</span>
+          <span>{{ $t('logout') }}</span>
         </button>
       </div>
     </aside>
@@ -85,6 +85,7 @@ const shopName = computed(() => authStore.user?.vendorProfile?.shopName || 'Merc
           <span class="text-xs bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded-full border border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800">
             Active Storefront
           </span>
+          <CommonLanguageSwitcher />
           <CommonThemeSwitcher />
         </div>
       </header>

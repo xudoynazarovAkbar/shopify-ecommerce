@@ -4,11 +4,10 @@
   >
     <div class="max-w-2xl mx-auto relative z-10 space-y-4">
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-        Your Omnipresent Marketplace
+        {{ $t('home.heroTitle') }}
       </h1>
       <p class="text-sm sm:text-base text-brandText/80">
-        Browse food, gadgets, fashion and more from trusted merchant shops and
-        restaurants, delivered straight to your door.
+        {{ $t('home.heroSubtitle') }}
       </p>
     </div>
     <div class="absolute inset-0 bg-grid-white/[0.05] pointer-events-none"/>

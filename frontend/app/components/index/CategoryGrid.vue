@@ -11,7 +11,7 @@ defineProps<{
   <section class="space-y-6">
     <h2 class="text-xl font-extrabold text-textPrimary flex items-center gap-2">
       <Icon name="heroicons:tag" class="text-brand w-5 h-5" />
-      Browse Categories
+      {{ $t('home.browseCategories') }}
     </h2>
     <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div
@@ -21,7 +21,7 @@ defineProps<{
       />
     </div>
     <div v-else-if="categories.length === 0" class="text-textMuted text-sm">
-      No categories available yet.
+      {{ $t('home.noCategories') }}
     </div>
     <div v-else class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div

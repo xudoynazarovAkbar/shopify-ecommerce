@@ -11,7 +11,7 @@ defineProps<{
   <section class="space-y-6">
     <h2 class="text-xl font-extrabold text-textPrimary flex items-center gap-2">
       <Icon name="heroicons:sparkles" class="text-brand w-5 h-5" />
-      Fresh Additions
+      {{ $t('home.freshAdditions') }}
     </h2>
     <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-4 gap-6">
       <div
@@ -21,7 +21,7 @@ defineProps<{
       />
     </div>
     <div v-else-if="products.length === 0" class="text-textMuted text-sm">
-      No products available yet.
+      {{ $t('home.noProducts') }}
     </div>
     <div v-else class="grid grid-cols-2 sm:grid-cols-4 gap-6">
       <NuxtLink
@@ -36,13 +36,13 @@ defineProps<{
         <div class="p-4 flex-1 flex flex-col">
           <div class="flex-1">
             <span class="text-xs font-bold text-brand uppercase">
-              {{ product.category?.name || 'Uncategorized' }}
+              {{ product.category?.name || $t('home.uncategorized') }}
             </span>
             <h3 class="font-bold text-textPrimary mt-1 line-clamp-1">
               {{ product.name }}
             </h3>
             <span class="text-xs text-textMuted mt-1 block">
-              by {{ product.vendor?.shopName || 'Unknown Shop' }}
+              by {{ product.vendor?.shopName || $t('home.unknownShop') }}
             </span>
           </div>
           <div class="flex items-center justify-between mt-4 pt-2 border-t border-appBorder">
@@ -50,7 +50,7 @@ defineProps<{
               ${{ product.price.toFixed(2) }}
             </span>
             <span class="text-xs text-brand font-bold hover:underline">
-              View Detail
+              {{ $t('home.viewDetail') }}
             </span>
           </div>
         </div>

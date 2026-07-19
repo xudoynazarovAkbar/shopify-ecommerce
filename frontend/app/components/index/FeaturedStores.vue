@@ -14,7 +14,7 @@ defineProps<{
         name="heroicons:building-storefront"
         class="text-brand w-5 h-5"
       />
-      Featured Stores & Kitchens
+      {{ $t('home.featuredStores') }}
     </h2>
     <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
       <div
@@ -24,7 +24,7 @@ defineProps<{
       />
     </div>
     <div v-else-if="vendors.length === 0" class="text-textMuted text-sm">
-      No active merchants available.
+      {{ $t('home.noMerchants') }}
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-6">
       <NuxtLink
@@ -45,11 +45,11 @@ defineProps<{
             {{ vendor.averageRating.toFixed(1) }}
           </span>
           <span v-else class="text-xs text-textMuted font-medium">
-            No ratings
+            {{ $t('home.noRatings') }}
           </span>
         </div>
         <p class="text-sm text-textMuted line-clamp-2">
-          {{ vendor.shopDescription || 'No description provided.' }}
+          {{ vendor.shopDescription || $t('home.noDescription') }}
         </p>
       </NuxtLink>
     </div>

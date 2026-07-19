@@ -18,15 +18,15 @@ const {
 <template>
   <div class="max-w-md mx-auto my-12 bg-cardBg p-8 rounded-xl shadow-md border border-appBorder transition-colors">
     <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold text-textPrimary mb-2">Create Account</h1>
-      <p class="text-textMuted text-sm">Join the marketplace as a buyer or vendor</p>
+      <h1 class="text-2xl font-bold text-textPrimary mb-2">{{ $t('auth.createAccount') }}</h1>
+      <p class="text-textMuted text-sm">{{ $t('auth.registerSubtitle') }}</p>
     </div>
 
     <form class="space-y-6" @submit.prevent="handleRegister">
       <!-- Role Toggle -->
       <div>
         <label class="block text-sm font-medium text-textSecondary mb-2">
-          I want to join as a:
+          {{ $t('auth.roleLabel') }}
         </label>
         <div class="grid grid-cols-2 gap-2 p-1 bg-appBg rounded-lg transition-colors">
           <button
@@ -39,7 +39,7 @@ const {
             "
             @click="role = 'BUYER'"
           >
-            Buyer (Customer)
+            {{ $t('auth.buyerRole') }}
           </button>
           <button
             type="button"
@@ -51,7 +51,7 @@ const {
             "
             @click="role = 'VENDOR'"
           >
-            Vendor (Merchant)
+            {{ $t('auth.vendorRole') }}
           </button>
         </div>
       </div>
@@ -61,7 +61,7 @@ const {
         id="email"
         v-model="email"
         type="email"
-        label="Email Address"
+        :label="$t('auth.emailAddress')"
         required
         placeholder="your@email.com"
       />
@@ -71,7 +71,7 @@ const {
         id="password"
         v-model="password"
         type="password"
-        label="Password"
+        :label="$t('auth.password')"
         required
         placeholder="••••••••"
       />
@@ -90,7 +90,7 @@ const {
             id="shopName"
             v-model="shopName"
             type="text"
-            label="Shop Name"
+            :label="$t('auth.shopName')"
             :required="role === 'VENDOR'"
             placeholder="e.g. Pizza Paradise"
           />
@@ -98,22 +98,22 @@ const {
           <BaseTextarea
             id="shopDescription"
             v-model="shopDescription"
-            label="Shop Description"
-            placeholder="Tell customers about your shop..."
+            :label="$t('auth.shopDescription')"
+            :placeholder="$t('auth.shopDescriptionPlaceholder')"
           />
         </div>
       </Transition>
 
       <!-- Submit Button -->
       <BaseButton type="submit" :loading="loading">
-        Register Account
+        {{ $t('auth.registerBtn') }}
       </BaseButton>
     </form>
 
     <div class="mt-8 pt-6 border-t border-appBorder text-center text-sm text-textMuted">
-      Already have an account?
+      {{ $t('auth.alreadyHaveAccount') }}
       <NuxtLink to="/login" class="font-semibold text-brand hover:text-brandHover ml-1 transition-colors">
-        Sign In here
+        {{ $t('auth.signInBtn') }}
       </NuxtLink>
     </div>
   </div>
