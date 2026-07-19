@@ -208,6 +208,7 @@ export interface Order {
   createdAt: string;
   updatedAt: string;
   items?: OrderItem[];
+  review?: Review | null;
   buyer?: {
     id: string;
     email: string;

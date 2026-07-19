@@ -12,7 +12,8 @@
   "vendorHub": "Sotuvchi markazi",
   "backToMarketplace": "Savdo maydonchasiga qaytish",
   "common": {
-    "loading": "Yuklanmoqda..."
+    "loading": "Yuklanmoqda...",
+    "cancel": "Bekor qilish"
   },
   "home": {
     "heroTitle": "Sizning universal savdo maydonchangiz",
@@ -66,7 +67,43 @@
   },
   "reviews": {
     "title": "Mijozlarning fikrlari",
-    "noReviews": "Ushbu sotuvchi haqida hali sharhlar yo'q"
+    "noReviews": "Ushbu sotuvchi haqida hali sharhlar yo'q",
+    "writeReview": "Fikr bildirish",
+    "forStore": "Do'kon uchun",
+    "rating": "Xizmat va taom sifati reytingi",
+    "comment": "Fikr matni",
+    "placeholder": "Xizmat va taom sifati haqida nima deb o'ylaysiz? Samimiy fikrlaringiz bilan o'rtoqlashing...",
+    "submit": "Fikrni yuborish",
+    "rated": "Siz baholadingiz",
+    "successToast": "Rahmat! Sizning samimiy fikringiz muvaffaqiyatli yuborildi.",
+    "starLabel": {
+      "1": "Dahshat",
+      "2": "Yomon",
+      "3": "O'rtacha",
+      "4": "Ajoyib",
+      "5": "Mukammal!"
+    }
+  },
+  "orders": {
+    "title": "Sizning buyurtmalar tarixingiz",
+    "subtitle": "Holatni kuzatib boring, to'lov kvitansiyalarini ko'ring va xaridlar haqida fikr bildiring",
+    "orderNo": "Buyurtma",
+    "total": "Jami",
+    "itemsPurchased": "Sotib olingan mahsulotlar",
+    "unknownProduct": "Noma'lum mahsulot",
+    "subtotal": "Oraliq jami",
+    "discount": "Chegirma",
+    "tax": "Soliqlar va QQS",
+    "deliveryFee": "Yetkazib berish haqi",
+    "emptyTitle": "Buyurtmalar hali yo'q",
+    "emptySubtitle": "Siz hali biror marta xarid amalga oshirmadingiz. Birinchi buyurtmani berish uchun do'konlarni o'rganishni boshlang!",
+    "discoverStores": "Do'konlarni ko'rish",
+    "boughtFrom": "Sotuvchi",
+    "status": {
+      "pending": "Kutilmoqda",
+      "completed": "Bajarildi",
+      "cancelled": "Bekor qilinadi"
+    }
   },
   "cart": {
     "addBtn": "Savatga qo'shish",

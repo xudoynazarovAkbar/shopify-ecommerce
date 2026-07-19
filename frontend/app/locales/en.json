@@ -12,7 +12,8 @@
   "vendorHub": "Vendor Hub",
   "backToMarketplace": "Back to Marketplace",
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "cancel": "Cancel"
   },
   "home": {
     "heroTitle": "Your Omnipresent Marketplace",
@@ -66,7 +67,43 @@
   },
   "reviews": {
     "title": "Customer Reviews",
-    "noReviews": "No reviews yet"
+    "noReviews": "No reviews yet",
+    "writeReview": "Write a Review",
+    "forStore": "For Store",
+    "rating": "Gourmet Rating Score",
+    "comment": "Written Feedback",
+    "placeholder": "What did you think of the service and food quality? Share your honest experience...",
+    "submit": "Submit Review",
+    "rated": "You rated",
+    "successToast": "Thank you! Your feedback review has been submitted successfully.",
+    "starLabel": {
+      "1": "Terrible",
+      "2": "Poor",
+      "3": "Average",
+      "4": "Great",
+      "5": "Excellent!"
+    }
+  },
+  "orders": {
+    "title": "Your Order History",
+    "subtitle": "Track, view item invoices, and rate your experience with merchants",
+    "orderNo": "Order",
+    "total": "Total",
+    "itemsPurchased": "Items Purchased",
+    "unknownProduct": "Unknown Product",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax": "Taxes & VAT",
+    "deliveryFee": "Delivery Fee",
+    "emptyTitle": "No Orders Yet",
+    "emptySubtitle": "You have not placed any orders. Start browsing our local stores to make your first purchase!",
+    "discoverStores": "Discover Stores",
+    "boughtFrom": "Bought From",
+    "status": {
+      "pending": "Pending Processing",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   },
   "cart": {
     "addBtn": "Add to Cart",

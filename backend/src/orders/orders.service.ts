@@ -124,6 +124,7 @@ export class OrdersService {
             shopDescription: true,
           },
         },
+        review: true,
       },
       orderBy: { createdAt: 'desc' },
     });
