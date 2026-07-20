@@ -4,7 +4,6 @@ import { useAdminProducts } from '../../composables/useAdminProducts';
 import { useAdminCategories } from '../../composables/useAdminCategories';
 
 definePageMeta({
-  layout: 'admin',
   middleware: ['auth', 'role'],
   meta: { roles: ['ADMIN'] },
 });

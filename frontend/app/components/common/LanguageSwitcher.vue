@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+const props = defineProps({
+  collapsed: {
+    type: Boolean,
+    default: false
+  }
+});
+
 const { locale, setLocale, locales } = useI18n();
 
 const isOpen = ref(false);
@@ -42,18 +49,19 @@ onBeforeUnmount(() => {
   <div ref="containerRef" class="relative inline-block text-left shrink-0">
     <button
       type="button"
-      class="p-2 rounded-full border border-appBorder bg-cardBg hover:bg-appBg text-textPrimary shadow-sm transition duration-200 flex items-center justify-center gap-1 shrink-0 px-3"
+      class="p-2 rounded-full border border-appBorder bg-cardBg hover:bg-appBg text-textPrimary shadow-sm transition duration-200 flex items-center justify-center gap-1 shrink-0"
+      :class="[props.collapsed ? 'h-10 w-10 px-0' : 'px-3']"
       title="Switch Language"
       @click="toggleDropdown"
     >
       <Icon name="heroicons:language-20-solid" class="w-5 h-5 text-brand" />
-      <span class="text-xs font-semibold uppercase">{{ locale }}</span>
-      <Icon name="heroicons:chevron-down-20-solid" class="w-4 h-4 text-textMuted transition-transform duration-200" :class="{ 'rotate-180': isOpen }" />
+      <span v-if="!props.collapsed" class="text-xs font-semibold uppercase">{{ locale }}</span>
+      <Icon v-if="!props.collapsed" name="heroicons:chevron-down-20-solid" class="w-4 h-4 text-textMuted transition-transform duration-200" :class="{ 'rotate-180': isOpen }" />
     </button>
 
     <div
       v-show="isOpen"
-      class="absolute right-0 mt-2 w-36 origin-top-right rounded-lg border border-appBorder bg-cardBg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 transition-all duration-200"
+      class="absolute bottom-full mb-2 left-0 w-36 origin-bottom-left rounded-lg border border-appBorder bg-cardBg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 transition-all duration-200"
     >
       <div class="py-1">
         <button

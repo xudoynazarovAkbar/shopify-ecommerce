@@ -4,7 +4,6 @@ import { useToastStore } from '../../stores/toast';
 import type { Product } from '../../types';
 
 definePageMeta({
-  layout: 'vendor',
   middleware: ['auth', 'role'],
   meta: { roles: ['VENDOR'] },
 });

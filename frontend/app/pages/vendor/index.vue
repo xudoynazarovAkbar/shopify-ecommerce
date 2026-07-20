@@ -5,7 +5,6 @@ import { useVendorProducts } from '../../composables/useVendorProducts';
 import { useVendorCoupons } from '../../composables/useVendorCoupons';
 
 definePageMeta({
-  layout: 'vendor',
   middleware: ['auth', 'role'],
   meta: { roles: ['VENDOR'] },
 });

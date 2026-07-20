@@ -3,7 +3,6 @@ import { useVendorCoupons } from '../../composables/useVendorCoupons';
 import { useToastStore } from '../../stores/toast';
 
 definePageMeta({
-  layout: 'vendor',
   middleware: ['auth', 'role'],
   meta: { roles: ['VENDOR'] },
 });

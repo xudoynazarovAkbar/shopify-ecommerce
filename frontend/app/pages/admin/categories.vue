@@ -4,7 +4,6 @@ import { useToastStore } from '../../stores/toast';
 import type { Category } from '../../types';
 
 definePageMeta({
-  layout: 'admin',
   middleware: ['auth', 'role'],
   meta: { roles: ['ADMIN'] },
 });
