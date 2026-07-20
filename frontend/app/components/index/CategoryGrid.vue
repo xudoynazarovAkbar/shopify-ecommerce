@@ -57,7 +57,7 @@ onUnmounted(() => {
       {{ $t('home.noCategories') }}
     </div>
     
-    <div v-else class="flex items-center gap-2 py-2 max-w-full overflow-hidden">
+    <div v-else class="flex items-center gap-2 py-2 max-w-full">
       <!-- Scrollable Categories -->
       <div class="flex items-center gap-1 md:gap-2 overflow-x-auto hide-scrollbar min-w-0">
         <template v-for="(cat, index) in visibleCategories" :key="cat.id">
