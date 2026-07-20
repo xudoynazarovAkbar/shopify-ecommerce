@@ -17,16 +17,34 @@ const { resolveImageUrl } = useImageResolver();
     <div v-if="loading" class="space-y-12">
       <!-- Vendors Skeleton -->
       <div>
-        <div class="h-6 w-48 bg-appBorder rounded animate-pulse mb-6"/>
+        <div class="h-6 w-48 bg-appBorder rounded mb-6 shimmer-box"/>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="n in 3" :key="'v-skel-' + n" class="h-40 bg-cardBg border border-appBorder rounded-2xl animate-pulse"/>
+          <div v-for="n in 3" :key="'v-skel-' + n" class="bg-cardBg border border-appBorder rounded-2xl p-6 flex flex-col justify-between h-40">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-4">
+                <div class="h-6 w-2/3 bg-appBorder rounded shimmer-box" />
+                <div class="h-6 w-12 bg-appBorder rounded-full shimmer-box" />
+              </div>
+              <div class="h-4 w-full bg-appBorder rounded shimmer-box" />
+              <div class="h-4 w-4/5 bg-appBorder rounded shimmer-box" />
+            </div>
+            <div class="h-4 w-1/3 bg-appBorder rounded shimmer-box mt-4" />
+          </div>
         </div>
       </div>
       <!-- Products Skeleton -->
       <div>
-        <div class="h-6 w-48 bg-appBorder rounded animate-pulse mb-6"/>
+        <div class="h-6 w-48 bg-appBorder rounded mb-6 shimmer-box"/>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div v-for="n in 4" :key="'p-skel-' + n" class="h-64 bg-cardBg border border-appBorder rounded-2xl animate-pulse"/>
+          <div v-for="n in 4" :key="'p-skel-' + n" class="bg-cardBg border border-appBorder rounded-2xl overflow-hidden flex flex-col justify-between h-64 p-4">
+            <div class="aspect-video w-full bg-appBorder rounded-lg mb-4 shimmer-box" />
+            <div class="space-y-2 flex-1">
+              <div class="h-4 w-3/4 bg-appBorder rounded shimmer-box" />
+              <div class="h-3 w-1/2 bg-appBorder rounded shimmer-box" />
+              <div class="h-3 w-full bg-appBorder rounded shimmer-box" />
+            </div>
+            <div class="h-6 w-1/3 bg-appBorder rounded shimmer-box mt-4" />
+          </div>
         </div>
       </div>
     </div>
@@ -166,3 +184,35 @@ const { resolveImageUrl } = useImageResolver();
     </template>
   </div>
 </template>
+
+<style scoped>
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-box {
+  background: linear-gradient(
+    90deg,
+    var(--shimmer-bg) 25%,
+    var(--shimmer-light) 50%,
+    var(--shimmer-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+:root {
+  --shimmer-bg: rgba(229, 231, 235, 0.6);
+  --shimmer-light: rgba(255, 255, 255, 0.9);
+}
+
+.dark {
+  --shimmer-bg: rgba(55, 65, 81, 0.6);
+  --shimmer-light: rgba(107, 114, 128, 0.9);
+}
+</style>

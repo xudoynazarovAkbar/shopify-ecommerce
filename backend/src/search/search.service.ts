@@ -38,6 +38,11 @@ export class SearchService {
         OR: [
           { name: { contains: trimmedQuery, mode: 'insensitive' } },
           { description: { contains: trimmedQuery, mode: 'insensitive' } },
+          {
+            vendor: {
+              shopName: { contains: trimmedQuery, mode: 'insensitive' },
+            },
+          },
         ],
       },
       include: {

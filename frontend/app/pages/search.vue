@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSearch } from '../composables/useSearch';
+import SearchResultGrid from '../components/search/SearchResultGrid.vue';
 
 definePageMeta({
   layout: 'default',
@@ -18,7 +19,7 @@ const { query, products, vendors, loading } = useSearch();
     </div>
 
     <!-- Search Grid -->
-    <SearchSearchResultGrid
+    <SearchResultGrid
       :query="query"
       :products="products"
       :vendors="vendors"

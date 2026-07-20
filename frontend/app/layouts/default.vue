@@ -5,17 +5,38 @@ import { useCartStore } from '../stores/cart';
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const route = useRoute();
+const router = useRouter();
 
-const searchQuery = ref('');
+const searchQuery = ref((route.query.q as string) || '');
+
+watch(
+  () => route.query.q,
+  (newQ) => {
+    searchQuery.value = (newQ as string) || '';
+  }
+);
 
 const showSearch = computed(() => {
   return !['/login', '/register'].includes(route.path);
 });
 
-const onSearch = () => {
-  if (searchQuery.value.trim()) {
-    navigateTo(`/search?q=${encodeURIComponent(searchQuery.value.trim())}`);
+watch(searchQuery, (newVal) => {
+  const queryStr = newVal.trim();
+  if (queryStr === (route.query.q as string || '').trim()) return;
+
+  if (queryStr.length > 0) {
+    if (route.path !== '/search') {
+      router.push(`/search?q=${encodeURIComponent(queryStr)}`);
+    } else {
+      router.replace(`/search?q=${encodeURIComponent(queryStr)}`);
+    }
+  } else if (route.path === '/search' && queryStr.length === 0) {
+    router.push('/');
   }
+});
+
+const onSearch = () => {
+  // Navigation is handled reactively by watch(searchQuery)
 };
 
 onMounted(() => {
@@ -43,12 +64,24 @@ onMounted(() => {
               v-model="searchQuery"
               type="text"
               :placeholder="$t('searchPlaceholder')"
-              class="w-full pl-10 pr-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:bg-cardBg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
+              class="w-full pl-10 pr-10 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:bg-cardBg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
             >
             <Icon
               name="heroicons:magnifying-glass-20-solid"
               class="w-5 h-5 text-textMuted absolute left-3 top-2.5 pointer-events-none"
             />
+            <!-- Clear Button -->
+            <button
+              v-if="searchQuery"
+              type="button"
+              class="absolute right-3 top-2.5 text-textMuted hover:text-textPrimary transition-colors flex items-center"
+              @click="searchQuery = ''"
+            >
+              <Icon
+                name="heroicons:x-mark-20-solid"
+                class="w-5 h-5"
+              />
+            </button>
           </form>
         </div>
 
