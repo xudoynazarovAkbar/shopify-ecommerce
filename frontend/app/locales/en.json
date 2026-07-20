@@ -32,6 +32,7 @@
     "categoriesSubtitle": "Create, modify, and delete taxonomies mapped to customer homepages and merchant catalogs",
     "addCategory": "Add New Category",
     "editCategory": "Edit Category",
+    "deleteCategory": "Delete Category",
     "createCategory": "Create Category",
     "categoryName": "Category Name",
     "categoryNamePlaceholder": "e.g., Fast Food, Electronics, Fashion",
@@ -63,7 +64,9 @@
   "common": {
     "loading": "Loading...",
     "cancel": "Cancel",
-    "more": "More"
+    "more": "More",
+    "confirm": "Confirm",
+    "delete": "Delete"
   },
   "home": {
     "heroTitle": "Your Omnipresent Marketplace",
@@ -169,6 +172,8 @@
     "emptyProductsTitle": "Inventory is Empty",
     "emptyProductsSubtitle": "You have not listed any items in your catalog yet. Click 'Add New Product' to spawn your first listing!",
     "edit": "Edit",
+    "deleteProduct": "Delete Product",
+    "deleteCoupon": "Delete Promo Coupon",
     "deleteConfirmation": "Are you absolutely sure you want to delete this product? This action is irreversible.",
     "productCreatedSuccess": "Product has been successfully added to your catalog.",
     "productUpdatedSuccess": "Product details successfully updated.",

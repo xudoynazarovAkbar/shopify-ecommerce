@@ -59,15 +59,28 @@ const handleFormSubmit = async (payload: { name: string; description?: string; i
   }
 };
 
-const handleDelete = async (catId: string) => {
-  if (!confirm(useNuxtApp().$i18n.t('admin.categoryDeleteConfirmation'))) return;
+const showDeleteConfirm = ref(false);
+const categoryIdToDelete = ref<string | null>(null);
+const isDeleting = ref(false);
 
+const handleDelete = (catId: string) => {
+  categoryIdToDelete.value = catId;
+  showDeleteConfirm.value = true;
+};
+
+const executeDeleteCategory = async () => {
+  if (!categoryIdToDelete.value) return;
+  isDeleting.value = true;
   try {
-    await deleteCategory(catId);
+    await deleteCategory(categoryIdToDelete.value);
     toastStore.success(useNuxtApp().$i18n.t('admin.categoryDeletedSuccess'));
+    showDeleteConfirm.value = false;
+    categoryIdToDelete.value = null;
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : 'Failed to delete category';
     toastStore.error(errMsg);
+  } finally {
+    isDeleting.value = false;
   }
 };
 </script>
@@ -175,6 +188,17 @@ const handleDelete = async (catId: string) => {
       :category="editingCategory"
       @close="closeModal"
       @submit="handleFormSubmit"
+    />
+
+    <!-- Custom reusable confirmation modal for deleting categories -->
+    <CommonConfirmationModal
+      :show="showDeleteConfirm"
+      :title="$t('admin.deleteCategory')"
+      :message="$t('admin.categoryDeleteConfirmation')"
+      :loading="isDeleting"
+      variant="danger"
+      @close="showDeleteConfirm = false"
+      @confirm="executeDeleteCategory"
     />
   </div>
 </template>

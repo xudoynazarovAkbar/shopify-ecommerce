@@ -32,6 +32,7 @@
     "categoriesSubtitle": "Mijozlarning bosh sahifasida va sotuvchilar kataloglarida aks etadigan global kategoriyalarni yarating, tahrirlang va o'chiring",
     "addCategory": "Yangi kategoriya qo'shish",
     "editCategory": "Kategoriyani tahrirlash",
+    "deleteCategory": "Kategoriyani o'chirish",
     "createCategory": "Kategoriya yaratish",
     "categoryName": "Kategoriya nomi",
     "categoryNamePlaceholder": "Masalan, Fast Fud, Elektronika, Moda",
@@ -63,7 +64,9 @@
   "common": {
     "loading": "Yuklanmoqda...",
     "cancel": "Bekor qilish",
-    "more": "Yana"
+    "more": "Yana",
+    "confirm": "Tasdiqlash",
+    "delete": "O'chirish"
   },
   "home": {
     "heroTitle": "Sizning universal savdo maydonchangiz",
@@ -169,6 +172,8 @@
     "emptyProductsTitle": "Katalogingiz bo'sh",
     "emptyProductsSubtitle": "Do'koningizda hali mahsulotlar yo'q. Birinchi taklifingizni yaratish uchun 'Mahsulot qo'shish' tugmasini bosing!",
     "edit": "Tahrirlash",
+    "deleteProduct": "Mahsulotni o'chirish",
+    "deleteCoupon": "Promo kodni o'chirish",
     "deleteConfirmation": "Ushbu mahsulotni o'chirishga ishonchingiz komilmi? Bu amalni ortga qaytarib bo'lmaydi.",
     "productCreatedSuccess": "Mahsulot muvaffaqiyatli yaratildi va katalogingizga qo'shildi.",
     "productUpdatedSuccess": "Mahsulot muvaffaqiyatli yangilandi.",

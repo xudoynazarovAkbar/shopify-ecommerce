@@ -54,15 +54,28 @@ const handleToggleActive = async (couponId: string, currentStatus: boolean) => {
   }
 };
 
-const handleDelete = async (couponId: string) => {
-  if (!confirm(useNuxtApp().$i18n.t('vendor.couponDeleteConfirmation'))) return;
+const showDeleteConfirm = ref(false);
+const couponIdToDelete = ref<string | null>(null);
+const isDeleting = ref(false);
 
+const handleDelete = (couponId: string) => {
+  couponIdToDelete.value = couponId;
+  showDeleteConfirm.value = true;
+};
+
+const executeDeleteCoupon = async () => {
+  if (!couponIdToDelete.value) return;
+  isDeleting.value = true;
   try {
-    await deleteCoupon(couponId);
+    await deleteCoupon(couponIdToDelete.value);
     toastStore.success(useNuxtApp().$i18n.t('vendor.couponDeletedSuccess'));
+    showDeleteConfirm.value = false;
+    couponIdToDelete.value = null;
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : 'Failed to delete coupon';
     toastStore.error(errMsg);
+  } finally {
+    isDeleting.value = false;
   }
 };
 </script>
@@ -192,6 +205,17 @@ const handleDelete = async (couponId: string) => {
       :show="showModal"
       @close="closeModal"
       @submit="handleFormSubmit"
+    />
+
+    <!-- Custom reusable confirmation modal for deleting coupon codes -->
+    <CommonConfirmationModal
+      :show="showDeleteConfirm"
+      :title="$t('vendor.deleteCoupon')"
+      :message="$t('vendor.couponDeleteConfirmation')"
+      :loading="isDeleting"
+      variant="danger"
+      @close="showDeleteConfirm = false"
+      @confirm="executeDeleteCoupon"
     />
   </div>
 </template>

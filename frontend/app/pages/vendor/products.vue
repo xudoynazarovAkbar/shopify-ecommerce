@@ -60,15 +60,28 @@ const handleFormSubmit = async (payload: { categoryId: string; name: string; des
   }
 };
 
-const handleDelete = async (productId: string) => {
-  if (!confirm(useNuxtApp().$i18n.t('vendor.deleteConfirmation'))) return;
+const showDeleteConfirm = ref(false);
+const productIdToDelete = ref<string | null>(null);
+const isDeleting = ref(false);
 
+const handleDelete = (productId: string) => {
+  productIdToDelete.value = productId;
+  showDeleteConfirm.value = true;
+};
+
+const executeDeleteProduct = async () => {
+  if (!productIdToDelete.value) return;
+  isDeleting.value = true;
   try {
-    await deleteProduct(productId);
+    await deleteProduct(productIdToDelete.value);
     toastStore.success(useNuxtApp().$i18n.t('vendor.productDeletedSuccess'));
+    showDeleteConfirm.value = false;
+    productIdToDelete.value = null;
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : 'Failed to delete product';
     toastStore.error(errMsg);
+  } finally {
+    isDeleting.value = false;
   }
 };
 </script>
@@ -208,6 +221,17 @@ const handleDelete = async (productId: string) => {
       :product="editingProduct"
       @close="closeModal"
       @submit="handleFormSubmit"
+    />
+
+    <!-- Custom reusable confirmation modal for deleting products -->
+    <CommonConfirmationModal
+      :show="showDeleteConfirm"
+      :title="$t('vendor.deleteProduct')"
+      :message="$t('vendor.deleteConfirmation')"
+      :loading="isDeleting"
+      variant="danger"
+      @close="showDeleteConfirm = false"
+      @confirm="executeDeleteProduct"
     />
   </div>
 </template>
