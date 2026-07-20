@@ -57,26 +57,29 @@ onUnmounted(() => {
       {{ $t('home.noCategories') }}
     </div>
     
-    <div v-else class="flex items-center gap-1 md:gap-2 overflow-x-auto hide-scrollbar py-2">
-      <template v-for="(cat, index) in visibleCategories" :key="cat.id">
-        <button
-          class="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0 focus:outline-none"
-          :class="[
-            modelValue === cat.id
-              ? 'bg-cardBg text-textPrimary shadow-sm border border-appBorder'
-              : 'bg-transparent text-textSecondary hover:text-textPrimary hover:bg-cardBg/60'
-          ]"
-          @click="handleSelect(cat.id)"
-        >
-          {{ cat.name }}
-        </button>
-        
-        <!-- Faint vertical separator -->
-        <div v-if="index < visibleCategories.length - 1" class="h-4 w-px bg-appBorder flex-shrink-0"/>
-      </template>
+    <div v-else class="flex items-center w-full py-2">
+      <!-- Scrollable Categories -->
+      <div class="flex items-center gap-1 md:gap-2 overflow-x-auto hide-scrollbar flex-grow">
+        <template v-for="(cat, index) in visibleCategories" :key="cat.id">
+          <button
+            class="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0 focus:outline-none"
+            :class="[
+              modelValue === cat.id
+                ? 'bg-cardBg text-textPrimary shadow-sm border border-appBorder'
+                : 'bg-transparent text-textSecondary hover:text-textPrimary hover:bg-cardBg/60'
+            ]"
+            @click="handleSelect(cat.id)"
+          >
+            {{ cat.name }}
+          </button>
+          
+          <!-- Faint vertical separator -->
+          <div v-if="index < visibleCategories.length - 1" class="h-4 w-px bg-appBorder flex-shrink-0"/>
+        </template>
+      </div>
 
       <!-- More Dropdown -->
-      <div v-if="overflowCategories.length > 0" class="relative more-dropdown-container flex-shrink-0 ml-1">
+      <div v-if="overflowCategories.length > 0" class="relative more-dropdown-container flex-shrink-0 ml-2">
         <button
           class="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-1 bg-brand text-brandText hover:bg-brandHover transition shadow-sm focus:outline-none"
           @click="isDropdownOpen = !isDropdownOpen"
