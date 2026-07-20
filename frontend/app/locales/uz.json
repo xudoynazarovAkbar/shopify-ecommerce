@@ -62,7 +62,8 @@
   "backToMarketplace": "Savdo maydonchasiga qaytish",
   "common": {
     "loading": "Yuklanmoqda...",
-    "cancel": "Bekor qilish"
+    "cancel": "Bekor qilish",
+    "more": "Yana"
   },
   "home": {
     "heroTitle": "Sizning universal savdo maydonchangiz",

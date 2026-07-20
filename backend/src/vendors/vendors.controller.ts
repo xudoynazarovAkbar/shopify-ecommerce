@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { VendorsService } from './vendors.service';
 import { RegisterVendorDto } from './dto/register-vendor.dto';
@@ -39,8 +40,8 @@ export class VendorsController {
   }
 
   @Get()
-  async listApproved() {
-    return this.vendorsService.listApproved();
+  async listApproved(@Query('categoryId') categoryId?: string) {
+    return this.vendorsService.listApproved(categoryId);
   }
 
   @Get(':id')

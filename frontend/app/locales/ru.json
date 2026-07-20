@@ -62,7 +62,8 @@
   "backToMarketplace": "Назад на маркетплейс",
   "common": {
     "loading": "Загрузка...",
-    "cancel": "Отмена"
+    "cancel": "Отмена",
+    "more": "Ещё"
   },
   "home": {
     "heroTitle": "Ваш повсеместный маркетплейс",

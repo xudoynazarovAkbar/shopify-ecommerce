@@ -11,31 +11,49 @@ const api = useApi();
 const categories = ref<Category[]>([]);
 const vendors = ref<Vendor[]>([]);
 const products = ref<Product[]>([]);
-const loading = ref(true);
 
-onMounted(async () => {
+const loadingCategories = ref(true);
+const loadingData = ref(true);
+const selectedCategoryId = ref<string | null>(null);
+
+const loadData = async () => {
+  loadingData.value = true;
   try {
-    const [catsRes, vendorsRes, productsRes] = await Promise.all([
-      api.get<Category[]>('/categories'),
-      api.get<Vendor[]>('/vendors'),
-      api.get<Product[]>('/products'),
+    const params = selectedCategoryId.value ? { categoryId: selectedCategoryId.value } : {};
+    const [vendorsRes, productsRes] = await Promise.all([
+      api.get<Vendor[]>('/vendors', { params }),
+      api.get<Product[]>('/products', { params }),
     ]);
-    categories.value = catsRes || [];
     vendors.value = vendorsRes || [];
     products.value = productsRes || [];
   } catch (err) {
     console.error('Failed to load home page data:', err);
   } finally {
-    loading.value = false;
+    loadingData.value = false;
   }
+};
+
+onMounted(async () => {
+  try {
+    categories.value = await api.get<Category[]>('/categories') || [];
+  } catch (err) {
+    console.error('Failed to load categories:', err);
+  } finally {
+    loadingCategories.value = false;
+  }
+  await loadData();
+});
+
+watch(selectedCategoryId, () => {
+  loadData();
 });
 </script>
 
 <template>
   <div class="space-y-12">
     <IndexHeroBanner />
-    <IndexCategoryGrid :categories="categories" :loading="loading" />
-    <IndexFeaturedStores :vendors="vendors" :loading="loading" />
-    <IndexProductAdditions :products="products" :loading="loading" />
+    <IndexCategoryGrid v-model="selectedCategoryId" :categories="categories" :loading="loadingCategories" />
+    <IndexFeaturedStores :vendors="vendors" :loading="loadingData" />
+    <IndexProductAdditions :products="products" :loading="loadingData" />
   </div>
 </template>

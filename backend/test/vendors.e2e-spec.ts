@@ -244,4 +244,73 @@ describe('Vendors System (e2e)', () => {
         .expect(403);
     });
   });
+
+  describe('4. Public Vendor Discovery & Filtering', () => {
+    let testCategoryId: string;
+
+    beforeAll(async () => {
+      // Approve registeredVendorId first so it is APPROVED and visible
+      await prisma.vendor.update({
+        where: { id: registeredVendorId },
+        data: { status: 'APPROVED' },
+      });
+
+      // Create a test category
+      const category = await prisma.category.create({
+        data: {
+          name: `Test Vendor Filter Cat ${Date.now()}`,
+          description: 'Used for testing vendor category filters',
+        },
+      });
+      testCategoryId = category.id;
+
+      // Create an approved product in this category for the registered vendor
+      await prisma.product.create({
+        data: {
+          vendorId: registeredVendorId,
+          categoryId: testCategoryId,
+          name: 'Test Filterable Product',
+          price: 9.99,
+          status: 'APPROVED',
+        },
+      });
+    });
+
+    it('should list all approved vendors', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/vendors')
+        .expect(200);
+
+      const vendors = res.body as TestVendor[];
+      expect(Array.isArray(vendors)).toBe(true);
+      const hasOurVendor = vendors.some((v) => v.id === registeredVendorId);
+      expect(hasOurVendor).toBe(true);
+    });
+
+    it('should filter approved vendors by categoryId', async () => {
+      // 1. Query with our test category id
+      const resWithCat = await request(app.getHttpServer())
+        .get(`/vendors?categoryId=${testCategoryId}`)
+        .expect(200);
+
+      const vendorsWithCat = resWithCat.body as TestVendor[];
+      const hasOurVendor = vendorsWithCat.some((v) => v.id === registeredVendorId);
+      expect(hasOurVendor).toBe(true);
+
+      // 2. Query with a non-existent or empty category id (should not return our vendor since no products match)
+      const emptyCat = await prisma.category.create({
+        data: {
+          name: `Empty Cat ${Date.now()}`,
+        },
+      });
+
+      const resWithEmptyCat = await request(app.getHttpServer())
+        .get(`/vendors?categoryId=${emptyCat.id}`)
+        .expect(200);
+
+      const vendorsWithEmptyCat = resWithEmptyCat.body as TestVendor[];
+      const hasOurVendorInEmpty = vendorsWithEmptyCat.some((v) => v.id === registeredVendorId);
+      expect(hasOurVendorInEmpty).toBe(false);
+    });
+  });
 });

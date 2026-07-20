@@ -62,7 +62,8 @@
   "backToMarketplace": "Back to Marketplace",
   "common": {
     "loading": "Loading...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "more": "More"
   },
   "home": {
     "heroTitle": "Your Omnipresent Marketplace",

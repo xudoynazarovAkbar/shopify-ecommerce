@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from '../auth/auth.service';
 import { RegisterVendorDto } from './dto/register-vendor.dto';
-import { Role, VendorStatus } from '@prisma/client';
+import { Role, VendorStatus, ProductStatus, Prisma } from '@prisma/client';
 
 @Injectable()
 export class VendorsService {
@@ -79,9 +79,20 @@ export class VendorsService {
     };
   }
 
-  async listApproved() {
+  async listApproved(categoryId?: string) {
+    const where: Prisma.VendorWhereInput = { status: VendorStatus.APPROVED };
+
+    if (categoryId) {
+      where.products = {
+        some: {
+          categoryId,
+          status: ProductStatus.APPROVED,
+        },
+      };
+    }
+
     const vendors = await this.prisma.vendor.findMany({
-      where: { status: VendorStatus.APPROVED },
+      where,
       orderBy: { createdAt: 'desc' },
     });
 
