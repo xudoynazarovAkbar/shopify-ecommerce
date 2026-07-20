@@ -57,9 +57,9 @@ onUnmounted(() => {
       {{ $t('home.noCategories') }}
     </div>
     
-    <div v-else class="flex items-center w-full py-2">
+    <div v-else class="flex items-center gap-2 py-2 max-w-full overflow-hidden">
       <!-- Scrollable Categories -->
-      <div class="flex items-center gap-1 md:gap-2 overflow-x-auto hide-scrollbar flex-grow">
+      <div class="flex items-center gap-1 md:gap-2 overflow-x-auto hide-scrollbar min-w-0">
         <template v-for="(cat, index) in visibleCategories" :key="cat.id">
           <button
             class="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer flex-shrink-0 focus:outline-none"
@@ -79,7 +79,7 @@ onUnmounted(() => {
       </div>
 
       <!-- More Dropdown -->
-      <div v-if="overflowCategories.length > 0" class="relative more-dropdown-container flex-shrink-0 ml-2">
+      <div v-if="overflowCategories.length > 0" class="relative more-dropdown-container flex-shrink-0">
         <button
           class="px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-1 bg-brand text-brandText hover:bg-brandHover transition shadow-sm focus:outline-none"
           @click="isDropdownOpen = !isDropdownOpen"
