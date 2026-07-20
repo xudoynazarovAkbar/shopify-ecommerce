@@ -37,10 +37,13 @@ export const useBuyerOrders = () => {
       // Update the order in our local list to append this new review instantly
       const orderIdx = orders.value.findIndex((o) => o.id === orderId);
       if (orderIdx !== -1) {
-        orders.value[orderIdx] = {
-          ...orders.value[orderIdx],
-          review: reviewRes,
-        };
+        const existingOrder = orders.value[orderIdx];
+        if (existingOrder) {
+          orders.value[orderIdx] = {
+            ...existingOrder,
+            review: reviewRes,
+          };
+        }
       }
 
       return reviewRes;

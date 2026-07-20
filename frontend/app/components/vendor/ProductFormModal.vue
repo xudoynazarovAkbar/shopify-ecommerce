@@ -48,7 +48,7 @@ const handleDrop = async (e: DragEvent) => {
   e.preventDefault();
   dragActive.value = false;
   const files = e.dataTransfer?.files;
-  if (files && files.length > 0) {
+  if (files && files.length > 0 && files[0]) {
     await processFile(files[0]);
   }
 };
@@ -56,7 +56,7 @@ const handleDrop = async (e: DragEvent) => {
 const handleFileSelect = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   const files = target.files;
-  if (files && files.length > 0) {
+  if (files && files.length > 0 && files[0]) {
     await processFile(files[0]);
   }
 };

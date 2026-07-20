@@ -15,7 +15,7 @@ const closeDropdown = () => {
 };
 
 const handleLocaleChange = async (code: string) => {
-  await setLocale(code);
+  await setLocale(code as 'en' | 'ru' | 'uz');
   closeDropdown();
 };
 

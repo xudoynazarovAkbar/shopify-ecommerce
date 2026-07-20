@@ -19,7 +19,10 @@ const selectedCategoryId = ref<string | null>(null);
 const loadData = async () => {
   loadingData.value = true;
   try {
-    const params = selectedCategoryId.value ? { categoryId: selectedCategoryId.value } : {};
+    const params: Record<string, string | number | boolean> = {};
+    if (selectedCategoryId.value) {
+      params.categoryId = selectedCategoryId.value;
+    }
     const [vendorsRes, productsRes] = await Promise.all([
       api.get<Vendor[]>('/vendors', { params }),
       api.get<Product[]>('/products', { params }),

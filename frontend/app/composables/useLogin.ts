@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { useAuthStore, type User } from '../stores/auth';
+import { useAuthStore } from '../stores/auth';
+import type { User } from '../types';
 import { useToastStore } from '../stores/toast';
 import { useApi } from './useApi';
 

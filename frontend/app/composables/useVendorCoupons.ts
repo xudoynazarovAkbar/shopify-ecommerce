@@ -38,10 +38,13 @@ export const useVendorCoupons = () => {
       
       const couponIdx = coupons.value.findIndex((c) => c.id === couponId);
       if (couponIdx !== -1) {
-        coupons.value[couponIdx] = {
-          ...coupons.value[couponIdx],
-          isActive: updated.isActive,
-        };
+        const existingCoupon = coupons.value[couponIdx];
+        if (existingCoupon) {
+          coupons.value[couponIdx] = {
+            ...existingCoupon,
+            isActive: updated.isActive,
+          };
+        }
       }
       return updated;
     } catch (err: unknown) {

@@ -1,15 +1,5 @@
 import { defineStore } from 'pinia';
-
-export interface User {
-  id: string;
-  email: string;
-  role: 'BUYER' | 'VENDOR' | 'ADMIN';
-  vendorProfile?: {
-    id: string;
-    shopName: string;
-    status: string;
-  };
-}
+import type { User } from '../types';
 
 export const useAuthStore = defineStore('auth', {
   state: () => {

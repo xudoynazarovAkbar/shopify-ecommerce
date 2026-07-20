@@ -28,10 +28,13 @@ export const useAdminMerchants = () => {
       
       const idx = merchants.value.findIndex((m) => m.id === vendorId);
       if (idx !== -1) {
-        merchants.value[idx] = {
-          ...merchants.value[idx],
-          status: updated.status,
-        };
+        const current = merchants.value[idx];
+        if (current) {
+          merchants.value[idx] = {
+            ...current,
+            status: updated.status,
+          };
+        }
       }
       return updated;
     } catch (err: unknown) {
@@ -46,10 +49,13 @@ export const useAdminMerchants = () => {
       
       const idx = merchants.value.findIndex((m) => m.id === vendorId);
       if (idx !== -1) {
-        merchants.value[idx] = {
-          ...merchants.value[idx],
-          autoApproveProducts: updated.autoApproveProducts,
-        };
+        const current = merchants.value[idx];
+        if (current) {
+          merchants.value[idx] = {
+            ...current,
+            autoApproveProducts: updated.autoApproveProducts,
+          };
+        }
       }
       return updated;
     } catch (err: unknown) {

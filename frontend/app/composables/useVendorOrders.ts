@@ -28,11 +28,14 @@ export const useVendorOrders = () => {
       // Update the order locally in our list
       const orderIdx = orders.value.findIndex((o) => o.id === orderId);
       if (orderIdx !== -1) {
-        orders.value[orderIdx] = {
-          ...orders.value[orderIdx],
-          status: updatedOrder.status,
-          updatedAt: updatedOrder.updatedAt,
-        };
+        const existingOrder = orders.value[orderIdx];
+        if (existingOrder) {
+          orders.value[orderIdx] = {
+            ...existingOrder,
+            status: updatedOrder.status,
+            updatedAt: updatedOrder.updatedAt,
+          };
+        }
       }
       return updatedOrder;
     } catch (err: unknown) {

@@ -60,7 +60,7 @@ const gradientClass = computed(() => {
           <div class="flex items-center gap-1.5 font-bold text-textPrimary">
             <Icon name="heroicons:star-20-solid" class="w-5 h-5 text-amber-500" />
             <span>
-              {{ vendor.averageRating !== null ? vendor.averageRating.toFixed(1) : '0.0' }}
+              {{ vendor.averageRating != null ? vendor.averageRating.toFixed(1) : '0.0' }}
             </span>
             <span class="text-textMuted text-xs font-normal">/ 5.0</span>
           </div>

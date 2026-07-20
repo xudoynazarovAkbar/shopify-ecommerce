@@ -35,6 +35,9 @@ export interface Vendor {
   averageRating?: number | null;
   reviewCount?: number;
   reviews?: Review[];
+  user?: {
+    email: string;
+  } | null;
 }
 
 export interface RegisterPayload {
@@ -75,6 +78,7 @@ export interface Category {
   id: string;
   name: string;
   description?: string | null;
+  icon?: string | null;
   createdAt: string;
   updatedAt: string;
 }

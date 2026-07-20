@@ -33,7 +33,10 @@ const fetchCards = async () => {
     
     // Auto-select first card if none is selected
     if (cards.value.length > 0 && !props.modelValue) {
-      emit('update:modelValue', cards.value[0].id);
+      const firstCard = cards.value[0];
+      if (firstCard) {
+        emit('update:modelValue', firstCard.id);
+      }
     }
   } catch (err) {
     console.error('Failed to fetch vaulted cards:', err);
