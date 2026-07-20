@@ -3,7 +3,7 @@ import { useApi } from './useApi';
 import type { Product, Vendor } from '../types';
 
 // Simple typesafe debounce utility
-function debounce<T extends (...args: any[]) => any>(fn: T, delay: number) {
+function debounce<T extends (...args: unknown[]) => unknown>(fn: T, delay: number) {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   return function (this: unknown, ...args: Parameters<T>) {
     if (timeoutId) {

@@ -24,16 +24,18 @@ const resetForm = () => {
   formError.value = null;
 };
 
-// Watch for category pre-population
+// Watch for modal visibility or category pre-population
 watch(
-  () => props.category,
-  (newCat) => {
-    if (newCat) {
-      name.value = newCat.name;
-      description.value = newCat.description || '';
-      icon.value = newCat.icon || '';
-    } else {
-      resetForm();
+  [() => props.show, () => props.category],
+  ([isShown, newCat]) => {
+    if (isShown) {
+      if (newCat) {
+        name.value = newCat.name;
+        description.value = newCat.description || '';
+        icon.value = newCat.icon || '';
+      } else {
+        resetForm();
+      }
     }
   },
   { immediate: true }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CouponDiscountType } from '../../types';
 
-defineProps<{
+const props = defineProps<{
   show: boolean;
 }>();
 
@@ -22,6 +22,16 @@ const resetForm = () => {
   discountValue.value = '';
   formError.value = null;
 };
+
+// Reset form when modal opens
+watch(
+  () => props.show,
+  (isShown) => {
+    if (isShown) {
+      resetForm();
+    }
+  }
+);
 
 const handleCancel = () => {
   resetForm();

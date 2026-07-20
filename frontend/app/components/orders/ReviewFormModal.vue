@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Order } from '../../types';
 
-defineProps<{
+const props = defineProps<{
   show: boolean;
   order: Order | null;
 }>();
@@ -18,6 +18,17 @@ const isSubmitting = ref(false);
 const selectRating = (stars: number) => {
   rating.value = stars;
 };
+
+// Reset form when modal opens
+watch(
+  () => props.show,
+  (isShown) => {
+    if (isShown) {
+      rating.value = 5;
+      comment.value = '';
+    }
+  }
+);
 
 const handleCancel = () => {
   rating.value = 5;

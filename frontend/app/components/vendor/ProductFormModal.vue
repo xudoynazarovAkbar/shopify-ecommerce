@@ -127,18 +127,20 @@ const resetForm = () => {
   formError.value = null;
 };
 
-// Watch for product changes to pre-populate (for Edit Mode)
+// Watch for modal visibility or product changes to pre-populate or reset
 watch(
-  () => props.product,
-  (newProduct) => {
-    if (newProduct) {
-      name.value = newProduct.name;
-      description.value = newProduct.description || '';
-      price.value = newProduct.price;
-      image.value = newProduct.image || '';
-      categoryId.value = newProduct.categoryId;
-    } else {
-      resetForm();
+  [() => props.show, () => props.product],
+  ([isShown, newProduct]) => {
+    if (isShown) {
+      if (newProduct) {
+        name.value = newProduct.name;
+        description.value = newProduct.description || '';
+        price.value = newProduct.price;
+        image.value = newProduct.image || '';
+        categoryId.value = newProduct.categoryId;
+      } else {
+        resetForm();
+      }
     }
   },
   { immediate: true }
