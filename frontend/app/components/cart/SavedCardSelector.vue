@@ -58,14 +58,9 @@ const handleAddCard = async () => {
 
   vaulting.value = true;
   try {
-    const last4 = digits.slice(-4);
-    // Simulate safe vaulting tokenization
-    const cardToken = 'tok_' + Math.random().toString(36).substring(2, 10);
-    
     const payload = {
-      cardToken,
+      cardNumber: digits,
       brand: cardBrand.value,
-      last4,
       expMonth: Number(expMonth.value),
       expYear: Number(expYear.value),
     };

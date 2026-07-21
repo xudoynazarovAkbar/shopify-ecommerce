@@ -19,6 +19,23 @@ export class OrdersService {
   ) {}
 
   async checkout(buyerId: string, dto?: CheckoutDto) {
+    // Validate card ownership if savedCardId is provided
+    if (dto?.savedCardId) {
+      const card = await this.prisma.savedCard.findUnique({
+        where: { id: dto.savedCardId },
+      });
+      if (!card) {
+        throw new NotFoundException(
+          `Saved card with ID "${dto.savedCardId}" not found`,
+        );
+      }
+      if (card.buyerId !== buyerId) {
+        throw new ForbiddenException(
+          'This payment method does not belong to you',
+        );
+      }
+    }
+
     // 1. Fetch active cart
     const cart = await this.cartService.getCart(buyerId);
 

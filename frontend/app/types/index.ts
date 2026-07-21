@@ -272,9 +272,8 @@ export interface SavedCard {
 }
 
 export interface SaveCardPayload {
-  cardToken: string;
+  cardNumber: string;
   brand: string;
-  last4: string;
   expMonth: number;
   expYear: number;
 }

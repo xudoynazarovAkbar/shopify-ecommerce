@@ -71,7 +71,7 @@ onMounted(async () => {
 
           <!-- Items Ledger -->
           <div class="space-y-3">
-            <CartCartItemRow
+            <CartItemRow
               v-for="item in cartStore.items"
               :key="item.id"
               :item="item"
