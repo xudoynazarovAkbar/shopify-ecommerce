@@ -77,6 +77,9 @@ onMounted(async () => {
               :item="item"
             />
           </div>
+
+          <!-- More From Active Vendor Recommendations Carousel -->
+          <CartMoreFromVendor />
         </div>
 
         <!-- Right Panel: Summary & Vaulting Method -->

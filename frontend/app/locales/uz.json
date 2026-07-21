@@ -261,6 +261,8 @@
     "couponApplyBtn": "Faollashtirish",
     "couponAppliedMsg": "Buyurtma berish uchun ro'yxatdan o'tkazildi",
     "paymentLabel": "To'lov usuli",
-    "authRequiredMessage": "Xarid savatingiz faqat tizimga kirgan foydalanuvchilar uchun amal qiladi. Iltimos, avval tizimga kiring."
+    "authRequiredMessage": "Xarid savatingiz faqat tizimga kirgan foydalanuvchilar uchun amal qiladi. Iltimos, avval tizimga kiring.",
+    "moreFromVendor": "{vendor} do'konidan yana",
+    "noMoreProducts": "Ushbu sotuvchining barcha mahsulotlari savatda mavjud!"
   }
 }
