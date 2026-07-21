@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useApi } from '../composables/useApi';
 import { useAuthStore } from './auth';
+import { useToastStore } from './toast';
 import type { Cart, CartItem } from '../types';
 
 export const useCartStore = defineStore('cart', {
@@ -14,6 +15,8 @@ export const useCartStore = defineStore('cart', {
     total: 0,
     items: [] as CartItem[],
     loading: false,
+    appliedCoupon: null as { code: string; discountType: 'PERCENTAGE' | 'FLAT'; discountValue: number } | null,
+    discount: 0,
   }),
   getters: {
     itemCount: (state) =>
@@ -35,14 +38,77 @@ export const useCartStore = defineStore('cart', {
           this.subtotal = cartData.subtotal;
           this.tax = cartData.tax;
           this.deliveryFee = cartData.deliveryFee;
-          this.total = cartData.total;
           this.items = cartData.items || [];
+          this.recalculateTotals();
         }
       } catch (err) {
         console.error('Failed to fetch cart:', err);
       } finally {
         this.loading = false;
       }
+    },
+
+    recalculateTotals() {
+      if (this.appliedCoupon) {
+        if (this.appliedCoupon.discountType === 'PERCENTAGE') {
+          this.discount = parseFloat(
+            (this.subtotal * (this.appliedCoupon.discountValue / 100)).toFixed(2)
+          );
+        } else {
+          this.discount = parseFloat(this.appliedCoupon.discountValue.toFixed(2));
+        }
+        // Discount cannot exceed subtotal
+        this.discount = Math.min(this.discount, this.subtotal);
+      } else {
+        this.discount = 0;
+      }
+      this.total = Math.max(0, parseFloat((this.subtotal + this.tax + this.deliveryFee - this.discount).toFixed(2)));
+    },
+
+    async applyPromoCode(code: string) {
+      if (!code.trim()) return false;
+      const api = useApi();
+      const toastStore = useToastStore();
+      this.loading = true;
+      try {
+        const coupon = await api.post<{ code: string; discountType: 'PERCENTAGE' | 'FLAT'; discountValue: number }>(
+          '/coupons/validate',
+          { code: code.trim() }
+        );
+
+        if (coupon) {
+          this.appliedCoupon = {
+            code: coupon.code,
+            discountType: coupon.discountType,
+            discountValue: coupon.discountValue,
+          };
+          this.recalculateTotals();
+          toastStore.success(`Promo code "${coupon.code}" applied successfully!`);
+          return true;
+        }
+        return false;
+      } catch (err) {
+        console.error('Failed to apply promo code:', err);
+        const fetchError = err as {
+          response?: {
+            _data?: {
+              message?: string;
+            };
+          };
+        };
+        const errMsg = fetchError.response?._data?.message || 'Invalid promo code.';
+        toastStore.error(errMsg);
+        this.removePromoCode();
+        throw new Error(errMsg);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    removePromoCode() {
+      this.appliedCoupon = null;
+      this.discount = 0;
+      this.recalculateTotals();
     },
 
     async addItem(productId: string, quantity = 1) {
@@ -97,6 +163,8 @@ export const useCartStore = defineStore('cart', {
         this.deliveryFee = 0;
         this.total = 0;
         this.items = [];
+        this.appliedCoupon = null;
+        this.discount = 0;
       } catch (err) {
         console.error('Failed to clear cart:', err);
         throw err;

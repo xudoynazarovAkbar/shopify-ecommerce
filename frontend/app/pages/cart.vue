@@ -96,9 +96,14 @@ onMounted(async () => {
                 <span>Estimated Tax (15%)</span>
                 <span class="font-semibold text-textPrimary">${{ cartStore.tax.toFixed(2) }}</span>
               </div>
-              <div class="flex items-center justify-between text-textSecondary border-b border-appBorder pb-3">
+              <div class="flex items-center justify-between text-textSecondary" :class="{ 'border-b border-appBorder pb-3': cartStore.discount === 0 }">
                 <span>Delivery Fee</span>
                 <span class="font-semibold text-textPrimary">${{ cartStore.deliveryFee.toFixed(2) }}</span>
+              </div>
+              <!-- Applied Promo Coupon Discount -->
+              <div v-if="cartStore.discount > 0" class="flex items-center justify-between text-teal-600 dark:text-teal-400 font-semibold border-b border-appBorder pb-3">
+                <span>{{ $t('orders.discount') || 'Discount' }} ({{ cartStore.appliedCoupon?.code }})</span>
+                <span>-${{ cartStore.discount.toFixed(2) }}</span>
               </div>
               <div class="flex items-center justify-between text-textPrimary font-extrabold text-base pt-1">
                 <span>Estimated Total</span>

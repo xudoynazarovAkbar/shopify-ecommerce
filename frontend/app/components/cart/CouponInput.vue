@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCartStore } from '../../stores/cart';
+
 const props = defineProps<{
   modelValue: string;
 }>();
@@ -7,17 +9,28 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
 
+const cartStore = useCartStore();
+
 const rawCode = ref(props.modelValue);
 const isApplied = ref(!!props.modelValue);
 
-const handleApply = () => {
+const handleApply = async () => {
   if (!rawCode.value.trim()) return;
   const normalized = rawCode.value.trim().toUpperCase();
-  emit('update:modelValue', normalized);
-  isApplied.value = true;
+  
+  try {
+    const success = await cartStore.applyPromoCode(normalized);
+    if (success) {
+      emit('update:modelValue', normalized);
+      isApplied.value = true;
+    }
+  } catch (err) {
+    isApplied.value = false;
+  }
 };
 
 const handleRemove = () => {
+  cartStore.removePromoCode();
   rawCode.value = '';
   emit('update:modelValue', '');
   isApplied.value = false;
@@ -27,6 +40,14 @@ const handleRemove = () => {
 watch(() => props.modelValue, (newVal) => {
   rawCode.value = newVal;
   isApplied.value = !!newVal;
+});
+
+onMounted(() => {
+  if (cartStore.appliedCoupon) {
+    rawCode.value = cartStore.appliedCoupon.code;
+    isApplied.value = true;
+    emit('update:modelValue', cartStore.appliedCoupon.code);
+  }
 });
 </script>
 

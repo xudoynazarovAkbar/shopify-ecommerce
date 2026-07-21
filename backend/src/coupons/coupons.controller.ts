@@ -8,6 +8,7 @@ import {
   Param,
   UseGuards,
   Request,
+  BadRequestException,
 } from '@nestjs/common';
 import { CouponsService } from './coupons.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
@@ -30,6 +31,18 @@ interface AuthenticatedRequest {
 @Roles(Role.VENDOR)
 export class CouponsController {
   constructor(private readonly couponsService: CouponsService) {}
+
+  @Post('validate')
+  @Roles(Role.BUYER, Role.VENDOR)
+  async validate(
+    @Request() req: AuthenticatedRequest,
+    @Body('code') code: string,
+  ) {
+    if (!code) {
+      throw new BadRequestException('Promo code is required');
+    }
+    return this.couponsService.validateCouponForBuyer(req.user.id, code);
+  }
 
   @Post()
   async create(

@@ -143,4 +143,18 @@ export class CouponsService {
 
     return coupon;
   }
+
+  async validateCouponForBuyer(buyerId: string, code: string) {
+    const cart = await this.prisma.cart.findUnique({
+      where: { buyerId },
+    });
+
+    if (!cart || !cart.vendorId) {
+      throw new BadRequestException(
+        'Cannot apply promo code: Your cart is empty or not associated with any vendor.',
+      );
+    }
+
+    return this.validateCoupon(cart.vendorId, code);
+  }
 }
