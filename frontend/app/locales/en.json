@@ -260,6 +260,7 @@
     "couponLabel": "Have a Promo Code?",
     "couponApplyBtn": "Apply",
     "couponAppliedMsg": "Registered for checkout",
-    "paymentLabel": "Payment Method"
+    "paymentLabel": "Payment Method",
+    "authRequiredMessage": "Your shopping cart is only available for authenticated users. Please sign in first."
   }
 }

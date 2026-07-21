@@ -386,5 +386,8 @@ onMounted(() => {
         </main>
       </div>
     </div>
+
+    <!-- Global Toast Notifications Container -->
+    <CommonToastNotification />
   </div>
 </template>
