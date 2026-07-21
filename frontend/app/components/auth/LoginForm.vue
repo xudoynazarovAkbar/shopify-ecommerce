@@ -2,6 +2,7 @@
 import { useLogin } from '../../composables/useLogin';
 
 const { email, password, loading, handleLogin } = useLogin();
+const showPassword = ref(false);
 </script>
 
 <template>
@@ -26,10 +27,12 @@ const { email, password, loading, handleLogin } = useLogin();
       <CommonBaseInput
         id="password"
         v-model="password"
-        type="password"
+        :type="showPassword ? 'text' : 'password'"
         :label="$t('auth.password')"
         required
         placeholder="••••••••"
+        :right-icon="showPassword ? 'heroicons:eye-slash' : 'heroicons:eye'"
+        @click:right="showPassword = !showPassword"
       />
 
       <!-- Submit Button -->

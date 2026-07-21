@@ -1,16 +1,30 @@
 <script setup lang="ts">
-defineProps<{
-  modelValue: string | number;
-  id: string;
-  type?: string;
-  label?: string;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  error?: string;
-}>();
+withDefaults(
+  defineProps<{
+    modelValue: string | number;
+    id: string;
+    type?: string;
+    label?: string;
+    placeholder?: string;
+    required?: boolean;
+    disabled?: boolean;
+    error?: string;
+    rightIcon?: string;
+    rightIconClickable?: boolean;
+  }>(),
+  {
+    type: 'text',
+    label: undefined,
+    placeholder: undefined,
+    required: false,
+    disabled: false,
+    error: undefined,
+    rightIcon: undefined,
+    rightIconClickable: true,
+  },
+);
 
-defineEmits(['update:modelValue']);
+defineEmits(['update:modelValue', 'click:right']);
 </script>
 
 <template>
@@ -22,26 +36,49 @@ defineEmits(['update:modelValue']);
     >
       {{ label }} <span v-if="required" class="text-rose-500">*</span>
     </label>
-    <input
-      :id="id"
-      :type="type || 'text'"
-      :value="modelValue"
-      :placeholder="placeholder"
-      :required="required"
-      :disabled="disabled"
-      class="w-full px-4 py-2.5 border rounded-lg text-sm bg-cardBg text-textPrimary placeholder-textMuted/70 focus:outline-none focus:ring-2 transition-colors disabled:opacity-50 disabled:bg-appBg"
-      :class="
-        error
-          ? 'border-rose-300 focus:ring-rose-500 focus:border-rose-500'
-          : 'border-appBorder focus:ring-brand focus:border-brand'
-      "
-      @input="
-        $emit(
-          'update:modelValue',
-          ($event.target as HTMLInputElement).value,
-        )
-      "
-    >
+    <div class="relative w-full">
+      <input
+        :id="id"
+        :type="type"
+        :value="modelValue"
+        :placeholder="placeholder"
+        :required="required"
+        :disabled="disabled"
+        class="w-full px-4 py-2.5 border rounded-lg text-sm bg-cardBg text-textPrimary placeholder-textMuted/70 focus:outline-none focus:ring-2 transition-colors disabled:opacity-50 disabled:bg-appBg"
+        :class="[
+          error
+            ? 'border-rose-300 focus:ring-rose-500 focus:border-rose-500'
+            : 'border-appBorder focus:ring-brand focus:border-brand',
+          (rightIcon || $slots.right) ? 'pr-11' : '',
+        ]"
+        @input="
+          $emit(
+            'update:modelValue',
+            ($event.target as HTMLInputElement).value,
+          )
+        "
+      >
+      <div
+        v-if="rightIcon || $slots.right"
+        class="absolute inset-y-0 right-0 flex items-center pr-3"
+      >
+        <slot name="right">
+          <button
+            v-if="rightIcon"
+            :type="rightIconClickable ? 'button' : undefined"
+            :disabled="disabled"
+            class="text-textMuted transition-colors focus:outline-none flex items-center justify-center"
+            :class="{
+              'hover:text-textPrimary cursor-pointer': rightIconClickable,
+              'cursor-default': !rightIconClickable,
+            }"
+            @click="rightIconClickable && $emit('click:right')"
+          >
+            <Icon :name="rightIcon" class="w-5 h-5 shrink-0" />
+          </button>
+        </slot>
+      </div>
+    </div>
     <p v-if="error" class="text-xs text-rose-500 mt-1">{{ error }}</p>
   </div>
 </template>
