@@ -70,6 +70,7 @@ model Vendor {
   orders   Order[]   @relation("VendorOrders")
   reviews  Review[]  @relation("VendorReviews")
   carts    Cart[]
+  adCampaigns AdCampaign[]
 }
 
 model Category {
@@ -203,4 +204,40 @@ model Review {
   order  Order  @relation(fields: [orderId], references: [id])
   buyer  User   @relation("BuyerReviews", fields: [buyerId], references: [id])
   vendor Vendor @relation("VendorReviews", fields: [vendorId], references: [id])
+}
+
+enum AdCampaignStatus {
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+}
+
+model AdCampaign {
+  id            String           @id @default(uuid())
+  vendorId      String
+  image         String           // filename of the uploaded creative banner
+  label         String?          // custom banner call-to-action text (e.g., "EXCLUSIVE")
+  labelColor    String?          // class or hex color (e.g., "red", "gold", "blue")
+  startDate     DateTime
+  endDate       DateTime
+  durationWeeks Int
+  tier          Int              // Selected Tier (1 to 4)
+  slidePosition Int              // Automatically allocated slot position (1 to 12)
+  totalPaid     Float
+  status        AdCampaignStatus @default(PENDING_APPROVAL)
+  isPaid        Boolean          @default(false)
+  isActive      Boolean          @default(true) // Admin master toggle
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  vendor        Vendor           @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+}
+
+model AdPricingSettings {
+  id         String   @id @default("GLOBAL")
+  priceTier1 Float    @default(100.0) // Flat weekly price for Tier 1
+  priceTier2 Float    @default(80.0)  // Flat weekly price for Tier 2
+  priceTier3 Float    @default(60.0)  // Flat weekly price for Tier 3
+  priceTier4 Float    @default(40.0)  // Flat weekly price for Tier 4
+  updatedAt  DateTime @updatedAt
 }

@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    'nuxt-swiper'
   ],
   css: ['~/assets/css/main.css'],
   runtimeConfig: {

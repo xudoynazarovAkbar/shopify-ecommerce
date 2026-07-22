@@ -293,6 +293,17 @@ onMounted(() => {
               <Icon name="heroicons:ticket-20-solid" class="w-5 h-5 shrink-0" />
               <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('vendor.activeCoupons') }}</span>
             </NuxtLink>
+
+            <NuxtLink
+              to="/vendor/campaigns"
+              class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+              :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+              active-class="bg-brand text-brandText"
+              :title="isSidebarCollapsed ? $t('vendor.campaignsBtn') || 'Ad Campaigns' : ''"
+            >
+              <Icon name="heroicons:megaphone-20-solid" class="w-5 h-5 shrink-0" />
+              <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('vendor.campaignsBtn') || 'Ad Campaigns' }}</span>
+            </NuxtLink>
           </template>
 
           <!-- Admin Navigation -->
@@ -348,6 +359,17 @@ onMounted(() => {
             >
               <Icon name="heroicons:tag-20-solid" class="w-5 h-5 shrink-0" />
               <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('admin.categoriesBtn') }}</span>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/admin/campaigns"
+              class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+              :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+              active-class="bg-brand text-brandText"
+              :title="isSidebarCollapsed ? $t('admin.campaignsBtn') || 'Ad Campaigns & Pricing' : ''"
+            >
+              <Icon name="heroicons:megaphone-20-solid" class="w-5 h-5 shrink-0" />
+              <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('admin.campaignsBtn') || 'Ad Campaigns & Pricing' }}</span>
             </NuxtLink>
           </template>
         </nav>

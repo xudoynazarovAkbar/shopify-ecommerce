@@ -12,6 +12,7 @@ import { CouponsModule } from './coupons/coupons.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { SearchModule } from './search/search.module';
+import { CampaignsModule } from './campaigns/campaigns.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SearchModule } from './search/search.module';
     PaymentsModule,
     ReviewsModule,
     SearchModule,
+    CampaignsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
