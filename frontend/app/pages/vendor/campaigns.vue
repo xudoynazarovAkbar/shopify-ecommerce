@@ -87,6 +87,87 @@ const getTierLabel = (t: number) => {
   return 'Tier 4 (Affordable budget placement)';
 };
 
+// Edit Modal State
+const isEditOpen = ref(false);
+const editingCampaign = ref<any>(null);
+const editLabel = ref('');
+const editLabelColor = ref('red');
+const editSelectedFile = ref<File | null>(null);
+
+const openEditModal = (campaign: any) => {
+  editingCampaign.value = campaign;
+  editLabel.value = campaign.label || '';
+  editLabelColor.value = campaign.labelColor || 'red';
+  editSelectedFile.value = null;
+  isEditOpen.value = true;
+};
+
+const closeEditModal = () => {
+  isEditOpen.value = false;
+  editingCampaign.value = null;
+  editSelectedFile.value = null;
+};
+
+const handleEditFileChange = (e: any) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!file.type.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
+    toastStore.error('Only image files are allowed!');
+    return;
+  }
+  editSelectedFile.value = file;
+};
+
+const handleEditCampaign = async () => {
+  if (!editingCampaign.value) return;
+
+  submitting.value = true;
+  try {
+    const formData = new FormData();
+    if (editSelectedFile.value) {
+      formData.append('file', editSelectedFile.value);
+    }
+    formData.append('label', editLabel.value);
+    formData.append('labelColor', editLabelColor.value);
+
+    await api.patch(`/campaigns/vendor/${editingCampaign.value.id}/edit`, formData);
+
+    toastStore.success(
+      autoApprove.value
+        ? 'Campaign updated and live!'
+        : 'Campaign updated! Reset to pending approval for admin review.'
+    );
+
+    closeEditModal();
+    await fetchCampaignsAndPricing();
+  } catch (err: any) {
+    console.error('Failed to edit campaign:', err);
+    toastStore.error(err.message || 'Failed to edit campaign details');
+  } finally {
+    submitting.value = false;
+  }
+};
+
+const handleTogglePause = async (campaign: any) => {
+  const nextPauseState = !campaign.isVendorPaused;
+  try {
+    await api.patch(`/campaigns/vendor/${campaign.id}/pause`, {
+      isVendorPaused: nextPauseState,
+    });
+
+    toastStore.success(
+      nextPauseState
+        ? 'Campaign paused successfully!'
+        : 'Campaign resumed successfully!'
+    );
+
+    await fetchCampaignsAndPricing();
+  } catch (err: any) {
+    console.error('Failed to toggle pause:', err);
+    toastStore.error(err.message || 'Failed to update campaign pause state');
+  }
+};
+
 const handleCreateCampaign = async () => {
   if (!startDate.value) {
     toastStore.error('Start date is required');
@@ -379,7 +460,13 @@ onMounted(async () => {
                 <!-- Status badges -->
                 <div class="flex flex-col items-end gap-1 shrink-0">
                   <span
-                    v-if="campaign.status === 'PENDING_APPROVAL'"
+                    v-if="campaign.isVendorPaused"
+                    class="text-[9px] font-bold bg-zinc-500/10 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded border border-zinc-500/10"
+                  >
+                    Paused
+                  </span>
+                  <span
+                    v-else-if="campaign.status === 'PENDING_APPROVAL'"
                     class="text-[9px] font-bold bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded border border-amber-500/10"
                   >
                     Pending Review
@@ -407,14 +494,41 @@ onMounted(async () => {
 
               <div class="flex items-center justify-between border-t border-appBorder/40 pt-2 text-xs">
                 <span class="font-extrabold text-textSecondary">${{ campaign.totalPaid.toFixed(2) }}</span>
-                <!-- Checkout trigger button -->
-                <button
-                  v-if="campaign.status === 'APPROVED' && !campaign.isPaid"
-                  class="text-[10px] font-bold bg-brand hover:bg-brandHover text-brandText px-2.5 py-1 rounded-md transition"
-                  @click="triggerCheckout(campaign.id)"
-                >
-                  Pay Now
-                </button>
+                
+                <div class="flex items-center gap-2">
+                  <!-- Pause/Resume button -->
+                  <button
+                    v-if="campaign.isPaid && campaign.status === 'APPROVED'"
+                    type="button"
+                    :class="[
+                      'text-[10px] font-bold px-2.5 py-1 rounded-md border transition',
+                      campaign.isVendorPaused
+                        ? 'bg-emerald-500/5 border-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10'
+                        : 'bg-zinc-500/5 border-zinc-500/15 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-500/10'
+                    ]"
+                    @click="handleTogglePause(campaign)"
+                  >
+                    {{ campaign.isVendorPaused ? 'Resume' : 'Pause' }}
+                  </button>
+
+                  <!-- Edit button -->
+                  <button
+                    type="button"
+                    class="text-[10px] font-bold bg-appBg hover:bg-appBorder border border-appBorder text-textPrimary px-2.5 py-1 rounded-md transition"
+                    @click="openEditModal(campaign)"
+                  >
+                    Edit
+                  </button>
+
+                  <!-- Checkout trigger button -->
+                  <button
+                    v-if="campaign.status === 'APPROVED' && !campaign.isPaid"
+                    class="text-[10px] font-bold bg-brand hover:bg-brandHover text-brandText px-2.5 py-1 rounded-md transition"
+                    @click="triggerCheckout(campaign.id)"
+                  >
+                    Pay Now
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -476,6 +590,90 @@ onMounted(async () => {
             <span>Process Payment</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Edit Campaign Modal -->
+    <div v-if="isEditOpen" class="fixed inset-0 bg-black/65 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
+      <div class="bg-cardBg border border-appBorder rounded-2xl p-6 shadow-xl max-w-md w-full space-y-6 animate-in fade-in zoom-in-95 duration-150">
+        <div class="flex items-center justify-between border-b border-appBorder pb-3">
+          <div class="flex items-center gap-2">
+            <Icon name="heroicons:pencil-square" class="w-5 h-5 text-brand" />
+            <h3 class="text-sm font-extrabold text-textPrimary uppercase tracking-wider">Edit Campaign Details</h3>
+          </div>
+          <button @click="closeEditModal" class="p-1 text-textMuted hover:text-textPrimary transition">
+            <Icon name="heroicons:x-mark" class="w-5 h-5" />
+          </button>
+        </div>
+
+        <form @submit.prevent="handleEditCampaign" class="space-y-4">
+          <!-- Campaign Info -->
+          <div class="bg-appBg border border-appBorder rounded-xl p-3 text-xs text-textSecondary space-y-1">
+            <p><strong>Tier:</strong> {{ editingCampaign?.tier }}</p>
+            <p><strong>Allocated Slot Position:</strong> {{ editingCampaign?.slidePosition }}</p>
+            <p>
+              <strong>Trust Level:</strong> 
+              <span :class="autoApprove ? 'text-emerald-500 font-bold' : 'text-amber-500 font-bold'">
+                {{ autoApprove ? 'Trusted Store (Immediate Auto-Approval)' : 'New Store (Requires Admin Moderation)' }}
+              </span>
+            </p>
+          </div>
+
+          <!-- Creative Image (Optional) -->
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-textPrimary uppercase tracking-wide">Update Ad Creative (Optional)</label>
+            <input
+              type="file"
+              accept="image/*"
+              class="w-full text-xs text-textSecondary file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 cursor-pointer"
+              @change="handleEditFileChange"
+            >
+            <p class="text-[10px] text-textMuted mt-0.5">Leave blank to keep existing creative image.</p>
+          </div>
+
+          <!-- Label Text -->
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-textPrimary uppercase tracking-wide">Label / CTA Text (Optional)</label>
+            <input
+              v-model="editLabel"
+              type="text"
+              placeholder="e.g. EXCLUSIVE, HOT, 50% OFF"
+              class="w-full px-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:ring-2 focus:ring-brand focus:outline-none focus:border-brand"
+            >
+          </div>
+
+          <!-- Label Color -->
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-textPrimary uppercase tracking-wide">Label Tag Color</label>
+            <select
+              v-model="editLabelColor"
+              class="w-full px-4 py-2 border border-appBorder rounded-lg text-sm bg-appBg text-textPrimary focus:ring-2 focus:ring-brand focus:outline-none focus:border-brand"
+            >
+              <option value="red">Rose Red</option>
+              <option value="blue">Sky Blue</option>
+              <option value="green">Emerald Green</option>
+              <option value="gold">Amber Gold</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-3 pt-2">
+            <button
+              type="button"
+              class="flex-1 py-2.5 bg-appBg hover:bg-appBg/80 border border-appBorder text-textPrimary font-bold rounded-xl transition text-xs"
+              @click="closeEditModal"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 py-2.5 bg-brand hover:bg-brandHover text-brandText font-extrabold rounded-xl transition text-xs flex items-center justify-center gap-1 shadow"
+              :disabled="submitting"
+            >
+              <Icon v-if="submitting" name="svg-spinners:ring-resize" class="w-4 h-4 animate-spin" />
+              <span>Save Changes</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

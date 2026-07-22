@@ -8,7 +8,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdatePricingSettingsDto } from './dto/update-pricing-settings.dto';
-import { AdCampaignStatus, AdPricingSettings } from '@prisma/client';
+import { EditCampaignDto } from './dto/edit-campaign.dto';
+import { AdCampaignStatus, AdPricingSettings, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CampaignsService implements OnModuleInit {
@@ -76,6 +77,7 @@ export class CampaignsService implements OnModuleInit {
         status: AdCampaignStatus.APPROVED,
         isPaid: true,
         isActive: true,
+        isVendorPaused: false,
         startDate: { lte: now },
         endDate: { gte: now },
       },
@@ -308,6 +310,84 @@ export class CampaignsService implements OnModuleInit {
     return this.prisma.adCampaign.update({
       where: { id: campaignId },
       data: { isActive },
+    });
+  }
+
+  async vendorTogglePause(
+    userId: string,
+    campaignId: string,
+    isVendorPaused: boolean,
+  ) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { userId },
+    });
+
+    if (!vendor) {
+      throw new NotFoundException('Vendor profile not found');
+    }
+
+    const campaign = await this.prisma.adCampaign.findUnique({
+      where: { id: campaignId },
+    });
+
+    if (!campaign) {
+      throw new NotFoundException('Ad campaign not found');
+    }
+
+    if (campaign.vendorId !== vendor.id) {
+      throw new ForbiddenException('You do not own this ad campaign');
+    }
+
+    return this.prisma.adCampaign.update({
+      where: { id: campaignId },
+      data: { isVendorPaused },
+    });
+  }
+
+  async vendorEditCampaign(
+    userId: string,
+    campaignId: string,
+    dto: EditCampaignDto,
+    imagePath?: string,
+  ) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { userId },
+    });
+
+    if (!vendor) {
+      throw new NotFoundException('Vendor profile not found');
+    }
+
+    const campaign = await this.prisma.adCampaign.findUnique({
+      where: { id: campaignId },
+    });
+
+    if (!campaign) {
+      throw new NotFoundException('Ad campaign not found');
+    }
+
+    if (campaign.vendorId !== vendor.id) {
+      throw new ForbiddenException('You do not own this ad campaign');
+    }
+
+    const updateData: Prisma.AdCampaignUpdateInput = {};
+    if (dto.label !== undefined) updateData.label = dto.label || null;
+    if (dto.labelColor !== undefined)
+      updateData.labelColor = dto.labelColor || null;
+    if (imagePath) updateData.image = imagePath;
+
+    // Trust Governance Rule:
+    // If vendor is trusted (autoApproveProducts === true), edited campaign automatically goes live (APPROVED).
+    // If vendor is untrusted, campaign should pause (reset status to PENDING_APPROVAL) and go live only after admin approval.
+    if (vendor.autoApproveProducts) {
+      updateData.status = AdCampaignStatus.APPROVED;
+    } else {
+      updateData.status = AdCampaignStatus.PENDING_APPROVAL;
+    }
+
+    return this.prisma.adCampaign.update({
+      where: { id: campaignId },
+      data: updateData,
     });
   }
 }

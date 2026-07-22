@@ -14,6 +14,7 @@ import {
 import { CampaignsService } from './campaigns.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdatePricingSettingsDto } from './dto/update-pricing-settings.dto';
+import { EditCampaignDto } from './dto/edit-campaign.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -139,5 +140,63 @@ export class CampaignsController {
       throw new BadRequestException('isActive is required');
     }
     return this.campaignsService.toggleCampaignActive(id, isActive);
+  }
+
+  @Patch('vendor/:id/pause')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  vendorTogglePause(
+    @Request() req: AuthenticatedRequest,
+    @Param('id') id: string,
+    @Body('isVendorPaused') isVendorPaused: boolean,
+  ) {
+    if (isVendorPaused === undefined) {
+      throw new BadRequestException('isVendorPaused is required');
+    }
+    return this.campaignsService.vendorTogglePause(
+      req.user.id,
+      id,
+      isVendorPaused,
+    );
+  }
+
+  @Patch('vendor/:id/edit')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/products',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          callback(null, `campaign-${uniqueSuffix}${ext}`);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
+          return callback(
+            new BadRequestException('Only image files are allowed!'),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  vendorEditCampaign(
+    @Request() req: AuthenticatedRequest,
+    @Param('id') id: string,
+    @Body() dto: EditCampaignDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const imagePath = file ? `/uploads/products/${file.filename}` : undefined;
+    return this.campaignsService.vendorEditCampaign(
+      req.user.id,
+      id,
+      dto,
+      imagePath,
+    );
   }
 }

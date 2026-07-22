@@ -70,9 +70,21 @@ export const useApi = () => {
             authStore.setToken(newToken);
             isRefreshing = false;
             onRefreshed(newToken);
-          } catch (refreshErr) {
+          } catch (refreshErr: any) {
             isRefreshing = false;
             authStore.logout();
+
+            // Normalize refreshErr
+            if (refreshErr && typeof refreshErr === 'object' && 'data' in refreshErr && refreshErr.data) {
+              const dataMessage = (refreshErr.data as any).message;
+              if (dataMessage) {
+                const friendlyMessage = Array.isArray(dataMessage) ? dataMessage.join(', ') : dataMessage;
+                const normalizedErr = new Error(friendlyMessage);
+                (normalizedErr as any).status = refreshErr.status;
+                (normalizedErr as any).data = refreshErr.data;
+                throw normalizedErr;
+              }
+            }
             throw refreshErr;
           }
         }
@@ -91,9 +103,38 @@ export const useApi = () => {
               headers: retryHeaders,
             } as Parameters<typeof $fetch>[1])
               .then(resolve)
-              .catch(reject);
+              .catch((retryErr) => {
+                // Normalize retryErr
+                if (retryErr && typeof retryErr === 'object' && 'data' in retryErr && retryErr.data) {
+                  const dataMessage = (retryErr.data as any).message;
+                  if (dataMessage) {
+                    const friendlyMessage = Array.isArray(dataMessage) ? dataMessage.join(', ') : dataMessage;
+                    const normalizedErr = new Error(friendlyMessage);
+                    (normalizedErr as any).status = retryErr.status;
+                    (normalizedErr as any).data = retryErr.data;
+                    reject(normalizedErr);
+                    return;
+                  }
+                }
+                reject(retryErr);
+              });
           });
         });
+      }
+
+      // Normalize general FetchError message to expose clear backend messages
+      if (err && typeof err === 'object' && 'data' in err && err.data) {
+        const dataMessage = (err.data as any).message;
+        if (dataMessage) {
+          const friendlyMessage = Array.isArray(dataMessage)
+            ? dataMessage.join(', ')
+            : dataMessage;
+          const normalizedError = new Error(friendlyMessage);
+          (normalizedError as any).status = err.status;
+          (normalizedError as any).statusCode = err.statusCode || err.status;
+          (normalizedError as any).data = err.data;
+          throw normalizedError;
+        }
       }
 
       throw err;

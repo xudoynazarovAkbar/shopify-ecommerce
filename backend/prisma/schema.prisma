@@ -227,6 +227,7 @@ model AdCampaign {
   status        AdCampaignStatus @default(PENDING_APPROVAL)
   isPaid        Boolean          @default(false)
   isActive      Boolean          @default(true) // Admin master toggle
+  isVendorPaused Boolean         @default(false)
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 
