@@ -128,19 +128,21 @@ model CartItem {
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  orderNumber Int         @unique @default(autoincrement())
-  buyerId     String
-  vendorId    String
-  subtotal    Float
-  tax         Float
-  deliveryFee Float
-  discount    Float       @default(0.0)
-  total       Float
-  promoCode   String?
-  status      OrderStatus @default(PENDING)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id               String      @id @default(uuid())
+  orderNumber      Int         @unique @default(autoincrement())
+  buyerId          String
+  vendorId         String
+  subtotal         Float
+  tax              Float
+  deliveryFee      Float
+  discount         Float       @default(0.0)
+  total            Float
+  commissionRate   Float       @default(0.0)
+  commissionAmount Float       @default(0.0)
+  promoCode        String?
+  status           OrderStatus @default(PENDING)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 
   buyer      User        @relation("BuyerOrders", fields: [buyerId], references: [id])
   vendor     Vendor      @relation("VendorOrders", fields: [vendorId], references: [id])
@@ -241,4 +243,10 @@ model AdPricingSettings {
   priceTier3 Float    @default(60.0)  // Flat weekly price for Tier 3
   priceTier4 Float    @default(40.0)  // Flat weekly price for Tier 4
   updatedAt  DateTime @updatedAt
+}
+
+model PlatformSettings {
+  id             String   @id @default("GLOBAL")
+  commissionRate Float    @default(0.10)
+  updatedAt      DateTime @updatedAt
 }

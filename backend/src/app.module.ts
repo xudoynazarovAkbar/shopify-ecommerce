@@ -13,6 +13,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { SearchModule } from './search/search.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
     ReviewsModule,
     SearchModule,
     CampaignsModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

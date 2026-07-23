@@ -1766,6 +1766,9 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
   await prisma.vendor.deleteMany();
+  await prisma.adCampaign.deleteMany();
+  await prisma.adPricingSettings.deleteMany();
+  await prisma.platformSettings.deleteMany();
   await prisma.user.deleteMany();
 
   // 2. Hash passwords
@@ -1780,6 +1783,14 @@ async function main() {
       email: 'admin@shopify.com',
       password: commonPasswordHash,
       role: Role.ADMIN,
+    },
+  });
+
+  console.log('⚙️ Creating default Platform settings...');
+  await prisma.platformSettings.create({
+    data: {
+      id: 'GLOBAL',
+      commissionRate: 0.10,
     },
   });
 

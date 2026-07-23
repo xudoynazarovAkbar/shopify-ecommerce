@@ -304,6 +304,17 @@ onMounted(() => {
               <Icon name="heroicons:megaphone-20-solid" class="w-5 h-5 shrink-0" />
               <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('vendor.campaignsBtn') || 'Ad Campaigns' }}</span>
             </NuxtLink>
+
+            <NuxtLink
+              to="/vendor/analytics"
+              class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+              :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+              active-class="bg-brand text-brandText"
+              :title="isSidebarCollapsed ? $t('vendor.analyticsBtn') : ''"
+            >
+              <Icon name="heroicons:presentation-chart-line-20-solid" class="w-5 h-5 shrink-0" />
+              <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('vendor.analyticsBtn') }}</span>
+            </NuxtLink>
           </template>
 
           <!-- Admin Navigation -->
@@ -370,6 +381,17 @@ onMounted(() => {
             >
               <Icon name="heroicons:megaphone-20-solid" class="w-5 h-5 shrink-0" />
               <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('admin.campaignsBtn') || 'Ad Campaigns & Pricing' }}</span>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/admin/revenue"
+              class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+              :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+              active-class="bg-brand text-brandText"
+              :title="isSidebarCollapsed ? $t('admin.revenueBtn') || 'Revenue' : ''"
+            >
+              <Icon name="heroicons:currency-dollar-20-solid" class="w-5 h-5 shrink-0" />
+              <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('admin.revenueBtn') || 'Revenue' }}</span>
             </NuxtLink>
           </template>
         </nav>

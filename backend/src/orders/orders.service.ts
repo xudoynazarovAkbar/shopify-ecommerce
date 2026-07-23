@@ -77,6 +77,15 @@ export class OrdersService {
     );
     const finalTotal = Math.max(0.0, calculatedTotal);
 
+    // Fetch active global commission rate
+    const settings = await this.prisma.platformSettings.findUnique({
+      where: { id: 'GLOBAL' },
+    });
+    const commissionRate = settings?.commissionRate ?? 0.1;
+    const commissionAmount = parseFloat(
+      (finalTotal * commissionRate).toFixed(2),
+    );
+
     // 3. Create order and clear cart in a transaction to ensure atomicity
     const order = await this.prisma.$transaction(async (tx) => {
       // Create the main Order along with nested OrderItems
@@ -89,6 +98,8 @@ export class OrdersService {
           deliveryFee: cart.deliveryFee,
           discount,
           total: finalTotal,
+          commissionRate,
+          commissionAmount,
           promoCode,
           status: OrderStatus.PENDING,
           items: {
