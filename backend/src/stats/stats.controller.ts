@@ -138,4 +138,37 @@ export class StatsController {
       endDate,
     );
   }
+
+  @Get('buyer/spendings')
+  @Roles(Role.BUYER)
+  async getBuyerSpendingsStats(
+    @Request() req: AuthenticatedRequest,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+  ) {
+    if (!startDate || !endDate) {
+      throw new BadRequestException(
+        'startDate and endDate query parameters are required.',
+      );
+    }
+
+    const start = Date.parse(startDate);
+    const end = Date.parse(endDate);
+
+    if (isNaN(start) || isNaN(end)) {
+      throw new BadRequestException(
+        'Invalid date format for startDate or endDate.',
+      );
+    }
+
+    if (start > end) {
+      throw new BadRequestException('startDate cannot be after endDate.');
+    }
+
+    return this.statsService.getBuyerSpendingsStats(
+      req.user.id,
+      startDate,
+      endDate,
+    );
+  }
 }

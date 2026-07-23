@@ -286,4 +286,60 @@ export class StatsService {
       chartData: Object.values(buckets),
     };
   }
+
+  async getBuyerSpendingsStats(
+    userId: string,
+    startDateStr: string,
+    endDateStr: string,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException('User profile not found.');
+    }
+
+    const start = new Date(startDateStr);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(endDateStr);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const orders = await this.prisma.order.findMany({
+      where: {
+        buyerId: userId,
+        status: 'COMPLETED',
+        createdAt: {
+          gte: start,
+          lte: end,
+        },
+      },
+      select: {
+        total: true,
+        createdAt: true,
+      },
+    });
+
+    const buckets: { [key: string]: { date: string; spendings: number } } = {};
+    const current = new Date(start);
+    while (current <= end) {
+      const dateStr = current.toISOString().split('T')[0];
+      buckets[dateStr] = { date: dateStr, spendings: 0 };
+      current.setUTCDate(current.getUTCDate() + 1);
+    }
+
+    for (const order of orders) {
+      const dateStr = order.createdAt.toISOString().split('T')[0];
+      if (buckets[dateStr]) {
+        buckets[dateStr].spendings += order.total;
+      }
+    }
+
+    const chartData = Object.values(buckets).map((b) => {
+      b.spendings = Math.round(b.spendings * 100) / 100;
+      return b;
+    });
+
+    return chartData;
+  }
 }

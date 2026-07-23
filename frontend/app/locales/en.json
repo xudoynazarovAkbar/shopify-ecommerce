@@ -300,5 +300,21 @@
     "authRequiredMessage": "Your shopping cart is only available for authenticated users. Please sign in first.",
     "moreFromVendor": "More from {vendor}",
     "noMoreProducts": "All products from this vendor are already in your cart!"
+  },
+  "buyer": {
+    "spendings": {
+      "title": "My Spendings Analytics",
+      "subtitle": "Track your total order expenses over custom timeframes",
+      "chartTitle": "Spendings Overview",
+      "totalSpent": "Total Spent",
+      "lastWeek": "Last Week",
+      "lastMonth": "Last Month",
+      "last3Months": "Last 3 Months",
+      "lastYear": "Last Year",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "loading": "Loading spendings...",
+      "noData": "No spendings recorded for this range"
+    }
   }
 }

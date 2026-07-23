@@ -246,4 +246,31 @@ describe('Platform Revenue Dashboard Stats (e2e)', () => {
       expect(res.body.chartData[0]).toHaveProperty('date', '2026-07-01');
     });
   });
+
+  describe('GET /stats/buyer/spendings', () => {
+    it('should refuse access for unauthenticated users', async () => {
+      await request(app.getHttpServer())
+        .get('/stats/buyer/spendings?startDate=2026-07-01&endDate=2026-07-03')
+        .expect(401);
+    });
+
+    it('should refuse access for non-buyer users (VENDOR)', async () => {
+      await request(app.getHttpServer())
+        .get('/stats/buyer/spendings?startDate=2026-07-01&endDate=2026-07-03')
+        .set('Authorization', `Bearer ${vendorToken}`)
+        .expect(403);
+    });
+
+    it('should return continuous date buckets for buyer spendings', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/stats/buyer/spendings?startDate=2026-07-01&endDate=2026-07-03')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .expect(200);
+
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body.length).toBe(3); // 2026-07-01, 2026-07-02, 2026-07-03
+      expect(res.body[0]).toHaveProperty('date', '2026-07-01');
+      expect(res.body[0]).toHaveProperty('spendings', 0);
+    });
+  });
 });

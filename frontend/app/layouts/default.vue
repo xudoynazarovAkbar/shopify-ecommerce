@@ -237,6 +237,19 @@ onMounted(() => {
               <Icon name="heroicons:clipboard-document-list-20-solid" class="w-5 h-5 shrink-0" />
               <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('myOrders') }}</span>
             </NuxtLink>
+
+            <!-- Spendings Link -->
+            <NuxtLink
+              v-if="authStore.isAuthenticated"
+              to="/buyer/spendings"
+              class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+              :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+              active-class="bg-brand text-brandText"
+              :title="isSidebarCollapsed ? $t('buyer.spendings.title') : ''"
+            >
+              <Icon name="heroicons:presentation-chart-line-20-solid" class="w-5 h-5 shrink-0" />
+              <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('buyer.spendings.title') }}</span>
+            </NuxtLink>
           </template>
 
           <!-- Vendor Navigation -->
