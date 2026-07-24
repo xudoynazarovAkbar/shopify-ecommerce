@@ -310,3 +310,53 @@ export interface SearchResponse {
   products: Product[];
   vendors: Vendor[];
 }
+
+// --- 📣 10. Ad Campaigns (`/campaigns`) ---
+
+export type AdCampaignStatus = 'PENDING_APPROVAL' | 'APPROVED' | 'REJECTED';
+
+export interface AdCampaign {
+  id: string;
+  vendorId: string;
+  image: string;
+  startDate: string;
+  endDate: string;
+  durationWeeks: number;
+  tier: number;
+  label?: string | null;
+  labelColor?: string | null;
+  isVendorPaused: boolean;
+  isPaid: boolean;
+  status: AdCampaignStatus;
+  totalPaid: number;
+  slidePosition: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdPricingSettings {
+  id: string;
+  priceTier1: number;
+  priceTier2: number;
+  priceTier3: number;
+  priceTier4: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCampaignParams {
+  startDate: string;
+  durationWeeks: number;
+  tier: number;
+  label: string;
+  labelColor: string;
+  file: File;
+}
+
+export interface EditCampaignParams {
+  label: string;
+  labelColor: string;
+  file: File | null;
+}
+
+
