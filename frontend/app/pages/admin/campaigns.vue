@@ -111,7 +111,7 @@ onMounted(async () => {
             <h2 class="text-sm font-extrabold text-textPrimary uppercase tracking-wider">Pricing Configuration</h2>
           </div>
 
-          <form @submit.prevent="handleSaveSettings" class="space-y-4">
+          <form class="space-y-4" @submit.prevent="handleSaveSettings">
             <!-- Tier 1 Cost -->
             <div class="space-y-1">
               <label class="block text-xs font-bold text-textPrimary uppercase tracking-wide">Tier 1 Flat Price (Slots 1-3)</label>
