@@ -24,7 +24,7 @@ const handleApply = async () => {
       emit('update:modelValue', normalized);
       isApplied.value = true;
     }
-  } catch (err) {
+  } catch {
     isApplied.value = false;
   }
 };

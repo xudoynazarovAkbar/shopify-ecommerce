@@ -99,7 +99,7 @@ export const useCartStore = defineStore('cart', {
         const errMsg = fetchError.response?._data?.message || 'Invalid promo code.';
         toastStore.error(errMsg);
         this.removePromoCode();
-        throw new Error(errMsg);
+        throw new Error(errMsg, { cause: err });
       } finally {
         this.loading = false;
       }
