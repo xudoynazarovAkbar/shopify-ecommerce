@@ -66,6 +66,7 @@ The application enforces role-based access control (RBAC) via JWT, dynamically r
 2.  **Cart Enforcement:** In the `Cart` or `Order` validation service, strictly check that incoming `product.vendorId` matches the `vendorId` of existing items in the active cart/session. Throw a 400 error if there is a mismatch.
 3.  **Auth Payload:** Ensure the JWT payload includes `{ "sub": "userId", "role": "ROLE_NAME" }` so the Nuxt middleware can route UI experiences purely off the token state without an extra DB call.
 4.  **Localize-as-you-Build (i18n):** The frontend strictly enforces multi-language support for English (`en`), Russian (`ru`), and Uzbek (`uz`). Every newly added page, component, or static UI element MUST be fully localized. Never hardcode static strings in Vue templates. Always extract strings into `frontend/app/locales/en.json`, `ru.json`, and `uz.json` and reference them using `$t('key')`.
+5.  **Post-Decomposition Quality Gate:** After completing any component or file decomposition, always run the linter and type-checker (e.g., `npm run lint`), identify ESLint and TypeScript warnings or errors, and fix them completely before concluding the task. No refactored code should contain residual errors or style violations.
 
 **Required Moderation Fields:**
 ```sql
