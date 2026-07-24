@@ -33,7 +33,16 @@ const fetchActiveCampaigns = async () => {
   }
 };
 
-const swiperRef = ref<any>(null);
+interface SwiperInstance {
+  slideNext: () => void;
+  slidePrev: () => void;
+}
+
+interface SwiperRefElement {
+  swiper: SwiperInstance;
+}
+
+const swiperRef = ref<SwiperRefElement | null>(null);
 
 const nextSlide = () => {
   if (swiperRef.value && swiperRef.value.swiper) {

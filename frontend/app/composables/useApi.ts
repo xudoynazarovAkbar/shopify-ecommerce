@@ -8,6 +8,30 @@ export interface ApiOptions {
   [key: string]: unknown;
 }
 
+interface FetchErrorLike {
+  status?: number;
+  statusCode?: number;
+  data?: {
+    message?: string | string[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
+export class ApiError extends Error {
+  status?: number;
+  statusCode?: number;
+  data?: unknown;
+
+  constructor(message: string, status?: number, data?: unknown) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.statusCode = status;
+    this.data = data;
+  }
+}
+
 // Global flag and queue to prevent concurrent refresh requests
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
@@ -42,16 +66,17 @@ export const useApi = () => {
         ...options,
         headers,
       } as Parameters<typeof $fetch>[1]);
-    } catch (err) {
+    } catch (err: unknown) {
       const isRefreshRequest = url.includes('/auth/refresh');
       const isLoginRequest = url.includes('/auth/login');
 
+      const fetchErr = err as FetchErrorLike;
+
       // If unauthorized (401) and we are logged in, try to refresh token silently
       if (
-        err &&
-        typeof err === 'object' &&
-        'status' in err &&
-        err.status === 401 &&
+        fetchErr &&
+        typeof fetchErr === 'object' &&
+        fetchErr.status === 401 &&
         authStore.isAuthenticated &&
         !isRefreshRequest &&
         !isLoginRequest
@@ -70,18 +95,17 @@ export const useApi = () => {
             authStore.setToken(newToken);
             isRefreshing = false;
             onRefreshed(newToken);
-          } catch (refreshErr: any) {
+          } catch (refreshErr: unknown) {
             isRefreshing = false;
             authStore.logout();
 
+            const typedRefreshErr = refreshErr as FetchErrorLike;
             // Normalize refreshErr
-            if (refreshErr && typeof refreshErr === 'object' && 'data' in refreshErr && refreshErr.data) {
-              const dataMessage = (refreshErr.data as any).message;
+            if (typedRefreshErr && typeof typedRefreshErr === 'object' && typedRefreshErr.data) {
+              const dataMessage = typedRefreshErr.data.message;
               if (dataMessage) {
                 const friendlyMessage = Array.isArray(dataMessage) ? dataMessage.join(', ') : dataMessage;
-                const normalizedErr = new Error(friendlyMessage);
-                (normalizedErr as any).status = refreshErr.status;
-                (normalizedErr as any).data = refreshErr.data;
+                const normalizedErr = new ApiError(friendlyMessage, typedRefreshErr.status, typedRefreshErr.data);
                 throw normalizedErr;
               }
             }
@@ -103,15 +127,14 @@ export const useApi = () => {
               headers: retryHeaders,
             } as Parameters<typeof $fetch>[1])
               .then(resolve)
-              .catch((retryErr) => {
+              .catch((retryErr: unknown) => {
+                const typedRetryErr = retryErr as FetchErrorLike;
                 // Normalize retryErr
-                if (retryErr && typeof retryErr === 'object' && 'data' in retryErr && retryErr.data) {
-                  const dataMessage = (retryErr.data as any).message;
+                if (typedRetryErr && typeof typedRetryErr === 'object' && typedRetryErr.data) {
+                  const dataMessage = typedRetryErr.data.message;
                   if (dataMessage) {
                     const friendlyMessage = Array.isArray(dataMessage) ? dataMessage.join(', ') : dataMessage;
-                    const normalizedErr = new Error(friendlyMessage);
-                    (normalizedErr as any).status = retryErr.status;
-                    (normalizedErr as any).data = retryErr.data;
+                    const normalizedErr = new ApiError(friendlyMessage, typedRetryErr.status, typedRetryErr.data);
                     reject(normalizedErr);
                     return;
                   }
@@ -123,16 +146,13 @@ export const useApi = () => {
       }
 
       // Normalize general FetchError message to expose clear backend messages
-      if (err && typeof err === 'object' && 'data' in err && err.data) {
-        const dataMessage = (err.data as any).message;
+      if (fetchErr && typeof fetchErr === 'object' && fetchErr.data) {
+        const dataMessage = fetchErr.data.message;
         if (dataMessage) {
           const friendlyMessage = Array.isArray(dataMessage)
             ? dataMessage.join(', ')
             : dataMessage;
-          const normalizedError = new Error(friendlyMessage);
-          (normalizedError as any).status = err.status;
-          (normalizedError as any).statusCode = err.statusCode || err.status;
-          (normalizedError as any).data = err.data;
+          const normalizedError = new ApiError(friendlyMessage, fetchErr.status, fetchErr.data);
           throw normalizedError;
         }
       }
