@@ -1,4 +1,5 @@
-import { ref } from 'vue';
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
 import { useAuthStore } from '../stores/auth';
 import type { User } from '../types';
 import { useToastStore } from '../stores/toast';
@@ -9,22 +10,30 @@ export const useLogin = () => {
   const toastStore = useToastStore();
   const api = useApi();
 
-  const email = ref('');
-  const password = ref('');
-  const loading = ref(false);
+  const schema = yup.object({
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Must be a valid email address'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters long'),
+  });
 
-  const handleLogin = async () => {
-    if (!email.value || !password.value) {
-      toastStore.error('Please fill in all fields');
-      return;
-    }
+  const { handleSubmit, isSubmitting } = useForm({
+    validationSchema: schema,
+  });
 
-    loading.value = true;
+  const { value: email, errorMessage: emailError } = useField<string>('email');
+  const { value: password, errorMessage: passwordError } = useField<string>('password');
+
+  const handleLogin = handleSubmit(async (values) => {
     try {
       // 1. Authenticate & fetch JWT token
       const loginRes = await api.post<{ accessToken: string }>('/auth/login', {
-        email: email.value,
-        password: password.value,
+        email: values.email,
+        password: values.password,
       });
 
       const token = loginRes.accessToken;
@@ -64,15 +73,15 @@ export const useLogin = () => {
       const errorMessage =
         fetchError.response?._data?.message || 'Invalid email or password';
       toastStore.error(errorMessage);
-    } finally {
-      loading.value = false;
     }
-  };
+  });
 
   return {
     email,
     password,
-    loading,
+    emailError,
+    passwordError,
+    loading: isSubmitting,
     handleLogin,
   };
 };

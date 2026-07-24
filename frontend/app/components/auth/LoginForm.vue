@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useLogin } from '../../composables/useLogin';
 
-const { email, password, loading, handleLogin } = useLogin();
+const { email, password, emailError, passwordError, loading, handleLogin } = useLogin();
 const showPassword = ref(false);
 </script>
 
@@ -12,7 +12,7 @@ const showPassword = ref(false);
       <p class="text-textMuted text-sm">{{ $t('auth.signInSubtitle') }}</p>
     </div>
 
-    <form class="space-y-6" @submit.prevent="handleLogin">
+    <form class="space-y-6" novalidate @submit.prevent="handleLogin">
       <!-- Email -->
       <CommonBaseInput
         id="email"
@@ -20,6 +20,7 @@ const showPassword = ref(false);
         type="email"
         :label="$t('auth.emailAddress')"
         required
+        :error="emailError"
         placeholder="your@email.com"
       />
 
@@ -30,6 +31,7 @@ const showPassword = ref(false);
         :type="showPassword ? 'text' : 'password'"
         :label="$t('auth.password')"
         required
+        :error="passwordError"
         placeholder="••••••••"
         :right-icon="showPassword ? 'heroicons:eye-slash' : 'heroicons:eye'"
         @click:right="showPassword = !showPassword"

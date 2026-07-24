@@ -42,13 +42,12 @@ defineEmits(['update:modelValue', 'click:right']);
         :type="type"
         :value="modelValue"
         :placeholder="placeholder"
-        :required="required"
         :disabled="disabled"
-        class="w-full px-4 py-2.5 border rounded-lg text-sm bg-cardBg text-textPrimary placeholder-textMuted/70 focus:outline-none focus:ring-2 transition-colors disabled:opacity-50 disabled:bg-appBg"
+        class="w-full px-4 py-2.5 border rounded-lg text-sm bg-cardBg text-textPrimary placeholder-textMuted/70 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors disabled:opacity-50 disabled:bg-appBg"
         :class="[
           error
-            ? 'border-rose-300 focus:ring-rose-500 focus:border-rose-500'
-            : 'border-appBorder focus:ring-brand focus:border-brand',
+            ? 'border-rose-500 focus:ring-rose-500/20'
+            : 'border-appBorder focus:ring-brand/20 focus:border-brand',
           (rightIcon || $slots.right) ? 'pr-11' : '',
         ]"
         @input="
@@ -78,7 +77,13 @@ defineEmits(['update:modelValue', 'click:right']);
           </button>
         </slot>
       </div>
+      <p
+        v-if="error"
+        class="absolute left-0 text-xs text-rose-500 font-medium"
+        style="top: calc(100% + 4px);"
+      >
+        {{ error }}
+      </p>
     </div>
-    <p v-if="error" class="text-xs text-rose-500 mt-1">{{ error }}</p>
   </div>
 </template>

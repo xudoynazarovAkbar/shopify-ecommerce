@@ -1,4 +1,6 @@
-import { ref } from 'vue';
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+import { watch } from 'vue';
 import { useToastStore } from '../stores/toast';
 import { useApi } from './useApi';
 
@@ -6,40 +8,70 @@ export const useRegister = () => {
   const toastStore = useToastStore();
   const api = useApi();
 
-  const email = ref('');
-  const password = ref('');
-  const role = ref<'BUYER' | 'VENDOR'>('BUYER');
-  const shopName = ref('');
-  const shopDescription = ref('');
-  const loading = ref(false);
+  const schema = yup.object({
+    role: yup.string().oneOf(['BUYER', 'VENDOR']).required(),
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Must be a valid email address'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters long'),
+    shopName: yup.string().when('role', {
+      is: 'VENDOR',
+      then: (schema) => schema.required('Shop name is required'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    shopDescription: yup.string().optional(),
+  });
 
-  const handleRegister = async () => {
-    if (!email.value || !password.value) {
-      toastStore.error('Please fill in email and password');
-      return;
-    }
+  const { handleSubmit, isSubmitting, resetForm } = useForm({
+    validationSchema: schema,
+    initialValues: {
+      role: 'BUYER',
+      email: '',
+      password: '',
+      shopName: '',
+      shopDescription: '',
+    },
+  });
 
-    if (role.value === 'VENDOR' && !shopName.value) {
-      toastStore.error('Please enter a shop name');
-      return;
-    }
+  const { value: role } = useField<'BUYER' | 'VENDOR'>('role');
+  const { value: email, errorMessage: emailError } = useField<string>('email');
+  const { value: password, errorMessage: passwordError } = useField<string>('password');
+  const { value: shopName, errorMessage: shopNameError } = useField<string>('shopName');
+  const { value: shopDescription, errorMessage: shopDescriptionError } = useField<string>('shopDescription');
 
-    loading.value = true;
+  // Reset form inputs and error messages when switching between roles (tabs)
+  watch(role, (newRole) => {
+    resetForm({
+      values: {
+        role: newRole,
+        email: '',
+        password: '',
+        shopName: '',
+        shopDescription: '',
+      },
+    });
+  });
+
+  const handleRegister = handleSubmit(async (values) => {
     try {
       const payload = {
-        email: email.value,
-        password: password.value,
-        role: role.value,
-        shopName: role.value === 'VENDOR' ? shopName.value : undefined,
+        email: values.email,
+        password: values.password,
+        role: values.role as 'BUYER' | 'VENDOR',
+        shopName: values.role === 'VENDOR' ? values.shopName : undefined,
         shopDescription:
-          role.value === 'VENDOR' && shopDescription.value
-            ? shopDescription.value
+          values.role === 'VENDOR' && values.shopDescription
+            ? values.shopDescription
             : undefined,
       };
 
       await api.post('/auth/register', payload);
 
-      if (role.value === 'VENDOR') {
+      if (values.role === 'VENDOR') {
         toastStore.success(
           'Account created! Your merchant application is currently pending admin approval.',
           6000,
@@ -61,10 +93,8 @@ export const useRegister = () => {
       const errorMessage =
         fetchError.response?._data?.message || 'Failed to register account';
       toastStore.error(errorMessage);
-    } finally {
-      loading.value = false;
     }
-  };
+  });
 
   return {
     email,
@@ -72,7 +102,11 @@ export const useRegister = () => {
     role,
     shopName,
     shopDescription,
-    loading,
+    emailError,
+    passwordError,
+    shopNameError,
+    shopDescriptionError,
+    loading: isSubmitting,
     handleRegister,
   };
 };

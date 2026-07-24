@@ -7,6 +7,10 @@ const {
   role,
   shopName,
   shopDescription,
+  emailError,
+  passwordError,
+  shopNameError,
+  shopDescriptionError,
   loading,
   handleRegister,
 } = useRegister();
@@ -20,7 +24,7 @@ const showPassword = ref(false);
       <p class="text-textMuted text-sm">{{ $t('auth.registerSubtitle') }}</p>
     </div>
 
-    <form class="space-y-6" @submit.prevent="handleRegister">
+    <form class="space-y-6" novalidate @submit.prevent="handleRegister">
       <!-- Role Toggle -->
       <div>
         <label class="block text-sm font-medium text-textSecondary mb-2">
@@ -61,6 +65,7 @@ const showPassword = ref(false);
         type="email"
         :label="$t('auth.emailAddress')"
         required
+        :error="emailError"
         placeholder="your@email.com"
       />
 
@@ -71,6 +76,7 @@ const showPassword = ref(false);
         :type="showPassword ? 'text' : 'password'"
         :label="$t('auth.password')"
         required
+        :error="passwordError"
         placeholder="••••••••"
         :right-icon="showPassword ? 'heroicons:eye-slash' : 'heroicons:eye'"
         @click:right="showPassword = !showPassword"
@@ -92,6 +98,7 @@ const showPassword = ref(false);
             type="text"
             :label="$t('auth.shopName')"
             :required="role === 'VENDOR'"
+            :error="shopNameError"
             placeholder="e.g. Pizza Paradise"
           />
 
@@ -99,6 +106,7 @@ const showPassword = ref(false);
             id="shopDescription"
             v-model="shopDescription"
             :label="$t('auth.shopDescription')"
+            :error="shopDescriptionError"
             :placeholder="$t('auth.shopDescriptionPlaceholder')"
           />
         </div>
