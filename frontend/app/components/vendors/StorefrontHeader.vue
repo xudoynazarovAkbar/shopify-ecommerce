@@ -2,7 +2,7 @@
 import type { Vendor } from '../../types';
 import { useImageResolver } from '../../composables/useImageResolver';
 
-const props = defineProps<{
+defineProps<{
   vendor: Vendor;
 }>();
 

@@ -1,5 +1,6 @@
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
+import type { Vendor } from '../types';
 import { useAuthStore } from '../stores/auth';
 import { useToastStore } from '../stores/toast';
 import { useApi } from './useApi';
@@ -10,7 +11,7 @@ export const useVendorSettings = () => {
   const api = useApi();
 
   const loading = ref(false);
-  const vendorData = ref<any>(null);
+  const vendorData = ref<Vendor | null>(null);
 
   const schema = yup.object({
     shopName: yup
@@ -34,7 +35,7 @@ export const useVendorSettings = () => {
   const fetchProfile = async () => {
     try {
       loading.value = true;
-      const res = await api.get<any>('/vendors/me');
+      const res = await api.get<Vendor>('/vendors/me');
       vendorData.value = res;
       setValues({
         shopName: res.shopName,
@@ -60,7 +61,7 @@ export const useVendorSettings = () => {
         formData.append('logo', logoFile.value);
       }
 
-      const res = await api.patch<any>('/vendors/me', formData);
+      const res = await api.patch<Vendor>('/vendors/me', formData);
 
       toastStore.success(useNuxtApp().$i18n.t('settings.shopInfoSuccessToast'));
       currentLogo.value = res.logo;
