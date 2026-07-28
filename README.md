@@ -178,37 +178,3 @@ The PostgreSQL relational structure mapping is defined inside `backend/prisma/sc
 │(Auto No.) │         │(Store-Scoped)       │               │
 └───────────┘         └───────────┘         └───────────────┘
 ```
-
----
-
-## 📐 AI Implementation Guidelines & Quality Gates
-
-If you are developing, extending, or maintaining this codebase, you **must** strictly adhere to the following architectural quality gates:
-
-### 1. Strict TypeScript Integrity
-- **No `any` or `@ts-ignore` Allowed:** The usage of `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` for type errors is **strictly prohibited** in all pages, components, services, and utilities.
-- **E2E/Unit Exception:** You may bypass strict typing *only* inside automated test files (`*.spec.ts`, `*.e2e-spec.ts`) where mock test environments are explicitly set up.
-
-### 2. Component Decomposition (100-Line Rule)
-- **Single Responsibility:** Any Vue component or page exceeding **100 lines** of code must be refactored and split into smaller, modular, highly cohesive, single-responsibility components.
-- **Page-Specific Components:** Place inside a subdirectory named after the page (e.g. `frontend/app/components/register/` for the Register page components).
-- **Global Reusable Components:** Place inside `frontend/app/components/common/`.
-
-### 3. Separation of Concerns (Composables for Business Logic)
-- **UI Only:** Keep Vue component template files focused entirely on UI rendering.
-- **Extraction:** Universally extract complex business logic, reactive form states, and API submissions into custom composables (e.g. `useLogin.ts` for LoginForm, `useRegister.ts` for RegisterForm, `useVendorProducts.ts` for Product catalog manipulation).
-
-### 4. Localize-as-you-Build (i18n)
-- **Supported Languages:** English (`en`), Russian (`ru`), Uzbek (`uz`).
-- **No Hardcoded Strings:** Do not write static strings inside any Vue templates. Always extract strings into the respective locale files (`frontend/app/locales/en.json`, `ru.json`, and `uz.json`) and reference them in templates using the `$t('key')` helper.
-
-### 5. Semantic Tailwind Color Tokens
-- **Flawless Themes:** To guarantee fully compatible dark/light mode switches, **do not hardcode static colors** (like `bg-white`, `bg-slate-50`, `text-slate-900`, `border-slate-200`) inside components.
-- **Semantic Mapping:** Leverage the semantic Tailwind variables mapped in `frontend/tailwind.config.ts`, pointing to CSS variables in `frontend/app/assets/css/main.css`:
-  - `bg-appBg` (Main application background)
-  - `bg-cardBg` (Card backgrounds)
-  - `text-textPrimary` (Primary text color)
-  - `text-textSecondary` (Secondary text color)
-  - `text-textMuted` (Disabled/muted text)
-  - `border-appBorder` (Border colors)
-  - `bg-brand` / `hover:bg-brandHover` / `text-brandText` (Primary brand colors)

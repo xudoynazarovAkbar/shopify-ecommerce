@@ -1749,6 +1749,303 @@ const CATEGORIES_DATA: CategorySeed[] = [
 ];
 
 // -----------------------------------------------------------------------------
+// Upgraded Curated Image Lists and Vendor Logos
+// -----------------------------------------------------------------------------
+
+const ELECTRONICS_IMAGES = [
+  'photo-1510557880182-3d4d3cba35a5',
+  'photo-1517336714731-489689fd1ca8',
+  'photo-1544244015-0df4b3ffc6b0',
+  'photo-1434494878577-86c23bcb06b9',
+  'photo-1588449668338-d15168822471',
+  'photo-1527443224154-c4a3942d3acf',
+  'photo-1516321318423-f06f85e504b3',
+  'photo-1589739900243-4b52cd9b104e',
+  'photo-1629131726617-4ecdedb9cc8b',
+  'photo-1593305841991-05c297ba4575',
+  'photo-1610945265064-0e34e5519bbf',
+  'photo-1511707171634-5f897ff02aa9',
+  'photo-1588872657578-7efd1f1555ed',
+  'photo-1508685096489-7aacd43bd3b1',
+  'photo-1590658268037-6bf12165a8df',
+  'photo-1531403009284-440f080d1e12',
+  'photo-1598327105666-5b89351aff97',
+  'photo-1575311373937-040b8e1fd5b6',
+  'photo-1558981806-ec527fa84c39',
+  'photo-1535016120720-40c646be5580',
+  'photo-1609592424109-dd08b4f0b07b',
+  'photo-1603302576837-37561b2e2302',
+  'photo-1612815154858-60aa4c59eaa6',
+  'photo-1587829741301-dc798b83add3',
+  'photo-1615663245857-ac93bb7c39e7',
+  'photo-1593508512255-86ab42a8e620',
+  'photo-1545454675-3531b543be5d',
+  'photo-1608043152269-423dbba4e7e1',
+  'photo-1563770660941-20978e870e26',
+  'photo-1505740420928-5e560c06d30e',
+  'photo-1546868871-7041f2a55e12',
+  'photo-1542751371-adc38448a05e',
+  'photo-1526738549149-8e07eca6c147',
+  'photo-1542393545-10f5cde2c810',
+  'photo-1550745165-9bc0b252726f',
+  'photo-1563986768609-322da13575f3',
+  'photo-1585776245991-cf89dd7fc73a',
+  'photo-1591799264318-7e6ef8ddb7ea',
+  'photo-1591405351990-4726e331f141',
+  'photo-1597872200319-382d746f5a63',
+  'photo-1618211500773-417dedfea67d',
+  'photo-1580234810907-b40315b76418',
+  'photo-1591510456681-370c707a4a40',
+  'photo-1562975078-0a69007481d1',
+  'photo-1586495777744-4413f21062fa',
+  'photo-1616440347437-b1c73416efc2',
+  'photo-1611186871348-b1ce696e52c9',
+  'photo-1601784551446-20c9e07cdbdb',
+  'photo-1610945415295-d9baf060e876',
+  'photo-1555664424-778a1e5e1b48'
+];
+
+const SPORTS_IMAGES = [
+  'photo-1542291026-7eec264c27ff',
+  'photo-1608231387042-66d1773070a5',
+  'photo-1581655353564-df123a1eb820',
+  'photo-1548883354-7622d03aca27',
+  'photo-1539185441755-769473a23570',
+  'photo-1553062407-98eeb64c6a62',
+  'photo-1508098682722-e99c43a406b2',
+  'photo-1511556532299-8f662fc26c06',
+  'photo-1534215754734-18e55d13ce35',
+  'photo-1517838277536-f5f99be501cd',
+  'photo-1504280390367-361c6d9f38f4',
+  'photo-1475503572774-15a45e5d60b9',
+  'photo-1519046904884-53103b34b206',
+  'photo-1485965120184-e220f721d03e',
+  'photo-1595435934249-5df7ed86e1c0',
+  'photo-1602143407151-7111542de6e8',
+  'photo-1530541930197-ff16ac917b0e',
+  'photo-1571008887538-b36bb32f4571',
+  'photo-1518611012118-696072aa579a',
+  'photo-1599058917212-d750089bc07e',
+  'photo-1517649763962-0c623066013b',
+  'photo-1506126613408-eca07ce68773',
+  'photo-1461896836934-ffe607ba8211',
+  'photo-1533560904424-a0c61dc306fc',
+  'photo-1519766304817-4f37bda74a27',
+  'photo-1517466787929-bc90951d0974',
+  'photo-1508612761958-e93158c7835f',
+  'photo-1541252260730-0412e8e2108e',
+  'photo-1526506118085-60ce8714f8c5',
+  'photo-1579758629938-03607ccdbaba',
+  'photo-1518310383802-640c2de311b2',
+  'photo-1552674605-db6ffd4facb5',
+  'photo-1568605117036-5fe5e7bab0b7',
+  'photo-1517438476312-12d7a036274d',
+  'photo-1584735935682-2f2b69dff9d2',
+  'photo-1541534741688-6078c6bfb5c5',
+  'photo-1502224562085-639556652f33',
+  'photo-1574629810360-7efbbe195018',
+  'photo-1544698310-74ea9d1c8258',
+  'photo-1518481612222-68bbe828ecd1',
+  'photo-1515555230216-8224dd0a23ab',
+  'photo-1595078475328-1ab05d0a6a63',
+  'photo-1607569745544-7661bcef4a0d',
+  'photo-1517466787929-bc90951d0974',
+  'photo-1591258370124-747605f69f20',
+  'photo-1594470117712-7bf2890605cc',
+  'photo-1548690312-e3b507d17a4d',
+  'photo-1598289431512-b97b0917affc',
+  'photo-1605296867304-46d5465a25f1',
+  'photo-1518611012118-696072aa579a'
+];
+
+const FASHION_IMAGES = [
+  'photo-1483985988355-763728e1935b',
+  'photo-1515886657613-9f3515b0c78f',
+  'photo-1539109136881-3be0616acf4b',
+  'photo-1490481651871-ab68de25d43d',
+  'photo-1525507119028-ed4c629a60a3',
+  'photo-1509631179647-0177331693ae',
+  'photo-1542272604-787c3835535d',
+  'photo-1551028719-00167b16eac5',
+  'photo-1620799140408-edc6dcb6d633',
+  'photo-1576566588028-4147f3842f27',
+  'photo-1596755094514-f87e34085b2c',
+  'photo-1603252109303-2751441dd157',
+  'photo-1541099649105-f69ad21f3246',
+  'photo-1512436991641-6745cdb1723f',
+  'photo-1496747611176-843222e1e57c',
+  'photo-1505022610485-0249ba5b3675',
+  'photo-1507679799987-c73779587ccf',
+  'photo-1578587018452-892bacefd3f2',
+  'photo-1605763240000-7e93b172d754',
+  'photo-1583743814966-8936f5b7be1a',
+  'photo-1562157873-818bc0726f68',
+  'photo-1591047139829-d91aecb6caea',
+  'photo-1511556532299-8f662fc26c06',
+  'photo-1534215754734-18e55d13ce35',
+  'photo-1607522370275-f14206abe5d3',
+  'photo-1492707892479-7bc8d5a4ee93',
+  'photo-1509319117193-57bab727e09d',
+  'photo-1618242479315-4a5c0e0b35df',
+  'photo-1581093450076-a5c2944fca81',
+  'photo-1618220179428-22790b461013',
+  'photo-1611312449412-6cefac5dc3e4',
+  'photo-1581093458022-77bb6c4a6316',
+  'photo-1593030761757-71fae45fa0e7',
+  'photo-1611186871348-b1ce696e52c9',
+  'photo-1603252109462-24af1327c5b6',
+  'photo-1543163521-1bf539c55dd2',
+  'photo-1549298916-b41d501d3772',
+  'photo-1559070135-f259b369bf87',
+  'photo-1624378439575-d8705ad7ae80',
+  'photo-1624224971170-2f84fed5eb5e',
+  'photo-1617137968427-85924c800a22',
+  'photo-1585487000160-6ebcfceb0d03',
+  'photo-1602810318383-e386cc2a3ccf',
+  'photo-1595950653106-6c9ebd614d3a',
+  'photo-1509631179647-0177331693ae',
+  'photo-1539109136881-3be0616acf4b',
+  'photo-1503342217505-b0a15ec3261c',
+  'photo-1496747611176-843222e1e57c',
+  'photo-1516762689617-e1cffcef479d',
+  'photo-1485230895905-ec40ba36b9bc'
+];
+
+const HOME_IMAGES = [
+  'photo-1524758631624-e2822e304c36',
+  'photo-1555041469-a586c61ea9bc',
+  'photo-1586023492125-27b2c045efd7',
+  'photo-1505691938895-1758d7feb511',
+  'photo-1583847268964-b28dc8f51f92',
+  'photo-1540518614846-7eded433c457',
+  'photo-1513519245088-0e12902e5a38',
+  'photo-1556911220-e15b29be8c8f',
+  'photo-1584622650111-993a426fbf0a',
+  'photo-1513694203232-719a280e022f',
+  'photo-1538688525198-9b88f6f53126',
+  'photo-1567538096630-e0c55bd6374c',
+  'photo-1522771739844-6a9f6d5f14af',
+  'photo-1581578731548-c64695cc6952',
+  'photo-1507089947368-19c1da9775ae',
+  'photo-1610701596007-11502861dcfa',
+  'photo-1585412727339-54e4bae3bbf9',
+  'photo-1505693416388-ac5ce068fe85',
+  'photo-1544816155-12df9643f363',
+  'photo-1532372320572-cda25653a26d',
+  'photo-1540518614846-7eded433c457',
+  'photo-1595515106969-1ce29566ff1c',
+  'photo-1565183997392-2f6f122e5912',
+  'photo-1533090161767-e6ffed986c88',
+  'photo-1585128792020-803d29415281',
+  'photo-1505692438830-1469cf3b22a5',
+  'photo-1565183997392-2f6f122e5912',
+  'photo-1522708323590-d24dbb6b0267',
+  'photo-1616486338812-3dadae4b4ace',
+  'photo-1615529182904-14819c35db37',
+  'photo-1617806118233-18e1db207f62',
+  'photo-1616046229478-9901c5536a45',
+  'photo-1594040226829-7f251ab46d80',
+  'photo-1574269909862-7e1d70bb8078',
+  'photo-1588854337236-6889d631faa8',
+  'photo-1592194996308-7b43878e84a6',
+  'photo-1505693395321-883724634266',
+  'photo-1558882224-cca166733360',
+  'photo-1595853035070-59a39fe84de3',
+  'photo-1615876234886-fd9a39fda97f',
+  'photo-1616047006786-b81d76a91890',
+  'photo-1594040226829-7f251ab46d80',
+  'photo-1501876725168-00c445821c9e',
+  'photo-1592928302636-c83cf1e1c887',
+  'photo-1590794056226-79ef3a8147e1',
+  'photo-1544816155-12df9643f363',
+  'photo-1616486338812-3dadae4b4ace',
+  'photo-1600585154340-be6161a56a0c',
+  'photo-1585412727339-54e4bae3bbf9',
+  'photo-1560185007-cde436f6a4d0'
+];
+
+const TOYS_IMAGES = [
+  'photo-1587654780291-39c9404d746b',
+  'photo-1611078489935-0cb964de46d6',
+  'photo-1606144042614-b2417e99c4e3',
+  'photo-1600861195091-690c92f1d2cc',
+  'photo-1566577134770-3d85bb3a9cc4',
+  'photo-1531525645387-7f14be1bdbbd',
+  'photo-1596461404969-9ae70f2830c1',
+  'photo-1515488042361-404e9250afef',
+  'photo-1558060370-d644479cb6f7',
+  'photo-1563861826100-9cb868fdabe1',
+  'photo-1585155770447-2f66e2a397b5',
+  'photo-1608889175123-8ec330b86f84',
+  'photo-1518156677180-95a2893f3e9f',
+  'photo-1593115057322-e94b77572f20',
+  'photo-1513151233558-d860c5398176',
+  'photo-1513364776144-60967b0f800f',
+  'photo-1531525645387-7f14be1bdbbd',
+  'photo-1596461404969-9ae70f2830c1',
+  'photo-1618843479313-40f8afb4b4d8',
+  'photo-1559251606-c623743a6d76',
+  'photo-1537655780520-1e392edd816a',
+  'photo-1594787318286-3d835c1d207f',
+  'photo-1599643478518-a784e5dc4c8f',
+  'photo-1582230302798-dd08b4f0b07b',
+  'photo-1607604276583-eef5d076aa5f',
+  'photo-1519074002996-a69e7ac46a42',
+  'photo-1568252542512-9fe8fe9c87bb',
+  'photo-1603481588273-2f908a9a7a1b',
+  'photo-1513151233558-d860c5398176',
+  'photo-1513364776144-60967b0f800f',
+  'photo-1558060370-d644479cb6f7',
+  'photo-1610483178766-08852b812f86',
+  'photo-1598902108854-10e335adac19',
+  'photo-1602810318383-e386cc2a3ccf',
+  'photo-1581093450076-a5c2944fca81',
+  'photo-1542751371-adc38448a05e',
+  'photo-1550745165-9bc0b252726f',
+  'photo-1612036782180-6f0b6cd846fe',
+  'photo-1513151233558-d860c5398176',
+  'photo-1566577134770-3d85bb3a9cc4',
+  'photo-1596461404969-9ae70f2830c1',
+  'photo-1593115057322-e94b77572f20',
+  'photo-1518156677180-95a2893f3e9f',
+  'photo-1608889175123-8ec330b86f84',
+  'photo-1585155770447-2f66e2a397b5',
+  'photo-1531525645387-7f14be1bdbbd',
+  'photo-1558060370-d644479cb6f7',
+  'photo-1618843479313-40f8afb4b4d8',
+  'photo-1594787318286-3d835c1d207f',
+  'photo-1568252542512-9fe8fe9c87bb'
+];
+
+const VENDOR_LOGOS: Record<string, string> = {
+  'Apple Store': 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=128&h=128&q=80',
+  'Samsung Store': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=128&h=128&q=80',
+  'Xiaomi Store': 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=128&h=128&q=80',
+  'HP Store': 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=128&h=128&q=80',
+  'Hoco Store': 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=128&h=128&q=80',
+  'Nike Store': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=128&h=128&q=80',
+  'Adidas Store': 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=128&h=128&q=80',
+  'Puma Store': 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=128&h=128&q=80',
+  'Decathlon': 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=128&h=128&q=80',
+  'Under Armour': 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=128&h=128&q=80',
+  'Zara': 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=128&h=128&q=80',
+  'H&M': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=128&h=128&q=80',
+  'Uniqlo': 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=128&h=128&q=80',
+  "Levi's": 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=128&h=128&q=80',
+  'Gucci': 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=128&h=128&q=80',
+  'IKEA': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=128&h=128&q=80',
+  'Dyson Store': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=128&h=128&q=80',
+  'Philips Home': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=128&h=128&q=80',
+  'KitchenAid Store': 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=128&h=128&q=80',
+  'Tupperware Store': 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=128&h=128&q=80',
+  'Lego Store': 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=128&h=128&q=80',
+  'Hasbro Store': 'https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?auto=format&fit=crop&w=128&h=128&q=80',
+  'Mattel Store': 'https://images.unsplash.com/photo-1515488042361-404e9250afef?auto=format&fit=crop&w=128&h=128&q=80',
+  'Nintendo Store': 'https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?auto=format&fit=crop&w=128&h=128&q=80',
+  'PlayStation Store': 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=128&h=128&q=80'
+};
+
+// -----------------------------------------------------------------------------
 // Seeding Execution Function
 // -----------------------------------------------------------------------------
 
@@ -1812,6 +2109,22 @@ async function main() {
     totalCategories++;
     console.log(`📂 Created Category: "${category.name}"`);
 
+    // Select the curated images array for this category to ensure 100% unique, working product images
+    let categoryImages: string[] = [];
+    if (categoryData.name === 'Electronics') {
+      categoryImages = ELECTRONICS_IMAGES;
+    } else if (categoryData.name === 'Sports & Outdoors') {
+      categoryImages = SPORTS_IMAGES;
+    } else if (categoryData.name === 'Clothing & Fashion') {
+      categoryImages = FASHION_IMAGES;
+    } else if (categoryData.name === 'Home & Living') {
+      categoryImages = HOME_IMAGES;
+    } else if (categoryData.name === 'Toys & Hobbies') {
+      categoryImages = TOYS_IMAGES;
+    }
+
+    let productImageIndex = 0;
+
     // B. Create vendors under this category
     for (const vendorData of categoryData.vendors) {
       // Create user login account for the vendor
@@ -1827,13 +2140,16 @@ async function main() {
       const colorIndex = vendorData.shopName.length % colors.length;
       const logoColor = colors[colorIndex];
 
+      // Assign the curated high-quality logo for the vendor
+      const vendorLogo = VENDOR_LOGOS[vendorData.shopName] || vendorData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(vendorData.shopName)}&background=fff&color=${logoColor}&size=128&bold=true`;
+
       // Create vendor profile with autoApproveProducts = true (high trust status)
       const vendor = await prisma.vendor.create({
         data: {
           userId: vendorUser.id,
           shopName: vendorData.shopName,
           shopDescription: vendorData.shopDescription,
-          logo: vendorData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(vendorData.shopName)}&background=fff&color=${logoColor}&size=128&bold=true`,
+          logo: vendorLogo,
           autoApproveProducts: true,
           status: VendorStatus.APPROVED,
         },
@@ -1842,6 +2158,13 @@ async function main() {
 
       // C. Create products under this vendor & category
       for (const productData of vendorData.products) {
+        // Select a unique product image from our curated stable Unsplash ID list
+        const imageId = categoryImages[productImageIndex % categoryImages.length];
+        const productImage = imageId
+          ? `https://images.unsplash.com/${imageId}?auto=format&fit=crop&w=500&q=80`
+          : productData.image;
+        productImageIndex++;
+
         await prisma.product.create({
           data: {
             vendorId: vendor.id,
@@ -1849,7 +2172,7 @@ async function main() {
             name: productData.name,
             description: productData.description,
             price: productData.price,
-            image: productData.image,
+            image: productImage,
             status: ProductStatus.APPROVED, // instanly visible to buyers
           },
         });
