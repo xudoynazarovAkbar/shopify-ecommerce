@@ -124,6 +124,9 @@ Initialize the database schemas, run migrations, generate the Prisma Client, and
 # Generate the Prisma Client and sync the schema with PostgreSQL
 npx prisma migrate dev
 
+# Explicitly generate the Prisma Client (required before seeding)
+npx prisma generate
+
 # Seed the database with default vendors, categories, products, and platform configurations
 npx prisma db seed
 ```
