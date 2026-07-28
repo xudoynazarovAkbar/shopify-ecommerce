@@ -64,6 +64,16 @@ export const useAdminMerchants = () => {
     }
   };
 
+  const deleteMerchant = async (vendorId: string): Promise<void> => {
+    try {
+      await api.delete(`/admin/vendors/${vendorId}`);
+      merchants.value = merchants.value.filter((m) => m.id !== vendorId);
+    } catch (err: unknown) {
+      const apiErr = err as { data?: { message?: string } };
+      throw new Error(apiErr?.data?.message || 'Failed to delete merchant', { cause: err });
+    }
+  };
+
   return {
     merchants,
     loading,
@@ -71,5 +81,6 @@ export const useAdminMerchants = () => {
     fetchMerchants,
     updateMerchantStatus,
     updateMerchantTrust,
+    deleteMerchant,
   };
 };

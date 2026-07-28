@@ -146,6 +146,10 @@ export class ProductsService {
   ) {
     const where: Prisma.ProductWhereInput = {
       status: ProductStatus.APPROVED,
+      isDeleted: false,
+      vendor: {
+        isDeleted: false,
+      },
     };
 
     if (categoryId) {
@@ -186,13 +190,20 @@ export class ProductsService {
         category: true,
         vendor: {
           select: {
+            id: true,
             shopName: true,
+            isDeleted: true,
           },
         },
       },
     });
 
-    if (!product || product.status !== ProductStatus.APPROVED) {
+    if (
+      !product ||
+      product.status !== ProductStatus.APPROVED ||
+      product.isDeleted ||
+      product.vendor.isDeleted
+    ) {
       throw new NotFoundException(`Product with ID "${id}" not found`);
     }
 
@@ -209,7 +220,7 @@ export class ProductsService {
     }
 
     return this.prisma.product.findMany({
-      where: { vendorId: vendor.id },
+      where: { vendorId: vendor.id, isDeleted: false },
       include: {
         category: true,
       },
@@ -221,7 +232,13 @@ export class ProductsService {
 
   async listPendingProducts() {
     return this.prisma.product.findMany({
-      where: { status: ProductStatus.PENDING_APPROVAL },
+      where: {
+        status: ProductStatus.PENDING_APPROVAL,
+        isDeleted: false,
+        vendor: {
+          isDeleted: false,
+        },
+      },
       include: {
         category: true,
         vendor: {

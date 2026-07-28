@@ -85,5 +85,16 @@ const authStore = useAuthStore();
       <Icon name="heroicons:presentation-chart-line-20-solid" class="w-5 h-5 shrink-0" />
       <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('vendor.analyticsBtn') }}</span>
     </NuxtLink>
+
+    <NuxtLink
+      to="/vendor/settings"
+      class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-appBg hover:text-textPrimary transition-all duration-200"
+      :class="[isSidebarCollapsed ? 'md:justify-center md:px-0 md:h-10 md:w-10 md:mx-auto' : '']"
+      active-class="bg-brand text-brandText"
+      :title="isSidebarCollapsed ? $t('settings.title') : ''"
+    >
+      <Icon name="heroicons:cog-6-tooth-20-solid" class="w-5 h-5 shrink-0" />
+      <span :class="[isSidebarCollapsed ? 'md:hidden' : '']">{{ $t('settings.title') }}</span>
+    </NuxtLink>
   </template>
 </template>

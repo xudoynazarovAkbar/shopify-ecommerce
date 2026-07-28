@@ -12,7 +12,7 @@ const { resolveImageUrl } = useImageResolver();
 const getLogoColor = (name: string): string => {
   const colors = ['dc2626', '000000', '2563eb', 'ea580c', '7c3aed', '059669'];
   const index = name ? name.length % colors.length : 0;
-  return colors[index];
+  return colors[index] || '000000';
 };
 </script>
 

@@ -67,6 +67,10 @@
     "categoryUpdatedSuccess": "Category taxonomy updated successfully.",
     "categoryDeletedSuccess": "Category has been successfully removed.",
     "categoryDeleteConfirmation": "Are you absolutely sure you want to permanently delete this category? All products assigned to it might lose their classification.",
+    "deleteVendorBtn": "Delete Vendor",
+    "deleteVendorConfirm": "Are you absolutely sure you want to permanently remove this vendor store from the marketplace? This will deactivate all their campaigns and hide all their products. THIS ACTION IS IRREVERSIBLE.",
+    "deleteVendorSuccess": "Vendor store removed successfully.",
+    "deleteVendorError": "Failed to remove vendor store.",
     "emptyCategoriesTitle": "No Categories Configured",
     "emptyCategoriesSubtitle": "There are no global product categories defined yet. Click 'Add New Category' to structure the catalog!",
     "errors": {
@@ -377,5 +381,32 @@
       "loading": "Loading spendings...",
       "noData": "No spendings recorded for this range"
     }
+  },
+  "settings": {
+    "title": "Account Settings",
+    "subtitle": "Manage your secure passwords and account preferences",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "At least 6 characters",
+    "savePasswordBtn": "Save New Password",
+    "passwordSuccessToast": "Password updated successfully",
+    "passwordErrorToast": "Failed to update password. Please check current password.",
+    "shopInfo": "Update Shop Information",
+    "shopName": "Shop Name",
+    "shopNamePlaceholder": "Your business name",
+    "shopDescription": "Shop Description",
+    "shopDescriptionPlaceholder": "Tell customers about your business...",
+    "logo": "Shop Logo",
+    "uploadLogo": "Upload Logo",
+    "saveShopInfoBtn": "Save Shop Information",
+    "shopInfoSuccessToast": "Shop information updated successfully",
+    "shopInfoErrorToast": "Failed to update shop info. Ensure description is at least 10 characters.",
+    "dangerZone": "Danger Zone",
+    "deleteStore": "Delete Store",
+    "deleteStoreConfirm": "Are you sure you want to permanently remove your store from the marketplace? This will delete all your products and campaigns. Your account will be downgraded to a buyer account. THIS ACTION IS IRREVERSIBLE.",
+    "deleteStoreSuccessToast": "Your store has been removed successfully. Your account has been downgraded to a buyer account.",
+    "deleteStoreErrorToast": "Failed to remove your store."
   }
 }

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from '../auth/auth.service';
 import { RegisterVendorDto } from './dto/register-vendor.dto';
+import { UpdateVendorDto } from './dto/update-vendor.dto';
 import { Role, VendorStatus, ProductStatus, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -55,7 +56,7 @@ export class VendorsService {
       },
     });
 
-    if (!vendor) {
+    if (!vendor || vendor.isDeleted) {
       throw new NotFoundException(`Vendor with ID ${vendorId} not found`);
     }
 
@@ -80,13 +81,17 @@ export class VendorsService {
   }
 
   async listApproved(categoryId?: string) {
-    const where: Prisma.VendorWhereInput = { status: VendorStatus.APPROVED };
+    const where: Prisma.VendorWhereInput = {
+      status: VendorStatus.APPROVED,
+      isDeleted: false,
+    };
 
     if (categoryId) {
       where.products = {
         some: {
           categoryId,
           status: ProductStatus.APPROVED,
+          isDeleted: false,
         },
       };
     }
@@ -121,7 +126,7 @@ export class VendorsService {
 
   async listVendors(status?: VendorStatus) {
     return this.prisma.vendor.findMany({
-      where: status ? { status } : {},
+      where: status ? { status, isDeleted: false } : { isDeleted: false },
       include: {
         user: {
           select: {
@@ -176,6 +181,87 @@ export class VendorsService {
           },
         },
       },
+    });
+  }
+
+  async updateProfile(userId: string, dto: UpdateVendorDto) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { userId },
+    });
+
+    if (!vendor) {
+      throw new NotFoundException('Vendor profile not found');
+    }
+
+    return this.prisma.vendor.update({
+      where: { id: vendor.id },
+      data: {
+        shopName: dto.shopName,
+        shopDescription: dto.shopDescription,
+        logo: dto.logo,
+      },
+    });
+  }
+
+  async deleteOwnStore(userId: string) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { userId },
+    });
+    if (!vendor) {
+      throw new NotFoundException('Vendor profile not found');
+    }
+    return this.softDeleteVendor(vendor.id);
+  }
+
+  async softDeleteVendor(vendorId: string) {
+    const vendor = await this.prisma.vendor.findUnique({
+      where: { id: vendorId },
+    });
+
+    if (!vendor) {
+      throw new NotFoundException(`Vendor with ID ${vendorId} not found`);
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      // 1. Soft delete the vendor
+      await tx.vendor.update({
+        where: { id: vendorId },
+        data: { isDeleted: true },
+      });
+
+      // 2. Soft delete all products of this vendor
+      await tx.product.updateMany({
+        where: { vendorId },
+        data: { isDeleted: true },
+      });
+
+      // 3. Deactivate all ad campaigns for this vendor
+      await tx.adCampaign.updateMany({
+        where: { vendorId },
+        data: { isActive: false },
+      });
+
+      // 4. Downgrade user's role to BUYER
+      await tx.user.update({
+        where: { id: vendor.userId },
+        data: { role: Role.BUYER },
+      });
+
+      // 5. Clean up carts referring to this vendor or their products
+      await tx.cartItem.deleteMany({
+        where: {
+          product: {
+            vendorId,
+          },
+        },
+      });
+
+      await tx.cart.updateMany({
+        where: { vendorId },
+        data: { vendorId: null },
+      });
+
+      return { success: true };
     });
   }
 }

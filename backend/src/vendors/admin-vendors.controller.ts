@@ -6,6 +6,7 @@ import {
   Body,
   Query,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { VendorsService } from './vendors.service';
 import { UpdateVendorStatusDto } from './dto/update-status.dto';
@@ -43,5 +44,10 @@ export class AdminVendorsController {
       id,
       updateVendorTrustDto.autoApproveProducts,
     );
+  }
+
+  @Delete(':id')
+  async deleteVendor(@Param('id') id: string) {
+    return this.vendorsService.softDeleteVendor(id);
   }
 }

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { AdPricingSettings } from '../../../types';
+import { useToastStore } from '../../../stores/toast';
+
+const toastStore = useToastStore();
 
 const props = defineProps<{
   submitting: boolean;
@@ -34,7 +37,7 @@ const onFileChange = (e: Event) => {
   const file = target.files?.[0];
   if (!file) return;
   if (!file.type.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
-    useNuxtApp().$toast.error(useNuxtApp().$i18n.t('vendor.campaigns.imageFormatErr'));
+    toastStore.error(useNuxtApp().$i18n.t('vendor.campaigns.imageFormatErr'));
     return;
   }
   selectedFile.value = file;
@@ -53,11 +56,11 @@ const totalCampaignCost = computed(() => {
 
 const handleSubmit = () => {
   if (!startDate.value) {
-    useNuxtApp().$toast.error(useNuxtApp().$i18n.t('vendor.campaigns.dateReq'));
+    toastStore.error(useNuxtApp().$i18n.t('vendor.campaigns.dateReq'));
     return;
   }
   if (!selectedFile.value) {
-    useNuxtApp().$toast.error(useNuxtApp().$i18n.t('vendor.campaigns.fileReq'));
+    toastStore.error(useNuxtApp().$i18n.t('vendor.campaigns.fileReq'));
     return;
   }
 

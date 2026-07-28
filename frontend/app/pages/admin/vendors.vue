@@ -15,6 +15,7 @@ const {
   fetchMerchants,
   updateMerchantStatus,
   updateMerchantTrust,
+  deleteMerchant,
 } = useAdminMerchants();
 
 const toastStore = useToastStore();
@@ -40,6 +41,18 @@ const handleTrustToggle = async (vendorId: string, currentTrustSetting: boolean)
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : 'Failed to toggle merchant trust tier';
     toastStore.error(errMsg);
+  }
+};
+
+const handleDeleteVendor = async (vendorId: string) => {
+  if (window.confirm(useNuxtApp().$i18n.t('admin.deleteVendorConfirm'))) {
+    try {
+      await deleteMerchant(vendorId);
+      toastStore.success(useNuxtApp().$i18n.t('admin.deleteVendorSuccess'));
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : 'Failed to delete merchant';
+      toastStore.error(errMsg);
+    }
   }
 };
 </script>
@@ -179,6 +192,17 @@ const handleTrustToggle = async (vendorId: string, currentTrustSetting: boolean)
               {{ $t('admin.approve') }}
             </button>
           </div>
+
+          <!-- Delete Vendor button (Visible to Admin for approved/rejected status) -->
+          <button
+            v-if="v.status !== 'PENDING'"
+            type="button"
+            class="bg-rose-500/10 hover:bg-rose-600 text-rose-500 hover:text-white px-4 py-2.5 font-bold rounded-xl text-xs transition active:scale-95 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-500/25"
+            @click="handleDeleteVendor(v.id)"
+          >
+            <Icon name="heroicons:trash" class="w-4 h-4 shrink-0" />
+            {{ $t('admin.deleteVendorBtn') }}
+          </button>
         </div>
       </div>
     </div>

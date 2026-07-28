@@ -16,6 +16,7 @@ export class SearchService {
     const vendorsPromise = this.prisma.vendor.findMany({
       where: {
         status: VendorStatus.APPROVED,
+        isDeleted: false,
         OR: [
           { shopName: { contains: trimmedQuery, mode: 'insensitive' } },
           { shopDescription: { contains: trimmedQuery, mode: 'insensitive' } },
@@ -32,8 +33,10 @@ export class SearchService {
     const productsPromise = this.prisma.product.findMany({
       where: {
         status: ProductStatus.APPROVED,
+        isDeleted: false,
         vendor: {
           status: VendorStatus.APPROVED,
+          isDeleted: false,
         },
         OR: [
           { name: { contains: trimmedQuery, mode: 'insensitive' } },

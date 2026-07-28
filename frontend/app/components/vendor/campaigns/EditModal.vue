@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { AdCampaign } from '../../../types';
+import { useToastStore } from '../../../stores/toast';
+
+const toastStore = useToastStore();
 
 const props = defineProps<{
   show: boolean;
@@ -35,7 +38,7 @@ const handleEditFileChange = (e: Event) => {
   const file = target.files?.[0];
   if (!file) return;
   if (!file.type.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
-    useNuxtApp().$toast.error(useNuxtApp().$i18n.t('vendor.campaigns.imageFormatErr'));
+    toastStore.error(useNuxtApp().$i18n.t('vendor.campaigns.imageFormatErr'));
     return;
   }
   editSelectedFile.value = file;

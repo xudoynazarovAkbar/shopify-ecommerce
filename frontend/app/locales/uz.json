@@ -67,6 +67,10 @@
     "categoryUpdatedSuccess": "Global kategoriya muvaffaqiyatli yangilandi.",
     "categoryDeletedSuccess": "Kategoriya muvaffaqiyatli o'chirildi.",
     "categoryDeleteConfirmation": "Ushbu kategoriyani butunlay o'chirishga ishonchingiz komilmi? Unga tegishli mahsulotlar o'z tasnifini yo'qotishi mumkin.",
+    "deleteVendorBtn": "Sotuvchini o'chirish",
+    "deleteVendorConfirm": "Ushbu sotuvchi do'konini savdo maydonchasidan butunlay olib tashlashga mutlaqo ishonchingiz komilmi? Bu ularning barcha kampaniyalarini faolsizlantiradi va mahsulotlarini yashiradi. USHBU AMALNI ORQAGA QAYTARIB BO'LMAYDI.",
+    "deleteVendorSuccess": "Sotuvchi do'koni muvaffaqiyatli o'chirildi.",
+    "deleteVendorError": "Sotuvchi do'konini o'chirish muvaffaqiyatsiz tugadi.",
     "emptyCategoriesTitle": "Kategoriyalar sozlanmagan",
     "emptyCategoriesSubtitle": "Global mahsulot kategoriyalari hali yaratilmagan. Katalogni shakllantirish uchun 'Yangi kategoriya qo'shish' tugmasini bosing!",
     "errors": {
@@ -377,5 +381,32 @@
       "loading": "Xarajatlar yuklanmoqda...",
       "noData": "Ushbu davr uchun xarajatlar topilmadi"
     }
+  },
+  "settings": {
+    "title": "Hisob sozlamalari",
+    "subtitle": "Xavfsiz parollaringizni va hisob sozlamalarini boshqaring",
+    "changePassword": "Parolni o'zgartirish",
+    "currentPassword": "Joriy parol",
+    "currentPasswordPlaceholder": "Joriy parolni kiriting",
+    "newPassword": "Yangi parol",
+    "newPasswordPlaceholder": "Kamida 6 ta belgi",
+    "savePasswordBtn": "Yangi parolni saqlash",
+    "passwordSuccessToast": "Parol muvaffaqiyatli yangilandi",
+    "passwordErrorToast": "Parolni yangilash muvaffaqiyatsiz tugadi. Joriy parolni tekshiring.",
+    "shopInfo": "Do'kon ma'lumotlarini yangilash",
+    "shopName": "Do'kon nomi",
+    "shopNamePlaceholder": "Sizning biznesingiz nomi",
+    "shopDescription": "Do'kon tavsifi",
+    "shopDescriptionPlaceholder": "Mijozlarga biznesingiz haqida gapirib bering...",
+    "logo": "Do'kon logotipi",
+    "uploadLogo": "Logotip yuklash",
+    "saveShopInfoBtn": "Do'kon ma'lumotlarini saqlash",
+    "shopInfoSuccessToast": "Do'kon ma'lumotlari muvaffaqiyatli yangilandi",
+    "shopInfoErrorToast": "Do'kon ma'lumotlarini yangilash muvaffaqiyatsiz tugadi. Tavsif kamida 10 ta belgi bo'lishini ta'minlang.",
+    "dangerZone": "Xavfli hudud",
+    "deleteStore": "Do'konni o'chirish",
+    "deleteStoreConfirm": "Do'koningizni savdo maydonchasidan butunlay olib tashlashga ishonchingiz komilmi? Bu barcha mahsulotlaringiz va kampaniyalaringizni o'chirib yuboradi. Hisobingiz xaridor maqomiga tushiriladi. USHBU AMALNI ORQAGA QAYTARIB BO'LMAYDI.",
+    "deleteStoreSuccessToast": "Do'koningiz muvaffaqiyatli o'chirildi. Hisobingiz xaridor maqomiga tushirildi.",
+    "deleteStoreErrorToast": "Do'konni o'chirish muvaffaqiyatsiz tugadi."
   }
 }

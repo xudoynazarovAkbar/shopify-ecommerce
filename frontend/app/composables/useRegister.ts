@@ -24,7 +24,7 @@ export const useRegister = () => {
       otherwise: (schema) => schema.notRequired(),
     }),
     shopDescription: yup.string().optional(),
-    logo: yup.mixed().optional(),
+    logo: yup.mixed().nullable().optional(),
   });
 
   const { handleSubmit, isSubmitting, resetForm } = useForm({
@@ -62,7 +62,7 @@ export const useRegister = () => {
 
   const handleRegister = handleSubmit(async (values) => {
     try {
-      let payload: any;
+      let payload: FormData | { email: string; password: string; role: 'BUYER' | 'VENDOR' };
 
       if (values.role === 'VENDOR') {
         const formData = new FormData();

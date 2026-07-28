@@ -62,6 +62,7 @@ model Vendor {
   logo                String?
   autoApproveProducts Boolean      @default(false)
   status              VendorStatus @default(PENDING)
+  isDeleted           Boolean      @default(false)
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
 
@@ -93,6 +94,7 @@ model Product {
   price       Float
   image       String?
   status      ProductStatus @default(PENDING_APPROVAL)
+  isDeleted   Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
