@@ -10,9 +10,9 @@ import fs from 'fs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Ensure uploads directory exists on startup
-  const uploadsDir = join(process.cwd(), 'uploads', 'products');
-  fs.mkdirSync(uploadsDir, { recursive: true });
+  // Ensure uploads directories exist on startup
+  fs.mkdirSync(join(process.cwd(), 'uploads', 'products'), { recursive: true });
+  fs.mkdirSync(join(process.cwd(), 'uploads', 'vendors'), { recursive: true });
 
   // Serve static assets from uploads directory
   app.use('/uploads', express.static(join(process.cwd(), 'uploads')));

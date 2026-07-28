@@ -1,35 +1,38 @@
 <script setup lang="ts">
 import type { Vendor } from '../../types';
+import { useImageResolver } from '../../composables/useImageResolver';
 
 const props = defineProps<{
   vendor: Vendor;
 }>();
 
-// Procedural visual initials placeholder
-const initials = computed(() => {
-  return props.vendor.shopName ? props.vendor.shopName.charAt(0).toUpperCase() : 'S';
-});
+const { resolveImageUrl } = useImageResolver();
 
-// Procedural gradient background selection based on name length
-const gradientClass = computed(() => {
-  const gradients = [
-    'from-pink-500 to-rose-500 text-white',
-    'from-purple-500 to-indigo-500 text-white',
-    'from-blue-500 to-teal-500 text-white',
-    'from-amber-500 to-orange-500 text-white',
-    'from-emerald-500 to-green-500 text-white',
-  ];
-  const index = props.vendor.shopName ? props.vendor.shopName.length % gradients.length : 0;
-  return gradients[index];
-});
+// Deterministic vibrant colors for fallback logos (white bg + dynamic text color)
+const getLogoColor = (name: string): string => {
+  const colors = ['dc2626', '000000', '2563eb', 'ea580c', '7c3aed', '059669'];
+  const index = name ? name.length % colors.length : 0;
+  return colors[index];
+};
 </script>
 
 <template>
   <div class="bg-cardBg border border-appBorder rounded-2xl p-6 md:p-8 shadow-sm transition-colors duration-200">
     <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
-      <!-- Procedural Store Avatar/Logo -->
-      <div :class="[gradientClass, 'w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center font-extrabold text-3xl md:text-4xl shadow-md shrink-0 bg-gradient-to-br']">
-        {{ initials }}
+      <!-- Store Avatar/Logo Image -->
+      <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-2xl overflow-hidden shadow-md border border-appBorder bg-white">
+        <img
+          v-if="vendor.logo"
+          :src="resolveImageUrl(vendor.logo)"
+          alt="logo"
+          class="w-full h-full object-cover"
+        />
+        <img
+          v-else
+          :src="`https://ui-avatars.com/api/?name=${encodeURIComponent(vendor.shopName)}&background=fff&color=${getLogoColor(vendor.shopName)}&size=128&bold=true`"
+          alt="logo"
+          class="w-full h-full object-cover"
+        />
       </div>
 
       <!-- Shop Info -->

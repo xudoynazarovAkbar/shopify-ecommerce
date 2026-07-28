@@ -24,6 +24,7 @@ export const useRegister = () => {
       otherwise: (schema) => schema.notRequired(),
     }),
     shopDescription: yup.string().optional(),
+    logo: yup.mixed().optional(),
   });
 
   const { handleSubmit, isSubmitting, resetForm } = useForm({
@@ -34,6 +35,7 @@ export const useRegister = () => {
       password: '',
       shopName: '',
       shopDescription: '',
+      logo: null as File | null,
     },
   });
 
@@ -42,6 +44,7 @@ export const useRegister = () => {
   const { value: password, errorMessage: passwordError } = useField<string>('password');
   const { value: shopName, errorMessage: shopNameError } = useField<string>('shopName');
   const { value: shopDescription, errorMessage: shopDescriptionError } = useField<string>('shopDescription');
+  const { value: logo, errorMessage: logoError } = useField<File | null>('logo');
 
   // Reset form inputs and error messages when switching between roles (tabs)
   watch(role, (newRole) => {
@@ -52,22 +55,35 @@ export const useRegister = () => {
         password: '',
         shopName: '',
         shopDescription: '',
+        logo: null,
       },
     });
   });
 
   const handleRegister = handleSubmit(async (values) => {
     try {
-      const payload = {
-        email: values.email,
-        password: values.password,
-        role: values.role as 'BUYER' | 'VENDOR',
-        shopName: values.role === 'VENDOR' ? values.shopName : undefined,
-        shopDescription:
-          values.role === 'VENDOR' && values.shopDescription
-            ? values.shopDescription
-            : undefined,
-      };
+      let payload: any;
+
+      if (values.role === 'VENDOR') {
+        const formData = new FormData();
+        formData.append('email', values.email);
+        formData.append('password', values.password);
+        formData.append('role', values.role);
+        formData.append('shopName', values.shopName || '');
+        if (values.shopDescription) {
+          formData.append('shopDescription', values.shopDescription);
+        }
+        if (values.logo) {
+          formData.append('logo', values.logo);
+        }
+        payload = formData;
+      } else {
+        payload = {
+          email: values.email,
+          password: values.password,
+          role: values.role as 'BUYER' | 'VENDOR',
+        };
+      }
 
       await api.post('/auth/register', payload);
 
@@ -102,10 +118,12 @@ export const useRegister = () => {
     role,
     shopName,
     shopDescription,
+    logo,
     emailError,
     passwordError,
     shopNameError,
     shopDescriptionError,
+    logoError,
     loading: isSubmitting,
     handleRegister,
   };

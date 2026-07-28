@@ -27,4 +27,7 @@ export class RegisterDto {
 
   @IsOptional()
   shopDescription?: string;
+
+  @IsOptional()
+  logo?: string;
 }

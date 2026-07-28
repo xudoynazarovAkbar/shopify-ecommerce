@@ -125,6 +125,7 @@
     "shopName": "Shop Name",
     "shopDescription": "Shop Description",
     "shopDescriptionPlaceholder": "Tell customers about your shop...",
+    "shopLogo": "Shop Logo",
     "registerBtn": "Register Account",
     "alreadyHaveAccount": "Already have an account?"
   },

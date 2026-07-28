@@ -28,6 +28,7 @@ export interface Vendor {
   userId: string;
   shopName: string;
   shopDescription?: string | null;
+  logo?: string | null;
   autoApproveProducts: boolean;
   status: VendorStatus;
   createdAt: string;

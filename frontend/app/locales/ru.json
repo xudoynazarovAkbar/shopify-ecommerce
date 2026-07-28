@@ -125,6 +125,7 @@
     "shopName": "Название магазина",
     "shopDescription": "Описание магазина",
     "shopDescriptionPlaceholder": "Расскажите покупателям о вашем магазине...",
+    "shopLogo": "Логотип магазина",
     "registerBtn": "Зарегистрироваться",
     "alreadyHaveAccount": "Уже есть аккаунт?"
   },

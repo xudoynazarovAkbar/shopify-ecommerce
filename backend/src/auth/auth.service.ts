@@ -49,6 +49,7 @@ export class AuthService {
             userId: user.id,
             shopName: dto.shopName!,
             shopDescription: dto.shopDescription,
+            logo: dto.logo,
             status: VendorStatus.PENDING,
             autoApproveProducts: false,
           },

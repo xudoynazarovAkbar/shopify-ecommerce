@@ -30,6 +30,7 @@ interface VendorSeed {
   shopName: string;
   shopDescription: string;
   email: string;
+  logo?: string;
   products: ProductSeed[];
 }
 
@@ -1822,12 +1823,17 @@ async function main() {
         },
       });
 
+      const colors = ['dc2626', '000000', '2563eb', 'ea580c', '7c3aed', '059669'];
+      const colorIndex = vendorData.shopName.length % colors.length;
+      const logoColor = colors[colorIndex];
+
       // Create vendor profile with autoApproveProducts = true (high trust status)
       const vendor = await prisma.vendor.create({
         data: {
           userId: vendorUser.id,
           shopName: vendorData.shopName,
           shopDescription: vendorData.shopDescription,
+          logo: vendorData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(vendorData.shopName)}&background=fff&color=${logoColor}&size=128&bold=true`,
           autoApproveProducts: true,
           status: VendorStatus.APPROVED,
         },

@@ -7,14 +7,30 @@ const {
   role,
   shopName,
   shopDescription,
+  logo,
   emailError,
   passwordError,
   shopNameError,
   shopDescriptionError,
+  logoError,
   loading,
   handleRegister,
 } = useRegister();
 const showPassword = ref(false);
+
+const logoPreview = ref<string | null>(null);
+
+const onFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (file) {
+    logo.value = file;
+    logoPreview.value = URL.createObjectURL(file);
+  } else {
+    logo.value = null;
+    logoPreview.value = null;
+  }
+};
 </script>
 
 <template>
@@ -109,6 +125,43 @@ const showPassword = ref(false);
             :error="shopDescriptionError"
             :placeholder="$t('auth.shopDescriptionPlaceholder')"
           />
+
+          <!-- Shop Logo File Upload -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-textSecondary">
+              {{ $t('auth.shopLogo') }}
+            </label>
+            <div class="flex items-center space-x-4">
+              <!-- Preview or Icon -->
+              <div class="w-16 h-16 rounded-xl border border-appBorder bg-appBg flex items-center justify-center overflow-hidden transition-colors shadow-sm">
+                <img
+                  v-if="logoPreview"
+                  :src="logoPreview"
+                  alt="Logo preview"
+                  class="w-full h-full object-cover"
+                />
+                <Icon
+                  v-else
+                  name="heroicons:photo"
+                  class="w-8 h-8 text-textMuted"
+                />
+              </div>
+              
+              <!-- File Input Button -->
+              <label class="px-4 py-2 bg-brand hover:bg-brandHover text-white text-sm font-semibold rounded-lg shadow-sm transition-all cursor-pointer select-none">
+                <span>Choose Image</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  @change="onFileChange"
+                />
+              </label>
+            </div>
+            <p v-if="logoError" class="text-xs text-rose-500 font-medium">
+              {{ logoError }}
+            </p>
+          </div>
         </div>
       </Transition>
 
