@@ -449,7 +449,8 @@ describe('Categories & Products Moderation System (e2e)', () => {
       const product = await prisma.product.findUnique({
         where: { id: prodId },
       });
-      expect(product).toBeNull();
+      expect(product).toBeDefined();
+      expect(product?.isDeleted).toBe(true);
     });
 
     it('should block deletion of category if it contains products', async () => {

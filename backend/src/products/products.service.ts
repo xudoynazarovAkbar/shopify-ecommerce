@@ -134,8 +134,40 @@ export class ProductsService {
       );
     }
 
-    return this.prisma.product.delete({
-      where: { id: productId },
+    return this.prisma.$transaction(async (tx) => {
+      const updatedProduct = await tx.product.update({
+        where: { id: productId },
+        data: { isDeleted: true },
+      });
+
+      // Find carts that have this product
+      const affectedCartItems = await tx.cartItem.findMany({
+        where: { productId },
+        select: { cartId: true },
+      });
+      const affectedCartIds = Array.from(
+        new Set(affectedCartItems.map((ci) => ci.cartId)),
+      );
+
+      // Clean up cart items containing this product
+      await tx.cartItem.deleteMany({
+        where: { productId },
+      });
+
+      // For each affected cart, check if it's now empty and reset vendorId
+      for (const cartId of affectedCartIds) {
+        const remainingItems = await tx.cartItem.count({
+          where: { cartId },
+        });
+        if (remainingItems === 0) {
+          await tx.cart.update({
+            where: { id: cartId },
+            data: { vendorId: null },
+          });
+        }
+      }
+
+      return updatedProduct;
     });
   }
 
